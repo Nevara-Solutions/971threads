@@ -119,14 +119,15 @@
     padding: 1.3rem 2.8rem;
     background: #111;
     color: #fff;
+    border: 1.5px solid #111;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     font-size: 1.4rem;
     text-decoration: none;
-    transition: opacity 0.2s ease;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   }
-  .cdb__btn:hover { opacity: 0.85; }
+  .cdb__btn:hover { background: #fff; color: #000; border-color: #000; }
   @media screen and (max-width: 749px) {
     .cdb__sep { height: 3rem; }
     .cdb__unit { min-width: 0; }

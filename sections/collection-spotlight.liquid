@@ -20,18 +20,20 @@
   }
 {%- endstyle -%}
 
-<section id="cspot-{{ section.id }}" class="cspot color-{{ section.settings.color_scheme }} gradient">
+<section id="cspot-{{ section.id }}" class="cspot cspot--{{ section.settings.layout }} color-{{ section.settings.color_scheme }} gradient">
   <div class="cspot__grid">
     <div class="cspot__intro">
-      {%- if section.settings.kicker != blank -%}
-        <p class="cspot__kicker">{{ section.settings.kicker }}</p>
-      {%- endif -%}
-      {%- if section.settings.heading != blank -%}
-        <h2 class="cspot__heading">{{ section.settings.heading }}</h2>
-      {%- endif -%}
-      {%- if section.settings.description != blank -%}
-        <p class="cspot__desc">{{ section.settings.description }}</p>
-      {%- endif -%}
+      <div class="cspot__intro-text">
+        {%- if section.settings.kicker != blank -%}
+          <p class="cspot__kicker">{{ section.settings.kicker }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="cspot__heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.description != blank -%}
+          <p class="cspot__desc">{{ section.settings.description }}</p>
+        {%- endif -%}
+      </div>
       {%- if section.settings.button_label != blank -%}
         <a href="{{ section.settings.button_link | default: coll.url | default: '#' }}" class="cspot__btn">
           <span>{{ section.settings.button_label }}</span>
@@ -52,13 +54,6 @@
                     | image_url: width: 800
                     | image_tag: loading: 'lazy', widths: '300, 500, 700, 800', class: 'cspot__img cspot__img--primary', alt: product.title
                   }}
-                  {%- if product.media[1] -%}
-                    {{
-                      product.media[1].preview_image
-                      | image_url: width: 800
-                      | image_tag: loading: 'lazy', widths: '300, 500, 700, 800', class: 'cspot__img cspot__img--hover', alt: product.title
-                    }}
-                  {%- endif -%}
                 {%- else -%}
                   {{ 'product-apparel-1' | placeholder_svg_tag: 'cspot__img placeholder' }}
                 {%- endif -%}
@@ -120,11 +115,12 @@
   }
   .cspot__heading {
     margin: 0 0 1.4rem;
-    font-family: var(--font-display-family);
+    font-family: var(--font-heading-family);
+    font-weight: 600;
     text-transform: uppercase;
-    line-height: 0.95;
-    letter-spacing: 0.01em;
-    font-size: clamp(3.2rem, 4vw, 5.2rem);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    font-size: clamp(3rem, 3.6vw, 4.6rem);
   }
   .cspot__desc {
     margin: 0 0 2.4rem;
@@ -139,14 +135,39 @@
     padding: 1.3rem 2.6rem;
     background: rgb(var(--color-foreground));
     color: rgb(var(--color-background));
+    border: 1.5px solid rgb(var(--color-foreground));
     text-transform: uppercase;
     letter-spacing: 0.1em;
     font-weight: 700;
     font-size: 1.3rem;
     text-decoration: none;
-    transition: opacity 0.2s ease;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   }
-  .cspot__btn:hover { opacity: 0.82; }
+  .cspot__btn:hover { background: #fff; color: #000; border-color: #000; }
+
+  /* "Top" layout: heading row + link on top, full-width slider below (sale section). */
+  .cspot--top .cspot__grid { display: block; }
+  .cspot--top .cspot__intro {
+    position: static;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.6rem 2rem;
+    margin-bottom: 3rem;
+  }
+  .cspot--top .cspot__heading { margin-bottom: 0; }
+  .cspot--top .cspot__desc { display: none; }
+  .cspot--top .cspot__btn {
+    background: transparent;
+    color: inherit;
+    border: none;
+    padding: 0;
+    text-decoration: underline;
+    text-underline-offset: 0.5rem;
+  }
+  .cspot--top .cspot__btn svg { display: none; }
+  .cspot--top .cspot__btn:hover { background: transparent; color: inherit; opacity: 0.65; }
 
   .cspot__row {
     display: flex;
@@ -180,12 +201,8 @@
     height: 100%;
     object-fit: cover;
   }
-  .cspot__img--hover {
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-  .cspot__card:hover .cspot__img--hover { opacity: 1; }
-  .cspot__card:hover .cspot__img--primary { opacity: 0; }
+  .cspot__img--primary { transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .cspot__card:hover .cspot__img--primary { transform: scale(1.07); }
   .cspot__media-link { position: absolute; inset: 0; z-index: 1; display: block; }
   .cspot__info { display: block; text-decoration: none; color: inherit; }
   .cspot__badge {
@@ -295,6 +312,16 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "side", "label": "Text beside products" },
+        { "value": "top", "label": "Heading on top, slider below" }
+      ],
+      "default": "side"
     },
     {
       "type": "header",

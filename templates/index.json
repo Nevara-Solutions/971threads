@@ -80,6 +80,7 @@
         "products_to_show": 8,
         "show_vendor": false,
         "color_scheme": "scheme-1",
+        "layout": "top",
         "kicker": "Sale",
         "heading": "Limited-time markdowns",
         "description": "Heavyweight tees and hoodies, marked down for a limited run. When the timer hits zero, prices go back up.",
