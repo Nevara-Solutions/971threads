@@ -35,6 +35,7 @@ Whenever you write headings, descriptions, button labels, alt text, or any user-
 
 ## Technical rules & gotchas (learned the hard way)
 - **`richtext` settings need block-level HTML.** A `description` of type `richtext` must be wrapped in `<p>…</p>` (or `<ul>/<ol>/<h1>-<h6>`). Plain text → "Setting is invalid" upload error. Plain `text`/`textarea` settings take raw text.
+- **`range` setting values must match the schema `step`.** A `range` with `"step": 5` only accepts multiples of 5 (0,5,10…). An off-step value (e.g. 28) → "must be a step in the range" upload error + 500 on the page. When you set a `range` value in a JSON template, check the section's schema `step`/`min`/`max`.
 - **Stale error overlay in the preview:** if `theme dev` shows an "Upload Errors" box after you've already fixed the file, it's stale — restart `theme dev` (Ctrl+C, re-run) and hard-refresh (Ctrl/Cmd+Shift+R).
 - **Temp-file upload errors** (`*.tmp.*` "must have .liquid extension"): handled by `.shopifyignore`; if they appear, restart `theme dev` so it re-reads the ignore file.
 - **Section JS:** put it in an `assets/*.js` file loaded with `<script src=... defer>`, not inline in the section — inline section scripts can silently fail to run on `theme dev` reloads.
