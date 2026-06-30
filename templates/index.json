@@ -6,19 +6,19 @@
         "s1": {
           "type": "slide",
           "settings": {
-            "kicker": "SS26 — Now live",
-            "heading": "No basics just statement pieces",
-            "subheading": "Look good and feel great with everyday pieces that balance style and comfort.",
-            "button_label": "Shop all",
+            "kicker": "SS26 Collection",
+            "heading": "From Sands to Street",
+            "subheading": "Streetwear born in the 971. Heavyweight tees and hoodies, built for the heat and the late nights.",
+            "button_label": "Shop the collection",
             "button_link": "shopify://collections/all"
           }
         },
         "s2": {
           "type": "slide",
           "settings": {
-            "kicker": "Hoodies",
-            "heading": "From sands to street",
-            "subheading": "Heavyweight hoodies built for the 971 and beyond.",
+            "kicker": "The Hoodies",
+            "heading": "Heavyweight, never heavy-handed",
+            "subheading": "Premium heavyweight hoodies with a relaxed fit. Made to layer, made to last.",
             "button_label": "Shop hoodies",
             "button_link": "shopify://collections/all"
           }
@@ -26,9 +26,9 @@
         "s3": {
           "type": "slide",
           "settings": {
-            "kicker": "Limited",
-            "heading": "Drops that don't restock",
-            "subheading": "Once they're gone, they're gone. Get yours early.",
+            "kicker": "Limited Drops",
+            "heading": "When it's gone, it's gone",
+            "subheading": "Every release is a limited run. No restocks — just the next drop.",
             "button_label": "Shop tees",
             "button_link": "shopify://collections/all"
           }
@@ -47,12 +47,13 @@
     "marquee": {
       "type": "marquee",
       "blocks": {
-        "p1": { "type": "phrase", "settings": { "text": "New drop — SS26" } },
-        "p2": { "type": "phrase", "settings": { "text": "Free shipping over AED 200" } },
-        "p3": { "type": "phrase", "settings": { "text": "971 threads" } },
-        "p4": { "type": "phrase", "settings": { "text": "Worldwide shipping" } }
+        "p1": { "type": "phrase", "settings": { "text": "From Sands to Street" } },
+        "p2": { "type": "phrase", "settings": { "text": "Heavyweight cotton" } },
+        "p3": { "type": "phrase", "settings": { "text": "Limited drops — no restocks" } },
+        "p4": { "type": "phrase", "settings": { "text": "Made for the 971" } },
+        "p5": { "type": "phrase", "settings": { "text": "Free UAE shipping over AED 200" } }
       },
-      "block_order": ["p1", "p2", "p3", "p4"],
+      "block_order": ["p1", "p2", "p3", "p4", "p5"],
       "settings": {
         "color_scheme": "scheme-4",
         "direction": "left",
@@ -69,10 +70,10 @@
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
-        "title": "Featured products",
+        "title": "The Latest Drop",
         "heading_size": "h2",
-        "description": "",
-        "show_description": false,
+        "description": "Fresh tees and hoodies, straight off the press. Limited runs — don't sleep on it.",
+        "show_description": true,
         "description_style": "body",
         "collection": "all",
         "products_to_show": 8,
@@ -98,14 +99,14 @@
       "type": "lookbook",
       "blocks": {
         "t1": { "type": "tile", "settings": { "heading": "New In", "text": "The SS26 drop", "button_label": "Shop now", "span_two": true, "link": "shopify://collections/all", "text_position": "bottom-left", "overlay_opacity": 30 } },
-        "t2": { "type": "tile", "settings": { "heading": "Tees", "button_label": "Shop", "link": "shopify://collections/all", "text_position": "bottom-left", "overlay_opacity": 25 } },
-        "t3": { "type": "tile", "settings": { "heading": "Outerwear", "button_label": "Shop", "link": "shopify://collections/all", "text_position": "bottom-left", "overlay_opacity": 25 } }
+        "t2": { "type": "tile", "settings": { "heading": "Tees", "text": "Everyday heavyweight cotton", "button_label": "Shop tees", "link": "shopify://collections/all", "text_position": "bottom-left", "overlay_opacity": 25 } },
+        "t3": { "type": "tile", "settings": { "heading": "Hoodies", "text": "Relaxed fit, built to last", "button_label": "Shop hoodies", "link": "shopify://collections/all", "text_position": "bottom-left", "overlay_opacity": 25 } }
       },
       "block_order": ["t1", "t2", "t3"],
       "settings": {
         "color_scheme": "scheme-1",
         "heading": "The Lookbook",
-        "subheading": "Styled on the street",
+        "subheading": "Styled from sands to street",
         "columns_desktop": 3,
         "tile_height": 460,
         "gap": 12,

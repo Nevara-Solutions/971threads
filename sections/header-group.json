@@ -17,7 +17,7 @@
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
-            "text": "Free shipping on orders over AED 200",
+            "text": "Free shipping across the UAE on orders over AED 200",
             "text_alignment": "center",
             "color_scheme": "scheme-4",
             "link": ""
@@ -26,7 +26,7 @@
         "announcement-bar-1": {
           "type": "announcement",
           "settings": {
-            "text": "New drop — SS26 out now",
+            "text": "SS26 just dropped — shop new arrivals",
             "text_alignment": "center",
             "color_scheme": "scheme-4",
             "link": "shopify://collections/all"
@@ -35,7 +35,7 @@
         "announcement-bar-2": {
           "type": "announcement",
           "settings": {
-            "text": "Worldwide shipping",
+            "text": "971 Threads — From Sands to Street",
             "text_alignment": "center",
             "color_scheme": "scheme-4",
             "link": ""
