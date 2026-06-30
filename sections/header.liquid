@@ -105,6 +105,42 @@
     letter-spacing: 0.08em;
     font-size: 1.25rem;
   }
+
+  {%- comment -%} 971threads: wide header (near full-width with padding) + labelled icons. {%- endcomment -%}
+  @media screen and (min-width: 990px) {
+    .section-header .header {
+      max-width: none;
+      padding-inline: 4rem;
+      column-gap: 3rem;
+    }
+  }
+  .header__icon-text {
+    font-family: var(--font-heading-family);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin-inline-start: 0.7rem;
+    white-space: nowrap;
+  }
+  /* Search + cart become icon + label rows on desktop */
+  .header__icon--search .header__icon-inner,
+  .header__icon--cart {
+    display: inline-flex;
+    align-items: center;
+  }
+  .header__icon--search,
+  .header__icon--cart {
+    width: auto;
+  }
+  /* Subtle divider before the cart, like the reference */
+  @media screen and (min-width: 990px) {
+    .header__icon--cart {
+      margin-inline-start: 1.2rem;
+      padding-inline-start: 1.8rem;
+      border-inline-start: 0.1rem solid rgba(var(--color-foreground), 0.15);
+    }
+  }
 </style>
 
 {%- style -%}
@@ -323,6 +359,7 @@
           <span class="svg-wrapper">{{ 'icon-cart.svg' | inline_asset_content }}</span>
         {% endif %}
         <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+        <span class="header__icon-text small-hide">{{ 'templates.cart.cart' | t }}{% if cart != empty %} ({{ cart.item_count }}){% endif %}</span>
         {%- if cart != empty -%}
           <div class="cart-count-bubble">
             {%- if cart.item_count < 100 -%}

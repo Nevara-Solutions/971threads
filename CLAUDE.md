@@ -31,14 +31,17 @@ Whenever you write headings, descriptions, button labels, alt text, or any user-
 - Use **Unsplash** (commercial-licensed, free) or the user's own product shots. Files live in `assets/`.
 - **NEVER scrape images from paid themes** (e.g. the Berlin demo) — they're licensed and would be a copyright risk on a live store.
 - Custom sections (hero, lookbook) can use `assets/` images as fallback defaults. Dawn's `image_picker` sections (hero banner, etc.) can only use images uploaded to Shopify Files.
-- Keep hero/lookbook imagery **lifestyle** (people in tees/hoodies), tonally consistent — not studio flat-lays.
+- Keep hero/lookbook imagery **lifestyle** (people wearing tees/hoodies), tonally consistent — not studio flat-lays.
+- **Images MUST be on-brand: t-shirts and hoodies only.** No leather/denim jackets, dress shirts, suits, or unrelated products — even if a stock photo "looks streetwear." Review every downloaded image (a contact-sheet `montage` is the fast way) and discard anything that isn't a tee/hoodie.
+- **Hero images should be dark-toned** so white headline/sub text stays readable; the hero scrim darkens them further. Avoid bright/washed shots for the hero.
 
 ## Technical rules & gotchas (learned the hard way)
 - **`richtext` settings need block-level HTML.** A `description` of type `richtext` must be wrapped in `<p>…</p>` (or `<ul>/<ol>/<h1>-<h6>`). Plain text → "Setting is invalid" upload error. Plain `text`/`textarea` settings take raw text.
 - **`range` setting values must match the schema `step`.** A `range` with `"step": 5` only accepts multiples of 5 (0,5,10…). An off-step value (e.g. 28) → "must be a step in the range" upload error + 500 on the page. When you set a `range` value in a JSON template, check the section's schema `step`/`min`/`max`.
 - **Stale error overlay in the preview:** if `theme dev` shows an "Upload Errors" box after you've already fixed the file, it's stale — restart `theme dev` (Ctrl+C, re-run) and hard-refresh (Ctrl/Cmd+Shift+R).
 - **Temp-file upload errors** (`*.tmp.*` "must have .liquid extension"): handled by `.shopifyignore`; if they appear, restart `theme dev` so it re-reads the ignore file.
-- **Section JS:** put it in an `assets/*.js` file loaded with `<script src=... defer>`, not inline in the section — inline section scripts can silently fail to run on `theme dev` reloads.
+- **Section JS:** put it in an `assets/*.js` file loaded with `<script src=... defer>`, not inline in the section — inline section scripts can silently fail to run on `theme dev` reloads. After adding a NEW asset, restart `theme dev` so it uploads.
+- **No horizontal scroll.** Don't use `width: 100vw` for full-bleed — `100vw` includes the scrollbar width and causes a horizontal scrollbar. Dawn sections (`.shopify-section`) are already full-width, so use `width: 100%` instead. (`100vw` is fine inside image `sizes` attributes — that's not layout width.)
 - **Always validate before declaring done:**
   - JSON templates: `node -e "JSON.parse(require('fs').readFileSync('<file>','utf8'))"`
   - Theme lint: `shopify theme check` — confirm offense count doesn't rise above the pre-existing baseline.

@@ -1,54 +1,62 @@
-/* 971threads — hero slideshow web component */
-if (!customElements.get('hero-slideshow')) {
-  customElements.define(
-    'hero-slideshow',
-    class extends HTMLElement {
-      connectedCallback() {
-        this.track = this.querySelector('.hero__track');
-        this.slides = Array.from(this.querySelectorAll('.hero__slide'));
-        this.dots = Array.from(this.querySelectorAll('.hero__dot'));
-        this.index = 0;
-        if (!this.track || this.slides.length <= 1) return;
+/* 971threads — hero slideshow (robust, framework-free) */
+(function () {
+  function init(root) {
+    if (root.dataset.heroReady === '1') return;
+    var track = root.querySelector('.hero__track');
+    var slides = root.querySelectorAll('.hero__slide');
+    if (!track || slides.length <= 1) return;
+    root.dataset.heroReady = '1';
 
-        const prev = this.querySelector('.hero__arrow--prev');
-        const next = this.querySelector('.hero__arrow--next');
-        if (prev) prev.addEventListener('click', () => this.go(this.index - 1));
-        if (next) next.addEventListener('click', () => this.go(this.index + 1));
-        this.dots.forEach((dot, i) => dot.addEventListener('click', () => this.go(i)));
+    var dots = root.querySelectorAll('.hero__dot');
+    var index = 0;
+    var timer = null;
+    var speed = (parseInt(root.dataset.speed, 10) || 5) * 1000;
+    var auto =
+      root.dataset.autoplay === 'true' &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        this.speed = (parseInt(this.dataset.speed, 10) || 5) * 1000;
-        this.auto =
-          this.dataset.autoplay === 'true' &&
-          !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (this.auto) {
-          this.addEventListener('mouseenter', () => this.stop());
-          this.addEventListener('mouseleave', () => this.start());
-          this.start();
-        }
-      }
-
-      disconnectedCallback() {
-        this.stop();
-      }
-
-      go(i) {
-        const n = this.slides.length;
-        this.index = ((i % n) + n) % n;
-        this.track.style.transform = 'translateX(-' + this.index * 100 + '%)';
-        this.dots.forEach((d, j) => d.classList.toggle('is-active', j === this.index));
-        if (this.auto) {
-          this.stop();
-          this.start();
-        }
-      }
-
-      start() {
-        this.timer = setInterval(() => this.go(this.index + 1), this.speed);
-      }
-
-      stop() {
-        clearInterval(this.timer);
+    function show(i) {
+      var n = slides.length;
+      index = ((i % n) + n) % n;
+      track.style.transform = 'translateX(-' + index * 100 + '%)';
+      for (var d = 0; d < dots.length; d++) {
+        dots[d].classList.toggle('is-active', d === index);
       }
     }
-  );
-}
+    function start() {
+      if (auto) timer = window.setInterval(function () { show(index + 1); }, speed);
+    }
+    function stop() { window.clearInterval(timer); }
+    function goTo(i) { show(i); if (auto) { stop(); start(); } }
+
+    var prev = root.querySelector('.hero__arrow--prev');
+    var next = root.querySelector('.hero__arrow--next');
+    if (prev) prev.addEventListener('click', function () { goTo(index - 1); });
+    if (next) next.addEventListener('click', function () { goTo(index + 1); });
+    for (var k = 0; k < dots.length; k++) {
+      (function (j) {
+        dots[j].addEventListener('click', function () { goTo(j); });
+      })(k);
+    }
+
+    if (auto) {
+      root.addEventListener('mouseenter', stop);
+      root.addEventListener('mouseleave', start);
+      start();
+    }
+    show(0);
+  }
+
+  function initAll() {
+    var nodes = document.querySelectorAll('.hero');
+    for (var i = 0; i < nodes.length; i++) init(nodes[i]);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAll);
+  } else {
+    initAll();
+  }
+  // Re-init when a section is re-rendered in the Theme Editor.
+  document.addEventListener('shopify:section:load', initAll);
+})();

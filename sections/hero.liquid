@@ -34,7 +34,7 @@
 >
   <div class="hero__viewport">
     <div class="hero__track">
-      {%- assign fallbacks = 'tee-black-model.jpg,hoodie-grey-back.jpg,ldc-apparel-6.jpg' | split: ',' -%}
+      {%- assign fallbacks = 'tee-black-model.jpg,hero-hoodie-grey.jpg,hero-hoodie-tan.jpg' | split: ',' -%}
       {%- for block in section.blocks -%}
         {%- assign fb = forloop.index0 | modulo: fallbacks.size -%}
         {%- assign fb_image = fallbacks[fb] -%}
@@ -110,8 +110,7 @@
   .hero {
     position: relative;
     display: block;
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
+    width: 100%;
     min-height: var(--hero-vh);
     color: #fff;
   }
@@ -143,12 +142,15 @@
   .hero__scrim {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      to top,
-      rgba(0,0,0,calc(var(--hero-scrim) + 0.2)) 0%,
-      rgba(0,0,0,var(--hero-scrim)) 50%,
-      rgba(0,0,0,calc(var(--hero-scrim) * 0.5)) 100%
-    );
+    /* Flat dark wash (even legibility for centered text) + a stronger bottom fade. */
+    background:
+      linear-gradient(
+        to top,
+        rgba(0,0,0,calc(var(--hero-scrim) + 0.25)) 0%,
+        rgba(0,0,0,calc(var(--hero-scrim) * 0.6)) 60%,
+        rgba(0,0,0,calc(var(--hero-scrim) * 0.6)) 100%
+      ),
+      rgba(0,0,0,var(--hero-scrim));
   }
   .hero__inner {
     position: relative;
@@ -198,17 +200,17 @@
     gap: 0.8rem;
     margin-top: 1.2rem;
     padding: 1.4rem 2.8rem;
-    background: #000;
-    border: 1.5px solid #000;
-    color: #fff;
+    background: #fff;
+    border: 1.5px solid #fff;
+    color: #000;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     font-size: 1.4rem;
     text-decoration: none;
-    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    transition: background 0.2s ease, color 0.2s ease;
   }
-  .hero__btn:hover { background: #fff; border-color: #fff; color: #000; }
+  .hero__btn:hover { background: transparent; color: #fff; }
   .hero__btn-arrow { flex-shrink: 0; }
 
   .hero__arrow {
