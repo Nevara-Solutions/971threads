@@ -39,6 +39,28 @@
         "show_text_below": false
       }
     },
+    "marquee": {
+      "type": "marquee",
+      "blocks": {
+        "p1": { "type": "phrase", "settings": { "text": "New drop — SS26" } },
+        "p2": { "type": "phrase", "settings": { "text": "Free shipping over AED 200" } },
+        "p3": { "type": "phrase", "settings": { "text": "971 threads" } },
+        "p4": { "type": "phrase", "settings": { "text": "Worldwide shipping" } }
+      },
+      "block_order": ["p1", "p2", "p3", "p4"],
+      "settings": {
+        "color_scheme": "scheme-4",
+        "direction": "left",
+        "speed": 30,
+        "font_size": 32,
+        "gap": 48,
+        "separator": "✦",
+        "uppercase": true,
+        "bold": true,
+        "padding_top": 18,
+        "padding_bottom": 18
+      }
+    },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
@@ -61,7 +83,7 @@
         "show_secondary_image": true,
         "show_vendor": false,
         "show_rating": false,
-        "quick_add": "none",
+        "quick_add": "standard",
         "columns_mobile": "2",
         "padding_top": 44,
         "padding_bottom": 36
@@ -70,6 +92,7 @@
   },
   "order": [
     "image_banner",
+    "marquee",
     "featured_collection"
   ]
 }

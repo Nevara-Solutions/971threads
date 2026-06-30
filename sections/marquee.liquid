@@ -1,0 +1,238 @@
+{%- comment -%}
+  971threads — Scrolling marquee (streetwear ticker).
+  Self-contained custom section: own CSS via {% stylesheet %}, no extra asset files,
+  plain-English labels so it works without locale entries. Add phrases as blocks.
+{%- endcomment -%}
+
+{%- liquid
+  assign speed = section.settings.speed | default: 30
+  assign gap = section.settings.gap | default: 48
+-%}
+
+{%- style -%}
+  #marquee-{{ section.id }} {
+    --marquee-speed: {{ speed }}s;
+    --marquee-gap: {{ gap }}px;
+    --marquee-size: {{ section.settings.font_size }}px;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<div
+  id="marquee-{{ section.id }}"
+  class="marquee color-{{ section.settings.color_scheme }} gradient{% if section.settings.uppercase %} marquee--upper{% endif %}{% if section.settings.bold %} marquee--bold{% endif %}"
+>
+  <div class="marquee__track marquee__track--{{ section.settings.direction }}" aria-hidden="true">
+    {%- comment -%} Rendered twice for a seamless loop. {%- endcomment -%}
+    {%- for n in (1..2) -%}
+      <div class="marquee__group">
+        {%- for block in section.blocks -%}
+          <span class="marquee__item" {{ block.shopify_attributes }}>
+            {%- if block.settings.link != blank -%}
+              <a href="{{ block.settings.link }}" class="marquee__link">{{ block.settings.text }}</a>
+            {%- else -%}
+              {{ block.settings.text }}
+            {%- endif -%}
+          </span>
+          <span class="marquee__sep">{{ section.settings.separator }}</span>
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{%- stylesheet -%}
+  .marquee {
+    overflow: hidden;
+    width: 100%;
+  }
+  .marquee__track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    animation: marquee-scroll var(--marquee-speed) linear infinite;
+  }
+  .marquee__track--right {
+    animation-direction: reverse;
+  }
+  .marquee:hover .marquee__track {
+    animation-play-state: paused;
+  }
+  .marquee__group {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .marquee__item,
+  .marquee__sep {
+    font-size: var(--marquee-size);
+    line-height: 1;
+    padding-inline: calc(var(--marquee-gap) / 2);
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+  .marquee--upper .marquee__item,
+  .marquee--upper .marquee__sep {
+    text-transform: uppercase;
+  }
+  .marquee--bold .marquee__item,
+  .marquee--bold .marquee__sep {
+    font-weight: 700;
+  }
+  .marquee__sep {
+    opacity: 0.55;
+  }
+  .marquee__link {
+    text-decoration: none;
+    color: inherit;
+  }
+  .marquee__link:hover {
+    text-decoration: underline;
+  }
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track { animation: none; }
+    .marquee__track { width: 100%; justify-content: center; }
+    .marquee__group:nth-child(2) { display: none; }
+  }
+{%- endstylesheet -%}
+
+{% schema %}
+{
+  "name": "Marquee",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Motion"
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Direction",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Scroll duration (seconds)",
+      "info": "Higher = slower scroll.",
+      "min": 5,
+      "max": 80,
+      "step": 1,
+      "unit": "s",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Type"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 14,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Spacing between items",
+      "min": 8,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "text",
+      "id": "separator",
+      "label": "Separator",
+      "default": "✦"
+    },
+    {
+      "type": "checkbox",
+      "id": "uppercase",
+      "label": "Uppercase",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "bold",
+      "label": "Bold",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    }
+  ],
+  "blocks": [
+    {
+      "type": "phrase",
+      "name": "Phrase",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free shipping over AED 200"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee",
+      "blocks": [
+        { "type": "phrase", "settings": { "text": "New drop — SS26" } },
+        { "type": "phrase", "settings": { "text": "Free shipping over AED 200" } },
+        { "type": "phrase", "settings": { "text": "971 threads" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
