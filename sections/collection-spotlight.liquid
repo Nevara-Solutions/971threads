@@ -1,0 +1,309 @@
+{%- comment -%}
+  971threads — Collection spotlight.
+  Berlin-style: editorial text panel on the left, horizontal-scrolling product row on the right.
+  Pure CSS scroll-snap slider (no JS). Pulls from a chosen collection; shows onboarding
+  placeholders if none is set yet. Description is a textarea (plain text — no richtext <p> gotcha).
+{%- endcomment -%}
+
+{%- liquid
+  assign coll = section.settings.collection
+  assign limit = section.settings.products_to_show
+-%}
+
+{%- style -%}
+  #cspot-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<section id="cspot-{{ section.id }}" class="cspot color-{{ section.settings.color_scheme }} gradient">
+  <div class="cspot__grid">
+    <div class="cspot__intro">
+      {%- if section.settings.kicker != blank -%}
+        <p class="cspot__kicker">{{ section.settings.kicker }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="cspot__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.description != blank -%}
+        <p class="cspot__desc">{{ section.settings.description }}</p>
+      {%- endif -%}
+      {%- if section.settings.button_label != blank -%}
+        <a href="{{ section.settings.button_link | default: coll.url | default: '#' }}" class="cspot__btn">
+          <span>{{ section.settings.button_label }}</span>
+          <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8" stroke-linecap="square"/></svg>
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="cspot__row">
+      {%- if coll != blank and coll.products.size > 0 -%}
+        {%- for product in coll.products limit: limit -%}
+          <a href="{{ product.url }}" class="cspot__card">
+            <div class="cspot__media">
+              {%- if product.featured_media -%}
+                {{
+                  product.featured_media
+                  | image_url: width: 800
+                  | image_tag: loading: 'lazy', widths: '300, 500, 700, 800', class: 'cspot__img cspot__img--primary', alt: product.title
+                }}
+                {%- if product.media[1] -%}
+                  {{
+                    product.media[1].preview_image
+                    | image_url: width: 800
+                    | image_tag: loading: 'lazy', widths: '300, 500, 700, 800', class: 'cspot__img cspot__img--hover', alt: product.title
+                  }}
+                {%- endif -%}
+              {%- else -%}
+                {{ 'product-apparel-1' | placeholder_svg_tag: 'cspot__img placeholder' }}
+              {%- endif -%}
+            </div>
+            <div class="cspot__info">
+              {%- if section.settings.show_vendor and product.vendor != blank -%}
+                <p class="cspot__vendor">{{ product.vendor }}</p>
+              {%- endif -%}
+              <h3 class="cspot__title">{{ product.title }}</h3>
+              <p class="cspot__price">
+                {%- if product.compare_at_price > product.price -%}
+                  <span class="cspot__price-sale">{{ product.price | money }}</span>
+                  <s class="cspot__price-was">{{ product.compare_at_price | money }}</s>
+                {%- else -%}
+                  {{ product.price | money }}
+                {%- endif -%}
+              </p>
+            </div>
+          </a>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..4) -%}
+          <div class="cspot__card cspot__card--placeholder">
+            <div class="cspot__media">{{ 'product-apparel-1' | placeholder_svg_tag: 'cspot__img placeholder' }}</div>
+            <div class="cspot__info">
+              <h3 class="cspot__title">Product title</h3>
+              <p class="cspot__price">AED 0.00</p>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{%- stylesheet -%}
+  .cspot__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  .cspot__intro {
+    padding-inline: 1.5rem;
+  }
+  .cspot__kicker {
+    margin: 0 0 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 1.2rem;
+    font-weight: 600;
+    opacity: 0.7;
+  }
+  .cspot__heading {
+    margin: 0 0 1.4rem;
+    font-family: var(--font-display-family);
+    text-transform: uppercase;
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+    font-size: clamp(3.2rem, 4vw, 5.2rem);
+  }
+  .cspot__desc {
+    margin: 0 0 2.4rem;
+    max-width: 42ch;
+    opacity: 0.8;
+    line-height: 1.5;
+  }
+  .cspot__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1.3rem 2.6rem;
+    background: rgb(var(--color-foreground));
+    color: rgb(var(--color-background));
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    font-size: 1.3rem;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+  .cspot__btn:hover { opacity: 0.82; }
+
+  .cspot__row {
+    display: flex;
+    gap: 1.6rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 1.5rem 1.5rem;
+    scrollbar-width: thin;
+  }
+  .cspot__card {
+    flex: 0 0 auto;
+    width: 30rem;
+    max-width: 78vw;
+    scroll-snap-align: start;
+    text-decoration: none;
+    color: inherit;
+  }
+  .cspot__media {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: rgba(var(--color-foreground), 0.05);
+    margin-bottom: 1.2rem;
+  }
+  .cspot__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .cspot__img--hover {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .cspot__card:hover .cspot__img--hover { opacity: 1; }
+  .cspot__card:hover .cspot__img--primary { opacity: 0; }
+  .cspot__vendor {
+    margin: 0 0 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 1.1rem;
+    opacity: 0.55;
+  }
+  .cspot__title {
+    margin: 0 0 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+  .cspot__price {
+    margin: 0;
+    font-size: 1.5rem;
+    opacity: 0.9;
+  }
+  .cspot__price-sale { color: rgb(var(--color-foreground)); }
+  .cspot__price-was { opacity: 0.5; margin-inline-start: 0.6rem; }
+
+  @media screen and (min-width: 990px) {
+    .cspot__grid {
+      grid-template-columns: minmax(26rem, 1fr) 2.6fr;
+      gap: 2rem;
+    }
+    .cspot__intro {
+      position: sticky;
+      top: 12rem;
+      padding-inline: 0 2rem;
+    }
+  }
+{%- endstylesheet -%}
+
+{% schema %}
+{
+  "name": "Collection spotlight",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 4,
+      "max": 16,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Text panel"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "The SS26 Drop"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Your new go-to fits"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Heavyweight tees and hoodies, built for the heat and the late nights. Limited runs — once they're gone, they're gone."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop the collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection spotlight"
+    }
+  ]
+}
+{% endschema %}

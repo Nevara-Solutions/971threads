@@ -44,6 +44,22 @@
         "autoplay_speed": 5
       }
     },
+    "collection_spotlight": {
+      "type": "collection-spotlight",
+      "settings": {
+        "collection": "all",
+        "products_to_show": 8,
+        "show_vendor": false,
+        "color_scheme": "scheme-1",
+        "kicker": "The SS26 Drop",
+        "heading": "Your new go-to fits",
+        "description": "Heavyweight tees and hoodies, built for the heat and the late nights. Limited runs — once they're gone, they're gone.",
+        "button_label": "Shop the collection",
+        "button_link": "shopify://collections/all",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
     "marquee": {
       "type": "marquee",
       "blocks": {
@@ -118,7 +134,7 @@
   },
   "order": [
     "hero",
-    "marquee",
+    "collection_spotlight",
     "featured_collection",
     "lookbook"
   ]

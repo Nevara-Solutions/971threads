@@ -50,6 +50,7 @@ Whenever you write headings, descriptions, button labels, alt text, or any user-
 
 ## Custom sections we've built (don't duplicate)
 - `sections/hero.liquid` — full-bleed `<hero-slideshow>` (arrows, dots, autoplay)
-- `sections/marquee.liquid` — scrolling streetwear ticker
+- `sections/collection-spotlight.liquid` — left text panel + horizontal product slider (CSS scroll-snap, no JS)
+- `sections/marquee.liquid` — scrolling streetwear ticker (currently NOT on the homepage; section still available to re-add)
 - `sections/lookbook.liquid` — editorial image grid
 - Header (`sections/header.liquid` + `header-group.json`) — Berlin centered-logo layout, dark rotating announcement bar, blur-on-scroll
