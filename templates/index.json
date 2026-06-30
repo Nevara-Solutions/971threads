@@ -88,11 +88,32 @@
         "padding_top": 44,
         "padding_bottom": 36
       }
+    },
+    "lookbook": {
+      "type": "lookbook",
+      "blocks": {
+        "t1": { "type": "tile", "settings": { "heading": "New In", "text": "The SS26 drop", "button_label": "Shop now", "span_two": true, "link": "shopify://collections/all", "text_position": "bottom-left", "overlay_opacity": 30 } },
+        "t2": { "type": "tile", "settings": { "heading": "Tees", "button_label": "Shop", "link": "shopify://collections/all", "text_position": "bottom-left", "overlay_opacity": 25 } },
+        "t3": { "type": "tile", "settings": { "heading": "Outerwear", "button_label": "Shop", "link": "shopify://collections/all", "text_position": "bottom-left", "overlay_opacity": 25 } }
+      },
+      "block_order": ["t1", "t2", "t3"],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "heading": "The Lookbook",
+        "subheading": "Styled on the street",
+        "columns_desktop": 3,
+        "tile_height": 460,
+        "gap": 12,
+        "corner_radius": 0,
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
     }
   },
   "order": [
     "image_banner",
     "marquee",
-    "featured_collection"
+    "featured_collection",
+    "lookbook"
   ]
 }

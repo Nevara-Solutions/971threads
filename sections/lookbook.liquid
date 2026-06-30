@@ -1,0 +1,359 @@
+{%- comment -%}
+  971threads — Lookbook / editorial image grid.
+  Custom section Dawn lacks. Each block = a clickable image tile with optional
+  overlay heading/subtext/button, hover zoom, and a "span 2 columns" option for
+  editorial asymmetry. Self-contained CSS via {% stylesheet %}.
+{%- endcomment -%}
+
+{%- style -%}
+  #lookbook-{{ section.id }} {
+    --lookbook-cols: {{ section.settings.columns_desktop }};
+    --lookbook-gap: {{ section.settings.gap }}px;
+    --lookbook-radius: {{ section.settings.corner_radius }}px;
+    --lookbook-min-h: {{ section.settings.tile_height }}px;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<div id="lookbook-{{ section.id }}" class="lookbook color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <div class="lookbook__header">
+        <h2 class="lookbook__title">{{ section.settings.heading }}</h2>
+        {%- if section.settings.subheading != blank -%}
+          <p class="lookbook__sub">{{ section.settings.subheading }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="lookbook__grid">
+      {%- assign fallbacks = 'ldc-apparel-6.jpg,ldc-apparel-1.jpg,ldc-apparel-2.jpg,ldc-apparel-4.jpg,ldc-apparel-7.jpg,ldc-apparel-8.jpg' | split: ',' -%}
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign tile_tag = 'div'
+          if block.settings.link != blank
+            assign tile_tag = 'a'
+          endif
+          assign fb_index = forloop.index0 | modulo: fallbacks.size
+          assign fb_image = fallbacks[fb_index]
+        -%}
+        <{{ tile_tag }}
+          class="lookbook__tile{% if block.settings.span_two %} lookbook__tile--wide{% endif %}{% if block.settings.image == blank %} lookbook__tile--placeholder{% endif %}"
+          {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %}
+          {{ block.shopify_attributes }}
+        >
+          <div class="lookbook__media">
+            {%- if block.settings.image != blank -%}
+              {{
+                block.settings.image
+                | image_url: width: 1500
+                | image_tag:
+                  loading: 'lazy',
+                  sizes: '(min-width: 990px) 50vw, 100vw',
+                  widths: '400, 600, 800, 1000, 1200, 1500',
+                  class: 'lookbook__img'
+              }}
+            {%- else -%}
+              <img
+                src="{{ fb_image | asset_url }}"
+                alt=""
+                class="lookbook__img"
+                loading="lazy"
+                width="1600"
+                height="2000"
+              >
+            {%- endif -%}
+            {%- if block.settings.overlay_opacity > 0 -%}
+              <span class="lookbook__scrim" style="opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"></span>
+            {%- endif -%}
+          </div>
+
+          {%- if block.settings.heading != blank or block.settings.text != blank or block.settings.button_label != blank -%}
+            <div class="lookbook__content lookbook__content--{{ block.settings.text_position }}">
+              {%- if block.settings.heading != blank -%}
+                <h3 class="lookbook__tile-title">{{ block.settings.heading }}</h3>
+              {%- endif -%}
+              {%- if block.settings.text != blank -%}
+                <p class="lookbook__tile-text">{{ block.settings.text }}</p>
+              {%- endif -%}
+              {%- if block.settings.button_label != blank -%}
+                <span class="lookbook__btn">{{ block.settings.button_label }}</span>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </{{ tile_tag }}>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{%- stylesheet -%}
+  .lookbook__header {
+    text-align: center;
+    margin-bottom: 2.4rem;
+  }
+  .lookbook__title {
+    margin: 0 0 0.6rem;
+  }
+  .lookbook__sub {
+    margin: 0;
+    opacity: 0.75;
+  }
+  .lookbook__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--lookbook-cols), 1fr);
+    gap: var(--lookbook-gap);
+  }
+  .lookbook__tile {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: var(--lookbook-radius);
+    min-height: var(--lookbook-min-h);
+    text-decoration: none;
+    color: inherit;
+  }
+  .lookbook__tile--wide {
+    grid-column: span 2;
+  }
+  .lookbook__media,
+  .lookbook__media .lookbook__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .lookbook__media .lookbook__img {
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .lookbook__tile:hover .lookbook__img {
+    transform: scale(1.06);
+  }
+  .lookbook__scrim {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    pointer-events: none;
+  }
+  .lookbook__content {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 2.4rem;
+    color: #fff;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
+  }
+  .lookbook__content--top-left { align-items: flex-start; justify-content: flex-start; text-align: left; }
+  .lookbook__content--center { align-items: center; justify-content: center; text-align: center; }
+  .lookbook__content--bottom-left { align-items: flex-start; justify-content: flex-end; text-align: left; }
+  .lookbook__tile-title {
+    margin: 0;
+    font-size: 2.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  .lookbook__tile-text {
+    margin: 0;
+    max-width: 32ch;
+  }
+  .lookbook__btn {
+    display: inline-block;
+    margin-top: 0.4rem;
+    padding: 0.9rem 1.8rem;
+    background: #fff;
+    color: #000;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 1.3rem;
+  }
+  .lookbook__tile:hover .lookbook__btn {
+    background: rgba(var(--color-foreground), 1);
+    color: rgba(var(--color-background), 1);
+  }
+  @media screen and (max-width: 749px) {
+    .lookbook__grid {
+      grid-template-columns: 1fr;
+    }
+    .lookbook__tile--wide {
+      grid-column: span 1;
+    }
+    .lookbook__content {
+      padding: 1.6rem;
+    }
+  }
+{%- endstylesheet -%}
+
+{% schema %}
+{
+  "name": "Lookbook",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The Lookbook"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Styled on the street"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns (desktop)",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "tile_height",
+      "label": "Tile height",
+      "min": 240,
+      "max": 720,
+      "step": 20,
+      "unit": "px",
+      "default": 460
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between tiles",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Image tile",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "checkbox",
+          "id": "span_two",
+          "label": "Span two columns (wide)",
+          "default": false
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Overlay text"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "select",
+          "id": "text_position",
+          "label": "Text position",
+          "options": [
+            { "value": "top-left", "label": "Top left" },
+            { "value": "center", "label": "Center" },
+            { "value": "bottom-left", "label": "Bottom left" }
+          ],
+          "default": "bottom-left"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "label": "Image darken",
+          "min": 0,
+          "max": 80,
+          "step": 5,
+          "unit": "%",
+          "default": 25
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lookbook",
+      "blocks": [
+        { "type": "tile", "settings": { "heading": "New In", "button_label": "Shop", "span_two": true } },
+        { "type": "tile", "settings": { "heading": "Tees", "button_label": "Shop" } },
+        { "type": "tile", "settings": { "heading": "Outerwear", "button_label": "Shop" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
