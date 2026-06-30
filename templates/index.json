@@ -60,57 +60,6 @@
         "padding_bottom": 64
       }
     },
-    "marquee": {
-      "type": "marquee",
-      "blocks": {
-        "p1": { "type": "phrase", "settings": { "text": "From Sands to Street" } },
-        "p2": { "type": "phrase", "settings": { "text": "Heavyweight cotton" } },
-        "p3": { "type": "phrase", "settings": { "text": "Limited drops — no restocks" } },
-        "p4": { "type": "phrase", "settings": { "text": "Made for the 971" } },
-        "p5": { "type": "phrase", "settings": { "text": "Free UAE shipping over AED 200" } }
-      },
-      "block_order": ["p1", "p2", "p3", "p4", "p5"],
-      "settings": {
-        "color_scheme": "scheme-4",
-        "direction": "left",
-        "speed": 30,
-        "font_size": 32,
-        "gap": 48,
-        "separator": "✦",
-        "uppercase": true,
-        "bold": true,
-        "padding_top": 18,
-        "padding_bottom": 18
-      }
-    },
-    "featured_collection": {
-      "type": "featured-collection",
-      "settings": {
-        "title": "The Latest Drop",
-        "heading_size": "h2",
-        "description": "<p>Fresh tees and hoodies, straight off the press. Limited runs — don't sleep on it.</p>",
-        "show_description": true,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "standard",
-        "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
-      }
-    },
     "lookbook": {
       "type": "lookbook",
       "blocks": {

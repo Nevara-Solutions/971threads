@@ -45,12 +45,12 @@ Whenever you write headings, descriptions, button labels, alt text, or any user-
 - **Always validate before declaring done:**
   - JSON templates: `node -e "JSON.parse(require('fs').readFileSync('<file>','utf8'))"`
   - Theme lint: `shopify theme check` — confirm offense count doesn't rise above the pre-existing baseline.
-- **Editing `templates/*.json`:** sections go inside the `sections` object and must also be listed in `order`. Watch comma/brace placement.
+- **Editing `templates/*.json`:** sections go inside the `sections` object and **every section MUST also be listed in `order`** — orphaned sections (in `sections` but not `order`) cause a "Section id … must exist in order" upload error. To remove a section from a page, delete it from BOTH `sections` and `order` (the section's `.liquid` file stays and can be re-added via the editor). Watch comma/brace placement.
 - Commit each working milestone with a clear message (git is local-only; no remote configured).
 
 ## Custom sections we've built (don't duplicate)
 - `sections/hero.liquid` — full-bleed `<hero-slideshow>` (arrows, dots, autoplay)
 - `sections/collection-spotlight.liquid` — left text panel + horizontal product slider (CSS scroll-snap, no JS)
-- `sections/marquee.liquid` — scrolling streetwear ticker (currently NOT on the homepage; section still available to re-add)
+- `sections/marquee.liquid` — scrolling streetwear ticker (not on the homepage; re-add via the Theme Editor or by adding to a template's `sections` + `order`)
 - `sections/lookbook.liquid` — editorial image grid
 - Header (`sections/header.liquid` + `header-group.json`) — Berlin centered-logo layout, dark rotating announcement bar, blur-on-scroll
