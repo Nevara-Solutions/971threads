@@ -1,0 +1,83 @@
+{%- comment -%}
+  971threads — Split sale banner. Dark text panel + vertical scrolling strip + image.
+{%- endcomment -%}
+
+{%- style -%}
+  #ssp-{{ section.id }} { --ssp-min: {{ section.settings.min_height }}px; }
+{%- endstyle -%}
+
+<section id="ssp-{{ section.id }}" class="ssp color-{{ section.settings.color_scheme }} gradient">
+  <div class="ssp__panel">
+    <div class="ssp__panel-inner">
+      {%- if section.settings.kicker != blank -%}<p class="ssp__kicker">{{ section.settings.kicker }}</p>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<h2 class="ssp__heading">{{ section.settings.heading }}</h2>{%- endif -%}
+      {%- if section.settings.description != blank -%}<p class="ssp__desc">{{ section.settings.description }}</p>{%- endif -%}
+      {%- if section.settings.button_label != blank -%}
+        <a href="{{ section.settings.button_link | default: '#' }}" class="ssp__btn">
+          <span>{{ section.settings.button_label }}</span>
+          <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8" stroke-linecap="square"/></svg>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if section.settings.strip_text != blank -%}
+    <div class="ssp__strip" aria-hidden="true">
+      <div class="ssp__strip-track">
+        {%- for i in (1..6) -%}<span class="ssp__strip-item">{{ section.settings.strip_text }}</span><span class="ssp__strip-dot">•</span>{%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="ssp__media">
+    {%- if section.settings.image != blank -%}
+      {{ section.settings.image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(min-width:990px) 50vw, 100vw', widths: '600,900,1200,1600', class: 'ssp__img' }}
+    {%- else -%}
+      <img src="{{ 'tee-black-model.jpg' | asset_url }}" alt="" class="ssp__img" loading="lazy" width="1200" height="1500">
+    {%- endif -%}
+  </div>
+</section>
+
+{%- stylesheet -%}
+  .ssp { display: grid; grid-template-columns: 1fr; min-height: var(--ssp-min); }
+  .ssp__panel { display: flex; align-items: center; padding: 6rem var(--page-gutter); }
+  .ssp__panel-inner { max-width: 46rem; margin-inline: auto; width: 100%; }
+  .ssp__kicker { margin: 0 0 1.2rem; text-transform: uppercase; letter-spacing: 0.28em; font-size: 1.2rem; font-weight: 600; opacity: 0.65; }
+  .ssp__heading { margin: 0 0 1.8rem; font-family: var(--font-heading-family); font-weight: 700; text-transform: uppercase; line-height: 1.02; letter-spacing: -0.01em; font-size: clamp(3.4rem, 4.5vw, 5.6rem); }
+  .ssp__desc { margin: 0 0 2.6rem; opacity: 0.8; line-height: 1.55; max-width: 40ch; }
+  .ssp__btn { display: inline-flex; align-items: center; gap: 0.7rem; padding: 1.3rem 2.8rem; background: #fff; color: #000; border: 1.5px solid #fff; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 1.3rem; text-decoration: none; transition: background .2s, color .2s, border-color .2s; }
+  .ssp__btn:hover { background: transparent; color: #fff; border-color: #fff; }
+  .ssp__strip { display: none; }
+  .ssp__media, .ssp__img { width: 100%; }
+  .ssp__img { display: block; height: 100%; object-fit: cover; min-height: 36rem; }
+
+  @media screen and (min-width: 990px) {
+    .ssp { grid-template-columns: 1fr 6rem 1fr; }
+    .ssp__strip { display: block; overflow: hidden; position: relative; background: rgba(255,255,255,0.04); }
+    .ssp__strip-track { position: absolute; inset: 0; writing-mode: vertical-rl; display: flex; flex-direction: column; align-items: center; gap: 2rem; white-space: nowrap; animation: ssp-scroll 18s linear infinite; }
+    .ssp__strip-item, .ssp__strip-dot { font-family: var(--font-heading-family); font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; font-size: 1.6rem; opacity: 0.8; }
+    @keyframes ssp-scroll { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+  }
+  @media (prefers-reduced-motion: reduce) { .ssp__strip-track { animation: none; } }
+{%- endstylesheet -%}
+
+{% schema %}
+{
+  "name": "Split sale banner",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-4" },
+    { "type": "range", "id": "min_height", "label": "Min height", "min": 360, "max": 720, "step": 20, "unit": "px", "default": 560 },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "strip_text", "label": "Vertical strip text", "default": "Up to 70% off" },
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Mega Deal" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Massive sale alert" },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "Heavyweight markdowns on your favourite fits. Score big on the best of our tees and hoodies — limited stock, limited time." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop sale" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [ { "name": "Split sale banner" } ]
+}
+{% endschema %}

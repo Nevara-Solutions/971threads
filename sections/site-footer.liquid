@@ -1,0 +1,199 @@
+{%- comment -%}
+  971threads — Custom footer (Berlin-style): Brand · Shop · Contacts · Newsletter,
+  aligned to the shared --page-gutter. Bottom bar: payment · policies · copyright.
+{%- endcomment -%}
+
+<footer class="sfooter color-{{ section.settings.color_scheme }} gradient">
+  <div class="sfooter__top">
+    {%- comment -%} Brand {%- endcomment -%}
+    <div class="sfooter__brand">
+      <a href="{{ routes.root_url }}" class="sfooter__logo-link" aria-label="{{ shop.name | escape }}">
+        {%- if settings.logo != blank -%}
+          {{ settings.logo | image_url: width: 400 | image_tag: widths: '120,200,300,400', class: 'sfooter__logo', alt: shop.name }}
+        {%- else -%}
+          <img src="{{ 'logo-971threads.jpg' | asset_url }}" alt="{{ shop.name | escape }}" class="sfooter__logo" width="200" height="55">
+        {%- endif -%}
+      </a>
+      {%- if section.settings.brand_text != blank -%}
+        <p class="sfooter__blurb">{{ section.settings.brand_text }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Shop {%- endcomment -%}
+    {%- if section.settings.shop_menu != blank -%}
+      <div class="sfooter__col">
+        <h3 class="sfooter__title">{{ section.settings.shop_heading }}</h3>
+        <ul class="sfooter__links">
+          {%- for link in linklists[section.settings.shop_menu].links -%}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} Company {%- endcomment -%}
+    {%- if section.settings.company_menu != blank -%}
+      <div class="sfooter__col">
+        <h3 class="sfooter__title">{{ section.settings.company_heading }}</h3>
+        <ul class="sfooter__links">
+          {%- for link in linklists[section.settings.company_menu].links -%}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} Contacts / socials {%- endcomment -%}
+    <div class="sfooter__col">
+      <h3 class="sfooter__title">{{ section.settings.contacts_heading }}</h3>
+      <ul class="sfooter__socials">
+        {%- assign socials = 'twitter,facebook,pinterest,instagram,tiktok,youtube,snapchat' | split: ',' -%}
+        {%- for name in socials -%}
+          {%- assign key = 'social_' | append: name | append: '_link' -%}
+          {%- assign url = settings[key] -%}
+          {%- if url != blank -%}
+            <li>
+              <a href="{{ url }}" class="sfooter__social">
+                <span class="sfooter__social-icon">{{ 'icon-' | append: name | append: '.svg' | inline_asset_content }}</span>
+                <span class="sfooter__social-label">{{ name | capitalize }}</span>
+              </a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- unless settings.social_twitter_link != blank or settings.social_facebook_link != blank or settings.social_instagram_link != blank or settings.social_pinterest_link != blank or settings.social_tiktok_link != blank or settings.social_youtube_link != blank or settings.social_snapchat_link != blank -%}
+          <li class="sfooter__social-empty">Add social links in Theme settings → Social media</li>
+        {%- endunless -%}
+      </ul>
+    </div>
+
+    {%- comment -%} Newsletter {%- endcomment -%}
+    <div class="sfooter__news">
+      <h3 class="sfooter__title">{{ section.settings.newsletter_heading }}</h3>
+      {%- form 'customer', class: 'sfooter__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="sfooter__form-row">
+          <input
+            type="email"
+            name="contact[email]"
+            class="sfooter__email"
+            placeholder="E-mail"
+            aria-label="Email"
+            required
+          >
+          <button type="submit" class="sfooter__subscribe">
+            <span>Subscribe</span>
+            <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8" stroke-linecap="square"/></svg>
+          </button>
+        </div>
+        {%- if form.posted_successfully? -%}
+          <p class="sfooter__news-note">Thanks — you're on the list.</p>
+        {%- else -%}
+          <p class="sfooter__news-note">{{ section.settings.newsletter_subtext }}</p>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+
+  <div class="sfooter__bottom">
+    {%- if section.settings.show_payment and shop.enabled_payment_types.size > 0 -%}
+      <div class="sfooter__pay">
+        {%- for type in shop.enabled_payment_types -%}
+          {{ type | payment_type_svg_tag: class: 'sfooter__pay-icon' }}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.show_policies -%}
+      <ul class="sfooter__policies">
+        {%- for policy in shop.policies -%}
+          {%- if policy != blank -%}<li><a href="{{ policy.url }}">{{ policy.title }}</a></li>{%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    <p class="sfooter__copy">&copy; {{ 'now' | date: '%Y' }}, {{ shop.name }} · {{ powered_by_link }}</p>
+  </div>
+</footer>
+
+{%- stylesheet -%}
+  .sfooter { border-top: 0.1rem solid rgba(var(--color-foreground), 0.14); }
+  .sfooter__top {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+    padding: 5rem var(--page-gutter) 4rem;
+  }
+  .sfooter__logo { display: block; height: auto; max-width: 18rem; margin-bottom: 1.6rem; }
+  .sfooter__blurb { margin: 0; max-width: 34ch; opacity: 0.7; line-height: 1.55; font-size: 1.4rem; }
+  .sfooter__title { margin: 0 0 1.8rem; font-family: var(--font-heading-family); font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; font-size: 1.3rem; }
+  .sfooter__links, .sfooter__socials, .sfooter__policies { list-style: none; margin: 0; padding: 0; }
+  .sfooter__links li { margin-bottom: 1.1rem; }
+  .sfooter__links a, .sfooter__social, .sfooter__policies a { color: inherit; text-decoration: none; opacity: 0.7; transition: opacity 0.15s ease; font-size: 1.4rem; }
+  .sfooter__links a:hover, .sfooter__social:hover, .sfooter__policies a:hover { opacity: 1; }
+  .sfooter__socials li { margin-bottom: 1.1rem; }
+  .sfooter__social { display: inline-flex; align-items: center; gap: 1rem; }
+  .sfooter__social-icon { display: inline-flex; }
+  .sfooter__social-icon svg { width: 1.7rem; height: 1.7rem; }
+  .sfooter__social-empty { opacity: 0.4; font-size: 1.2rem; max-width: 22ch; }
+
+  .sfooter__form-row { display: flex; gap: 0; max-width: 42rem; }
+  .sfooter__email { flex: 1; min-width: 0; padding: 1.3rem 1.4rem; border: 0.1rem solid rgba(var(--color-foreground), 0.25); background: transparent; color: inherit; font-size: 1.4rem; }
+  .sfooter__subscribe { display: inline-flex; align-items: center; gap: 0.6rem; padding: 1.3rem 2rem; border: none; background: rgb(var(--color-foreground)); color: rgb(var(--color-background)); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; font-size: 1.3rem; cursor: pointer; white-space: nowrap; transition: opacity 0.2s ease; }
+  .sfooter__subscribe:hover { opacity: 0.85; }
+  .sfooter__news-note { margin: 1.2rem 0 0; opacity: 0.6; font-size: 1.3rem; }
+
+  .sfooter__bottom {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.6rem 3rem;
+    padding: 2.4rem var(--page-gutter);
+    border-top: 0.1rem solid rgba(var(--color-foreground), 0.12);
+  }
+  .sfooter__pay { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .sfooter__pay-icon { width: 3.8rem; height: auto; }
+  .sfooter__policies { display: flex; flex-wrap: wrap; gap: 2rem; }
+  .sfooter__copy { margin: 0 0 0 auto; opacity: 0.6; font-size: 1.3rem; }
+  .sfooter__copy a { color: inherit; }
+
+  @media screen and (min-width: 990px) {
+    .sfooter__top {
+      grid-template-columns: 1.6fr 0.9fr 0.9fr 1fr 1.8fr;
+      gap: 0;
+    }
+    .sfooter__top > * { padding-inline: 3.5rem; }
+    .sfooter__top > :first-child { padding-inline-start: 0; }
+    .sfooter__top > :last-child { padding-inline-end: 0; }
+    .sfooter__top > * + * {
+      border-inline-start: 0.1rem solid rgba(var(--color-foreground), 0.14);
+    }
+  }
+  @media screen and (max-width: 989px) {
+    .sfooter__copy { margin: 0; width: 100%; }
+  }
+{%- endstylesheet -%}
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "textarea", "id": "brand_text", "label": "Brand text", "default": "Streetwear from sands to street. Heavyweight tees and hoodies, born in the 971 — limited drops, built to last." },
+    { "type": "header", "content": "Shop column" },
+    { "type": "text", "id": "shop_heading", "label": "Heading", "default": "Shop" },
+    { "type": "link_list", "id": "shop_menu", "label": "Menu", "default": "footer" },
+    { "type": "header", "content": "Company column" },
+    { "type": "text", "id": "company_heading", "label": "Heading", "default": "Company" },
+    { "type": "link_list", "id": "company_menu", "label": "Menu", "default": "main-menu" },
+    { "type": "header", "content": "Contacts column" },
+    { "type": "text", "id": "contacts_heading", "label": "Heading", "default": "Contacts" },
+    { "type": "paragraph", "content": "Social links come from Theme settings → Social media." },
+    { "type": "header", "content": "Newsletter" },
+    { "type": "text", "id": "newsletter_heading", "label": "Heading", "default": "Join our newsletter" },
+    { "type": "text", "id": "newsletter_subtext", "label": "Subtext", "default": "Subscribe for early access to drops and exclusive offers." },
+    { "type": "header", "content": "Bottom bar" },
+    { "type": "checkbox", "id": "show_payment", "label": "Show payment icons", "default": true },
+    { "type": "checkbox", "id": "show_policies", "label": "Show policy links", "default": true }
+  ]
+}
+{% endschema %}

@@ -90,24 +90,64 @@
         "padding_bottom": 64
       }
     },
-    "lookbook": {
-      "type": "lookbook",
+    "sale_split": {
+      "type": "sale-split",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "min_height": 560,
+        "strip_text": "Up to 70% off",
+        "kicker": "Mega Deal",
+        "heading": "Massive sale alert",
+        "description": "Heavyweight markdowns on your favourite fits. Score big on the best of our tees and hoodies — limited stock, limited time.",
+        "button_label": "Shop the sale",
+        "button_link": "shopify://collections/all"
+      }
+    },
+    "about": {
+      "type": "about-feature",
       "blocks": {
-        "t1": { "type": "tile", "settings": { "heading": "New In", "text": "The SS26 drop", "button_label": "Shop now", "span_two": true, "link": "shopify://collections/all", "text_position": "bottom-left", "overlay_opacity": 30 } },
-        "t2": { "type": "tile", "settings": { "heading": "Tees", "text": "Everyday heavyweight cotton", "button_label": "Shop tees", "link": "shopify://collections/all", "text_position": "bottom-left", "overlay_opacity": 25 } },
-        "t3": { "type": "tile", "settings": { "heading": "Hoodies", "text": "Relaxed fit, built to last", "button_label": "Shop hoodies", "link": "shopify://collections/all", "text_position": "bottom-left", "overlay_opacity": 25 } }
+        "a1": { "type": "tab", "settings": { "label": "Mission", "text": "971 Threads makes heavyweight tees and hoodies for the streets of the UAE and beyond — from sands to street, built to last and designed to stand out." } },
+        "a2": { "type": "tab", "settings": { "label": "Promise", "text": "Premium heavyweight cotton, honest pricing, and limited runs. No mass production, no filler — just fits worth wearing on repeat." } },
+        "a3": { "type": "tab", "settings": { "label": "Values", "text": "Born in the 971 and made for the culture. We keep drops limited, quality high, and the community first." } }
       },
-      "block_order": ["t1", "t2", "t3"],
+      "block_order": ["a1", "a2", "a3"],
       "settings": {
         "color_scheme": "scheme-1",
-        "heading": "The Lookbook",
-        "subheading": "Styled from sands to street",
-        "columns_desktop": 3,
-        "tile_height": 460,
-        "gap": 12,
-        "corner_radius": 0,
-        "padding_top": 48,
-        "padding_bottom": 48
+        "kicker": "About Us",
+        "button_label": "Explore our story",
+        "button_link": "shopify://pages/about",
+        "padding_top": 72,
+        "padding_bottom": 72
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q1": { "type": "question", "settings": { "question": "How long does it take for my order to arrive?", "answer": "Orders within the UAE arrive in 1–3 business days. International orders typically take 5–10 business days depending on your location." } },
+        "q2": { "type": "question", "settings": { "question": "What is your return policy?", "answer": "Unworn items with tags can be returned within 14 days for an exchange or store credit. Sale and limited-drop pieces are final sale." } },
+        "q3": { "type": "question", "settings": { "question": "Do you offer international shipping?", "answer": "Yes — we ship the 971 worldwide. Shipping is calculated at checkout, and free across the UAE on orders over AED 200." } }
+      },
+      "block_order": ["q1", "q2", "q3"],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "kicker": "FAQ",
+        "heading": "Questions & answers",
+        "padding_top": 72,
+        "padding_bottom": 72
+      }
+    },
+    "feature_row": {
+      "type": "feature-row",
+      "blocks": {
+        "f1": { "type": "feature", "settings": { "icon": "shipping", "heading": "Worldwide shipping", "text": "Wherever you are, we ship the 971 to your door — fast and tracked." } },
+        "f2": { "type": "feature", "settings": { "icon": "shirt", "heading": "Heavyweight quality", "text": "Premium heavyweight cotton tees and hoodies, built to last drop after drop." } },
+        "f3": { "type": "feature", "settings": { "icon": "grid", "heading": "Limited drops", "text": "Every release is a limited run — no restocks, no repeats." } }
+      },
+      "block_order": ["f1", "f2", "f3"],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "padding_top": 24,
+        "padding_bottom": 56
       }
     }
   },
@@ -116,6 +156,9 @@
     "collection_spotlight",
     "countdown_banner",
     "collection_spotlight_sale",
-    "lookbook"
+    "sale_split",
+    "about",
+    "faq",
+    "feature_row"
   ]
 }
