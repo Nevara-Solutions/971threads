@@ -246,6 +246,20 @@
         --variant-pills-shadow-blur-radius: {{ settings.variant_pills_shadow_blur }}px;
       }
 
+      {%- comment -%} 971threads: self-hosted Anton display font for all headings. {%- endcomment -%}
+      @font-face {
+        font-family: 'Anton';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url({{ 'anton.woff2' | asset_url }}) format('woff2');
+      }
+
+      :root {
+        --font-heading-family: 'Anton', 'Anton Fallback', sans-serif;
+        --font-heading-weight: 400;
+      }
+
       *,
       *::before,
       *::after {

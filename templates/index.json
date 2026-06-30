@@ -1,42 +1,19 @@
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
-          }
-        },
-        "button": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "button"
-      ],
+    "hero": {
+      "type": "hero",
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "image_behavior": "none",
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "color_scheme": "scheme-4",
+        "height": "large",
+        "overlay_opacity": 35,
+        "text_align": "left",
+        "kicker": "SS26 — Now live",
+        "heading": "From Sands to Street",
+        "subheading": "Streetwear born in the 971. Limited drops, built to last.",
+        "button_label": "Shop the drop",
+        "button_link": "shopify://collections/all",
+        "button_label_2": "View lookbook",
+        "button_link_2": "#lookbook"
       }
     },
     "marquee": {
@@ -111,7 +88,7 @@
     }
   },
   "order": [
-    "image_banner",
+    "hero",
     "marquee",
     "featured_collection",
     "lookbook"

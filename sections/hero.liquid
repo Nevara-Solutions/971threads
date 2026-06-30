@@ -1,0 +1,310 @@
+{%- comment -%}
+  971threads — Full-bleed streetwear hero.
+  Custom section: escapes page-width to span edge-to-edge, Anton headline (inherits
+  --font-heading-family), gradient scrim for text legibility, dual CTAs. Falls back to a
+  bundled assets/ image when no image is picked, so it shows real imagery with no upload.
+{%- endcomment -%}
+
+{%- liquid
+  case section.settings.height
+    when 'small'
+      assign vh = 55
+    when 'medium'
+      assign vh = 70
+    when 'large'
+      assign vh = 85
+    else
+      assign vh = 100
+  endcase
+-%}
+
+{%- style -%}
+  #hero-{{ section.id }} {
+    --hero-vh: {{ vh }}svh;
+    --hero-scrim: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+  }
+{%- endstyle -%}
+
+<section
+  id="hero-{{ section.id }}"
+  class="hero hero--{{ section.settings.text_align }} color-{{ section.settings.color_scheme }}"
+>
+  <div class="hero__media">
+    {%- if section.settings.image != blank -%}
+      {{
+        section.settings.image
+        | image_url: width: 3000
+        | image_tag:
+          loading: 'eager',
+          fetchpriority: 'high',
+          sizes: '100vw',
+          widths: '600, 900, 1200, 1600, 2000, 2600, 3000',
+          class: 'hero__img'
+      }}
+    {%- else -%}
+      <img
+        src="{{ 'ldc-apparel-6.jpg' | asset_url }}"
+        alt=""
+        class="hero__img"
+        loading="eager"
+        fetchpriority="high"
+        width="1600"
+        height="1878"
+      >
+    {%- endif -%}
+    <span class="hero__scrim"></span>
+  </div>
+
+  <div class="hero__inner page-width">
+    <div class="hero__content">
+      {%- if section.settings.kicker != blank -%}
+        <p class="hero__kicker">{{ section.settings.kicker }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h1 class="hero__heading">{{ section.settings.heading }}</h1>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="hero__sub">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+      {%- if section.settings.button_label != blank or section.settings.button_label_2 != blank -%}
+        <div class="hero__buttons">
+          {%- if section.settings.button_label != blank -%}
+            <a href="{{ section.settings.button_link | default: '#' }}" class="hero__btn hero__btn--primary">
+              {{ section.settings.button_label }}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.button_label_2 != blank -%}
+            <a href="{{ section.settings.button_link_2 | default: '#' }}" class="hero__btn hero__btn--ghost">
+              {{ section.settings.button_label_2 }}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{%- stylesheet -%}
+  .hero {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    min-height: var(--hero-vh);
+    display: flex;
+    align-items: var(--hero-align, flex-end);
+    overflow: hidden;
+    color: #fff;
+  }
+  .hero__media,
+  .hero__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .hero__img {
+    object-fit: cover;
+  }
+  .hero__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, calc(var(--hero-scrim) + 0.25)) 0%,
+      rgba(0, 0, 0, var(--hero-scrim)) 45%,
+      rgba(0, 0, 0, calc(var(--hero-scrim) * 0.4)) 100%
+    );
+  }
+  .hero__inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+  .hero__content {
+    max-width: 62rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+  .hero--center .hero__content {
+    max-width: 80rem;
+    margin-inline: auto;
+    text-align: center;
+    align-items: center;
+  }
+  .hero__kicker {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.32em;
+    font-size: 1.3rem;
+    font-weight: 700;
+    opacity: 0.9;
+  }
+  .hero__heading {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    text-transform: uppercase;
+    line-height: 0.92;
+    letter-spacing: 0.01em;
+    font-size: clamp(4.4rem, 9vw, 11rem);
+    text-shadow: 0 2px 30px rgba(0, 0, 0, 0.35);
+  }
+  .hero__sub {
+    margin: 0;
+    font-size: clamp(1.5rem, 1.8vw, 2rem);
+    max-width: 48ch;
+    opacity: 0.95;
+  }
+  .hero__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    margin-top: 1rem;
+  }
+  .hero__btn {
+    display: inline-block;
+    padding: 1.3rem 3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 1.4rem;
+    text-decoration: none;
+    transition: transform 0.15s ease, background 0.2s ease, color 0.2s ease;
+  }
+  .hero__btn:hover {
+    transform: translateY(-2px);
+  }
+  .hero__btn--primary {
+    background: #fff;
+    color: #000;
+  }
+  .hero__btn--primary:hover {
+    background: rgba(255, 255, 255, 0.85);
+  }
+  .hero__btn--ghost {
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    color: #fff;
+  }
+  .hero__btn--ghost:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+  @media screen and (max-width: 749px) {
+    .hero__inner {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+    .hero__btn {
+      flex: 1 1 auto;
+      text-align: center;
+    }
+  }
+{%- endstylesheet -%}
+
+{% schema %}
+{
+  "name": "Hero",
+  "tag": "section",
+  "class": "section-hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image",
+      "info": "Leave empty to use the built-in streetwear image."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-4"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Height",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "full", "label": "Full screen" }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Image darken",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 30
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text position",
+      "options": [
+        { "value": "left", "label": "Bottom left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker (small label)",
+      "default": "SS26 — Now live"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "From Sands to Street"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Streetwear born in the 971. Limited drops, built to last."
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Primary button label",
+      "default": "Shop the drop"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "button_label_2",
+      "label": "Secondary button label",
+      "default": "View lookbook"
+    },
+    {
+      "type": "url",
+      "id": "button_link_2",
+      "label": "Secondary button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
+}
+{% endschema %}
