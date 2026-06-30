@@ -2,18 +2,46 @@
   "sections": {
     "hero": {
       "type": "hero",
+      "blocks": {
+        "s1": {
+          "type": "slide",
+          "settings": {
+            "kicker": "SS26 — Now live",
+            "heading": "No basics just statement pieces",
+            "subheading": "Look good and feel great with everyday pieces that balance style and comfort.",
+            "button_label": "Shop all",
+            "button_link": "shopify://collections/all"
+          }
+        },
+        "s2": {
+          "type": "slide",
+          "settings": {
+            "kicker": "Hoodies",
+            "heading": "From sands to street",
+            "subheading": "Heavyweight hoodies built for the 971 and beyond.",
+            "button_label": "Shop hoodies",
+            "button_link": "shopify://collections/all"
+          }
+        },
+        "s3": {
+          "type": "slide",
+          "settings": {
+            "kicker": "Limited",
+            "heading": "Drops that don't restock",
+            "subheading": "Once they're gone, they're gone. Get yours early.",
+            "button_label": "Shop tees",
+            "button_link": "shopify://collections/all"
+          }
+        }
+      },
+      "block_order": ["s1", "s2", "s3"],
       "settings": {
-        "color_scheme": "scheme-4",
         "height": "large",
+        "text_align": "center",
         "overlay_opacity": 35,
-        "text_align": "left",
-        "kicker": "SS26 — Now live",
-        "heading": "From Sands to Street",
-        "subheading": "Streetwear born in the 971. Limited drops, built to last.",
-        "button_label": "Shop the drop",
-        "button_link": "shopify://collections/all",
-        "button_label_2": "View lookbook",
-        "button_link_2": "#lookbook"
+        "color_scheme": "scheme-4",
+        "autoplay": true,
+        "autoplay_speed": 5
       }
     },
     "marquee": {
