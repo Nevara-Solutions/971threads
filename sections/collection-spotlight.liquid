@@ -10,6 +10,9 @@
   assign limit = section.settings.products_to_show
 -%}
 
+{{ 'quick-view.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'quick-view.js' | asset_url }}" defer></script>
+
 {%- style -%}
   #cspot-{{ section.id }} {
     padding-top: {{ section.settings.padding_top }}px;
@@ -40,26 +43,32 @@
     <div class="cspot__row">
       {%- if coll != blank and coll.products.size > 0 -%}
         {%- for product in coll.products limit: limit -%}
-          <a href="{{ product.url }}" class="cspot__card">
+          <div class="cspot__card">
             <div class="cspot__media">
-              {%- if product.featured_media -%}
-                {{
-                  product.featured_media
-                  | image_url: width: 800
-                  | image_tag: loading: 'lazy', widths: '300, 500, 700, 800', class: 'cspot__img cspot__img--primary', alt: product.title
-                }}
-                {%- if product.media[1] -%}
+              <a href="{{ product.url }}" class="cspot__media-link" aria-label="{{ product.title | escape }}">
+                {%- if product.featured_media -%}
                   {{
-                    product.media[1].preview_image
+                    product.featured_media
                     | image_url: width: 800
-                    | image_tag: loading: 'lazy', widths: '300, 500, 700, 800', class: 'cspot__img cspot__img--hover', alt: product.title
+                    | image_tag: loading: 'lazy', widths: '300, 500, 700, 800', class: 'cspot__img cspot__img--primary', alt: product.title
                   }}
+                  {%- if product.media[1] -%}
+                    {{
+                      product.media[1].preview_image
+                      | image_url: width: 800
+                      | image_tag: loading: 'lazy', widths: '300, 500, 700, 800', class: 'cspot__img cspot__img--hover', alt: product.title
+                    }}
+                  {%- endif -%}
+                {%- else -%}
+                  {{ 'product-apparel-1' | placeholder_svg_tag: 'cspot__img placeholder' }}
                 {%- endif -%}
-              {%- else -%}
-                {{ 'product-apparel-1' | placeholder_svg_tag: 'cspot__img placeholder' }}
+              </a>
+              {%- if product.compare_at_price > product.price -%}
+                <span class="cspot__badge">Sale</span>
               {%- endif -%}
+              <button type="button" class="cspot__qv" data-quick-view data-product-url="{{ product.url }}">Quick view</button>
             </div>
-            <div class="cspot__info">
+            <a href="{{ product.url }}" class="cspot__info">
               {%- if section.settings.show_vendor and product.vendor != blank -%}
                 <p class="cspot__vendor">{{ product.vendor }}</p>
               {%- endif -%}
@@ -72,8 +81,8 @@
                   {{ product.price | money }}
                 {%- endif -%}
               </p>
-            </div>
-          </a>
+            </a>
+          </div>
         {%- endfor -%}
       {%- else -%}
         {%- for i in (1..4) -%}
@@ -177,6 +186,45 @@
   }
   .cspot__card:hover .cspot__img--hover { opacity: 1; }
   .cspot__card:hover .cspot__img--primary { opacity: 0; }
+  .cspot__media-link { position: absolute; inset: 0; z-index: 1; display: block; }
+  .cspot__info { display: block; text-decoration: none; color: inherit; }
+  .cspot__badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 2;
+    background: rgba(17, 17, 17, 0.9);
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+  }
+  .cspot__qv {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    border: none;
+    cursor: pointer;
+    background: rgba(17, 17, 17, 0.92);
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    font-size: 1.3rem;
+    padding: 1.3rem;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .cspot__card:hover .cspot__qv,
+  .cspot__qv:focus-visible { opacity: 1; transform: translateY(0); }
+  @media (hover: none) {
+    .cspot__qv { opacity: 1; transform: translateY(0); } /* always visible on touch */
+  }
   .cspot__vendor {
     margin: 0 0 0.4rem;
     text-transform: uppercase;

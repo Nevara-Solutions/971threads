@@ -60,6 +60,35 @@
         "padding_bottom": 64
       }
     },
+    "countdown_banner": {
+      "type": "countdown-banner",
+      "settings": {
+        "heading": "Mid-Season Sale",
+        "end_date": "2026-07-31",
+        "end_time": "23:59",
+        "button_label": "Shop the sale",
+        "button_link": "shopify://collections/all",
+        "height": "medium",
+        "overlay_opacity": 35,
+        "color_scheme": "scheme-4"
+      }
+    },
+    "collection_spotlight_sale": {
+      "type": "collection-spotlight",
+      "settings": {
+        "collection": "all",
+        "products_to_show": 8,
+        "show_vendor": false,
+        "color_scheme": "scheme-1",
+        "kicker": "Sale",
+        "heading": "Limited-time markdowns",
+        "description": "Heavyweight tees and hoodies, marked down for a limited run. When the timer hits zero, prices go back up.",
+        "button_label": "Shop the sale",
+        "button_link": "shopify://collections/all",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
     "lookbook": {
       "type": "lookbook",
       "blocks": {
@@ -84,6 +113,8 @@
   "order": [
     "hero",
     "collection_spotlight",
+    "countdown_banner",
+    "collection_spotlight_sale",
     "lookbook"
   ]
 }

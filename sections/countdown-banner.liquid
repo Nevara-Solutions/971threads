@@ -1,0 +1,161 @@
+{%- comment -%}
+  971threads — Countdown sale banner.
+  Full-bleed image, Anton heading, live countdown (Days/Hours/Minutes/Seconds), CTA.
+  Timer logic in assets/countdown.js. Falls back to a bundled image when none is set.
+{%- endcomment -%}
+
+{%- liquid
+  case section.settings.height
+    when 'small'
+      assign vh = 55
+    when 'large'
+      assign vh = 82
+    else
+      assign vh = 68
+  endcase
+-%}
+
+{%- style -%}
+  #cdb-{{ section.id }} {
+    --cdb-vh: {{ vh }}svh;
+    --cdb-scrim: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+  }
+{%- endstyle -%}
+
+<section id="cdb-{{ section.id }}" class="cdb color-{{ section.settings.color_scheme }}">
+  <div class="cdb__media">
+    {%- if section.settings.image != blank -%}
+      {{ section.settings.image | image_url: width: 3000 | image_tag: loading: 'lazy', sizes: '100vw', widths: '800,1200,1600,2000,2600,3000', class: 'cdb__img' }}
+    {%- else -%}
+      <img src="{{ 'hero-hoodie-grey.jpg' | asset_url }}" alt="" class="cdb__img" loading="lazy" width="1600" height="1067">
+    {%- endif -%}
+    <span class="cdb__scrim"></span>
+  </div>
+
+  <div class="cdb__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="cdb__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    <div class="cdb__timer" data-countdown data-end="{{ section.settings.end_date }}T{{ section.settings.end_time }}:00">
+      <div class="cdb__unit"><span class="cdb__num" data-days>00</span><span class="cdb__label">Days</span></div>
+      <span class="cdb__sep"></span>
+      <div class="cdb__unit"><span class="cdb__num" data-hours>00</span><span class="cdb__label">Hours</span></div>
+      <span class="cdb__sep"></span>
+      <div class="cdb__unit"><span class="cdb__num" data-minutes>00</span><span class="cdb__label">Minutes</span></div>
+      <span class="cdb__sep"></span>
+      <div class="cdb__unit"><span class="cdb__num" data-seconds>00</span><span class="cdb__label">Seconds</span></div>
+    </div>
+
+    {%- if section.settings.button_label != blank -%}
+      <a href="{{ section.settings.button_link | default: '#' }}" class="cdb__btn">
+        <span>{{ section.settings.button_label }}</span>
+        <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8" stroke-linecap="square"/></svg>
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+<script src="{{ 'countdown.js' | asset_url }}" defer></script>
+
+{%- stylesheet -%}
+  .cdb {
+    position: relative;
+    width: 100%;
+    min-height: var(--cdb-vh);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: #fff;
+    text-align: center;
+  }
+  .cdb__media, .cdb__img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .cdb__img { object-fit: cover; }
+  .cdb__scrim { position: absolute; inset: 0; background: rgba(0,0,0,var(--cdb-scrim)); }
+  .cdb__inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 6rem var(--page-gutter);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.4rem;
+  }
+  .cdb__heading {
+    margin: 0;
+    font-family: var(--font-display-family);
+    text-transform: uppercase;
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+    font-size: clamp(3.6rem, 7vw, 8rem);
+    text-shadow: 0 2px 30px rgba(0,0,0,0.35);
+  }
+  .cdb__timer {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.6rem, 4vw, 4.5rem);
+    border-top: 0.1rem solid rgba(255,255,255,0.4);
+    padding-top: 2.4rem;
+  }
+  .cdb__unit { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; min-width: 6rem; }
+  .cdb__num {
+    font-family: var(--font-display-family);
+    font-size: clamp(2.8rem, 4vw, 4.6rem);
+    line-height: 1;
+  }
+  .cdb__label {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 1.1rem;
+    opacity: 0.85;
+  }
+  .cdb__sep { width: 0.1rem; height: 4rem; background: rgba(255,255,255,0.35); }
+  .cdb__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1.3rem 2.8rem;
+    background: #111;
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 1.4rem;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+  .cdb__btn:hover { opacity: 0.85; }
+  @media screen and (max-width: 749px) {
+    .cdb__sep { height: 3rem; }
+    .cdb__unit { min-width: 0; }
+  }
+{%- endstylesheet -%}
+
+{% schema %}
+{
+  "name": "Countdown banner",
+  "tag": "section",
+  "class": "section-cdb",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Background image", "info": "Leave empty for a built-in image." },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Mid-Season Sale" },
+    { "type": "header", "content": "Countdown" },
+    { "type": "text", "id": "end_date", "label": "End date", "info": "Format: YYYY-MM-DD", "default": "2026-07-31" },
+    { "type": "text", "id": "end_time", "label": "End time (24h)", "info": "Format: HH:MM", "default": "23:59" },
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop sale" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "header", "content": "Appearance" },
+    {
+      "type": "select", "id": "height", "label": "Height",
+      "options": [ { "value": "small", "label": "Small" }, { "value": "medium", "label": "Medium" }, { "value": "large", "label": "Large" } ],
+      "default": "medium"
+    },
+    { "type": "range", "id": "overlay_opacity", "label": "Image darken", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 35 },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-4" }
+  ],
+  "presets": [ { "name": "Countdown banner" } ]
+}
+{% endschema %}

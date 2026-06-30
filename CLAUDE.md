@@ -54,4 +54,6 @@ Whenever you write headings, descriptions, button labels, alt text, or any user-
 - `sections/collection-spotlight.liquid` — left text panel + horizontal product slider (CSS scroll-snap, no JS)
 - `sections/marquee.liquid` — scrolling streetwear ticker (not on the homepage; re-add via the Theme Editor or by adding to a template's `sections` + `order`)
 - `sections/lookbook.liquid` — editorial image grid
+- `sections/countdown-banner.liquid` — full-bleed sale banner with live countdown (`assets/countdown.js`)
 - Header (`sections/header.liquid` + `header-group.json`) — Berlin centered-logo layout, dark rotating announcement bar, blur-on-scroll
+- **Quick View** (`assets/quick-view.js` + `quick-view.css`, loaded by collection-spotlight): any `[data-quick-view][data-product-url]` button opens a modal that fetches `{handle}.js`, lets the user pick a variant, and adds to cart via `/cart/add.js`. Money is formatted as `Dhs. X.XX` in JS (AED store) — update that string if the store currency changes.
