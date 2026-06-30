@@ -135,7 +135,6 @@
   "order": [
     "hero",
     "collection_spotlight",
-    "featured_collection",
     "lookbook"
   ]
 }
