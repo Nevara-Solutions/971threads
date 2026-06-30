@@ -246,14 +246,7 @@
         --variant-pills-shadow-blur-radius: {{ settings.variant_pills_shadow_blur }}px;
       }
 
-      {%- comment -%} 971threads: self-hosted display fonts. Bebas Neue = headings, Anton = navbar/accent. {%- endcomment -%}
-      @font-face {
-        font-family: 'Bebas Neue';
-        font-style: normal;
-        font-weight: 400;
-        font-display: swap;
-        src: url({{ 'bebas-neue.woff2' | asset_url }}) format('woff2');
-      }
+      {%- comment -%} 971threads: self-hosted fonts. Anton = hero display; Inter = everything else. {%- endcomment -%}
       @font-face {
         font-family: 'Anton';
         font-style: normal;
@@ -261,19 +254,41 @@
         font-display: swap;
         src: url({{ 'anton.woff2' | asset_url }}) format('woff2');
       }
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url({{ 'inter-400.woff2' | asset_url }}) format('woff2');
+      }
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 600;
+        font-display: swap;
+        src: url({{ 'inter-600.woff2' | asset_url }}) format('woff2');
+      }
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+        src: url({{ 'inter-700.woff2' | asset_url }}) format('woff2');
+      }
 
       :root {
         /* 971threads font system — change a font here once, it updates everywhere.
            --font-display = Anton (hero / big statement titles)
-           --font-heading = Bebas Neue (section titles, nav, labels)
-           --font-body    = Bebas Neue (body / paragraphs) */
+           --font-heading = Inter 700 (bold section titles, nav, labels)
+           --font-body    = Inter 400 (body / paragraphs, upper + lowercase) */
         --font-display-family: 'Anton', sans-serif;
         --font-display-weight: 400;
 
-        --font-body-family: 'Bebas Neue', sans-serif;
+        --font-body-family: 'Inter', sans-serif;
         --font-body-weight: 400;
-        --font-heading-family: 'Bebas Neue', sans-serif;
-        --font-heading-weight: 400;
+        --font-body-weight-bold: 700;
+        --font-heading-family: 'Inter', sans-serif;
+        --font-heading-weight: 700;
       }
 
       {%- comment -%} 971threads: Berlin-style announcement bar — uppercase, wide tracking. {%- endcomment -%}

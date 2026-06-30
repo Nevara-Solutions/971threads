@@ -38,7 +38,7 @@
       "settings": {
         "height": "large",
         "text_align": "center",
-        "overlay_opacity": 35,
+        "overlay_opacity": 28,
         "color_scheme": "scheme-4",
         "autoplay": true,
         "autoplay_speed": 5
