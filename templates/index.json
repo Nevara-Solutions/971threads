@@ -72,7 +72,7 @@
       "settings": {
         "title": "The Latest Drop",
         "heading_size": "h2",
-        "description": "Fresh tees and hoodies, straight off the press. Limited runs — don't sleep on it.",
+        "description": "<p>Fresh tees and hoodies, straight off the press. Limited runs — don't sleep on it.</p>",
         "show_description": true,
         "description_style": "body",
         "collection": "all",
