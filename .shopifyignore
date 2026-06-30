@@ -1,0 +1,12 @@
+# Files Shopify CLI should never upload to the store.
+# Stray atomic-save / editor temp files (the source of the "Upload Errors" overlay):
+*.tmp
+*.tmp.*
+*~
+*.swp
+.DS_Store
+
+# Repo / tooling files that aren't part of the theme:
+.git/
+README.md
+release-notes.md
