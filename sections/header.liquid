@@ -87,6 +87,24 @@
       padding-top: 0.5rem;
     }
   }
+
+  {%- comment -%} 971threads: Berlin-style nav — Anton, uppercase, letter-spaced. {%- endcomment -%}
+  .header__menu-item {
+    font-family: 'Bebas Neue', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 400;
+    font-size: 1.6rem;
+  }
+  .header__menu-item span {
+    text-decoration-thickness: 0.1rem;
+    text-underline-offset: 0.4rem;
+  }
+  /* Dropdown / mega-menu links inherit the same treatment, slightly tighter */
+  .header__submenu .header__menu-item {
+    letter-spacing: 0.08em;
+    font-size: 1.25rem;
+  }
 </style>
 
 {%- style -%}
