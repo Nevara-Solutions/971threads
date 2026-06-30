@@ -28,6 +28,19 @@
     }
   {%- endif -%}
 
+  {%- comment -%} 971threads: premium translucent blur + shadow once scrolled. {%- endcomment -%}
+  {%- if section.settings.sticky_header_type != 'none' -%}
+    sticky-header {
+      transition: box-shadow 0.2s ease, backdrop-filter 0.2s ease;
+    }
+    sticky-header.scrolled-past-header {
+      background: rgba(var(--color-background), 0.82);
+      -webkit-backdrop-filter: saturate(160%) blur(14px);
+      backdrop-filter: saturate(160%) blur(14px);
+      box-shadow: 0 1px 24px rgba(0, 0, 0, 0.1);
+    }
+  {%- endif -%}
+
   {%- if section.settings.menu_type_desktop != "drawer" -%}
     @media screen and (min-width: 990px) {
       header-drawer {
