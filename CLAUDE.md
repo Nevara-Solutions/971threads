@@ -42,12 +42,13 @@ Whenever you write headings, descriptions, button labels, alt text, or any user-
 - **Stale error overlay in the preview:** if `theme dev` shows an "Upload Errors" box after you've already fixed the file, it's stale — restart `theme dev` (Ctrl+C, re-run) and hard-refresh (Ctrl/Cmd+Shift+R).
 - **Temp-file upload errors** (`*.tmp.*` "must have .liquid extension"): handled by `.shopifyignore`; if they appear, restart `theme dev` so it re-reads the ignore file.
 - **Section JS:** put it in an `assets/*.js` file loaded with `<script src=... defer>`, not inline in the section — inline section scripts can silently fail to run on `theme dev` reloads. After adding a NEW asset, restart `theme dev` so it uploads.
+- **`{% stylesheet %}` is NOT Liquid-processed** — it must contain only static CSS. Putting `{{ ... }}` inside it is a theme-check error and won't render. For dynamic values, set a CSS variable in a `{% style %}` block (which IS Liquid) and reference `var(--x)` in the stylesheet.
 - **No horizontal scroll.** Don't use `width: 100vw` for full-bleed — `100vw` includes the scrollbar width and causes a horizontal scrollbar. Dawn sections (`.shopify-section`) are already full-width, so use `width: 100%` instead. (`100vw` is fine inside image `sizes` attributes — that's not layout width.)
 - **Always validate before declaring done:**
   - JSON templates: `node -e "JSON.parse(require('fs').readFileSync('<file>','utf8'))"`
   - Theme lint: `shopify theme check` — confirm offense count doesn't rise above the pre-existing baseline.
 - **Editing `templates/*.json`:** sections go inside the `sections` object and **every section MUST also be listed in `order`** — orphaned sections (in `sections` but not `order`) cause a "Section id … must exist in order" upload error. To remove a section from a page, delete it from BOTH `sections` and `order` (the section's `.liquid` file stays and can be re-added via the editor). Watch comma/brace placement.
-- Commit each working milestone with a clear message (git is local-only; no remote configured).
+- **Do NOT run `git add` or `git commit`** — the user manages all version control themselves. Make file edits only; never stage or commit. (Set 2026-06-30.)
 
 ## Custom sections we've built (don't duplicate)
 - `sections/hero.liquid` — full-bleed `<hero-slideshow>` (arrows, dots, autoplay)
@@ -55,5 +56,10 @@ Whenever you write headings, descriptions, button labels, alt text, or any user-
 - `sections/marquee.liquid` — scrolling streetwear ticker (not on the homepage; re-add via the Theme Editor or by adding to a template's `sections` + `order`)
 - `sections/lookbook.liquid` — editorial image grid
 - `sections/countdown-banner.liquid` — full-bleed sale banner with live countdown (`assets/countdown.js`)
+- `sections/sale-split.liquid` — split promo: dark text panel + vertical scrolling strip + image
+- `sections/about-feature.liquid` — About with switchable tabs (`assets/about-tabs.js`) + image
+- `sections/faq.liquid` — FAQ accordion (native `<details>`, no JS)
+- `sections/feature-row.liquid` — icon + heading + text benefit columns
+- Spotlight slider arrows: `assets/spotlight-slider.js`
 - Header (`sections/header.liquid` + `header-group.json`) — Berlin centered-logo layout, dark rotating announcement bar, blur-on-scroll
 - **Quick View** (`assets/quick-view.js` + `quick-view.css`, loaded by collection-spotlight): any `[data-quick-view][data-product-url]` button opens a modal that fetches `{handle}.js`, lets the user pick a variant, and adds to cart via `/cart/add.js`. Money is formatted as `Dhs. X.XX` in JS (AED store) — update that string if the store currency changes.

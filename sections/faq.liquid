@@ -1,0 +1,76 @@
+{%- comment -%}
+  971threads — FAQ accordion. Native <details>/<summary> (no JS). Each block = one Q&A.
+{%- endcomment -%}
+
+{%- style -%}
+  #faq-{{ section.id }} { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; }
+{%- endstyle -%}
+
+<section id="faq-{{ section.id }}" class="faq color-{{ section.settings.color_scheme }} gradient">
+  <div class="faq__inner">
+    <div class="faq__head">
+      {%- if section.settings.kicker != blank -%}<p class="faq__kicker">{{ section.settings.kicker }}</p>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<h2 class="faq__heading">{{ section.settings.heading }}</h2>{%- endif -%}
+    </div>
+    <div class="faq__list">
+      {%- for block in section.blocks -%}
+        <details class="faq__item" {{ block.shopify_attributes }}{% if forloop.first %} open{% endif %}>
+          <summary class="faq__q">
+            <span>{{ block.settings.question }}</span>
+            <svg class="faq__chev" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke-linecap="square"/></svg>
+          </summary>
+          <div class="faq__a">{{ block.settings.answer }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- stylesheet -%}
+  .faq__inner { max-width: 84rem; margin-inline: auto; padding-inline: var(--page-gutter); }
+  .faq__head { text-align: center; margin-bottom: 3.5rem; }
+  .faq__kicker { margin: 0 0 1rem; text-transform: uppercase; letter-spacing: 0.28em; font-size: 1.2rem; font-weight: 600; opacity: 0.6; }
+  .faq__heading { margin: 0; font-family: var(--font-heading-family); font-weight: 700; text-transform: uppercase; letter-spacing: -0.01em; font-size: clamp(2.8rem, 4vw, 4.4rem); }
+  .faq__item { border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.15); }
+  .faq__q { display: flex; align-items: center; justify-content: space-between; gap: 2rem; cursor: pointer; list-style: none; padding: 2.2rem 0; font-family: var(--font-heading-family); font-weight: 700; text-transform: uppercase; letter-spacing: 0.01em; font-size: clamp(1.6rem, 2vw, 2.2rem); }
+  .faq__q::-webkit-details-marker { display: none; }
+  .faq__chev { flex-shrink: 0; transition: transform 0.25s ease; }
+  .faq__item[open] .faq__chev { transform: rotate(180deg); }
+  .faq__a { padding: 0 0 2.4rem; max-width: 64ch; line-height: 1.6; opacity: 0.8; }
+  .faq__a p { margin: 0 0 1rem; }
+{%- endstylesheet -%}
+
+{% schema %}
+{
+  "name": "FAQ",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "FAQ" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Questions & answers" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 72 }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "How long does it take for my order to arrive?" },
+        { "type": "textarea", "id": "answer", "label": "Answer", "default": "Orders within the UAE arrive in 1–3 business days. International orders typically take 5–10 business days depending on your location." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        { "type": "question", "settings": { "question": "How long does it take for my order to arrive?", "answer": "Orders within the UAE arrive in 1–3 business days. International orders typically take 5–10 business days depending on your location." } },
+        { "type": "question", "settings": { "question": "What is your return policy?", "answer": "Unworn items with tags can be returned within 14 days for an exchange or store credit. Sale and limited-drop pieces are final sale." } },
+        { "type": "question", "settings": { "question": "Do you offer international shipping?", "answer": "Yes — we ship the 971 worldwide. Shipping is calculated at checkout, and free across the UAE on orders over AED 200." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

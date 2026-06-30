@@ -12,6 +12,7 @@
 
 {{ 'quick-view.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'quick-view.js' | asset_url }}" defer></script>
+<script src="{{ 'spotlight-slider.js' | asset_url }}" defer></script>
 
 {%- style -%}
   #cspot-{{ section.id }} {
@@ -42,6 +43,8 @@
       {%- endif -%}
     </div>
 
+    <div class="cspot__slider">
+      <button class="cspot__arrow cspot__arrow--prev" type="button" aria-label="Previous products"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5 8 12l7 7" stroke-linecap="square"/></svg></button>
     <div class="cspot__row">
       {%- if coll != blank and coll.products.size > 0 -%}
         {%- for product in coll.products limit: limit -%}
@@ -90,6 +93,8 @@
           </div>
         {%- endfor -%}
       {%- endif -%}
+      </div>
+      <button class="cspot__arrow cspot__arrow--next" type="button" aria-label="Next products"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m9 5 7 7-7 7" stroke-linecap="square"/></svg></button>
     </div>
   </div>
 </section>
@@ -179,6 +184,33 @@
     scrollbar-width: none; /* hide scrollbar (Firefox) */
   }
   .cspot__row::-webkit-scrollbar { display: none; } /* hide scrollbar (WebKit) */
+
+  .cspot__slider { position: relative; }
+  .cspot__arrow {
+    position: absolute;
+    top: 38%;
+    transform: translateY(-50%);
+    z-index: 3;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 4.6rem;
+    height: 4.6rem;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    color: #111;
+    box-shadow: 0 0.2rem 1.4rem rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .cspot__arrow:hover { transform: translateY(-50%) scale(1.06); }
+  .cspot__arrow--prev { left: -1rem; }
+  .cspot__arrow--next { right: -1rem; }
+  .cspot__slider.is-scrollable .cspot__arrow { display: flex; }
+  @media screen and (max-width: 749px) {
+    .cspot__arrow { display: none !important; }
+  }
   .cspot__card {
     flex: 0 0 auto;
     width: 80vw;
@@ -273,9 +305,14 @@
       position: sticky;
       top: 12rem;
     }
-    /* Show exactly 3 cards in the slider column; the rest scroll. */
-    .cspot__card {
+    /* Side layout: exactly 3 cards in the slider column; the rest scroll. */
+    .cspot--side .cspot__card {
       width: calc((100% - 3.2rem) / 3);
+      max-width: none;
+    }
+    /* Top layout (full-width sale slider): fixed-width cards + arrows, horizontal scroll. */
+    .cspot--top .cspot__card {
+      width: 32rem;
       max-width: none;
     }
   }

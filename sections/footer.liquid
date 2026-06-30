@@ -121,6 +121,10 @@
                               width: settings.brand_image_width
                           }}
                         </div>
+                      {%- else -%}
+                        <div class="footer-block__image-wrapper" style="max-width: min(100%, 200px);">
+                          <img src="{{ 'logo-971threads.jpg' | asset_url }}" alt="{{ shop.name | escape }}" width="200" height="55" style="height: auto;">
+                        </div>
                       {%- endif -%}
                       {%- if settings.brand_headline != blank -%}
                         <h2 class="footer-block__heading rte">{{ settings.brand_headline }}</h2>
