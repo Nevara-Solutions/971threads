@@ -20,6 +20,7 @@ Whenever you write headings, descriptions, button labels, alt text, or any user-
 
 ## Design direction
 - **Light mode** base (white), matching the black/grey logo. Dark accents (announcement bar, hero scrim) are fine.
+- **Consistent alignment:** all sections share one horizontal gutter via the CSS variable **`--page-gutter`** (defined in `layout/theme.liquid`: 1.5rem mobile, 4rem ≥750px). The header and every section's content use `padding-inline: var(--page-gutter)` so left/right edges line up. New sections must use `var(--page-gutter)` (don't reintroduce Dawn's centered `.page-width` for full-width sections, and never hardcode the gutter).
 - Berlin-inspired editorial layout: centered logo nav (nav-left / logo-center / icons-right), full-bleed hero **slideshow**, generous whitespace.
 - **Fonts (self-hosted, defined once as CSS variables in `layout/theme.liquid`):**
   - `--font-display-family: 'Anton'` → hero / big statement titles only

@@ -107,10 +107,12 @@
   }
 
   {%- comment -%} 971threads: wide header (near full-width with padding) + labelled icons. {%- endcomment -%}
+  .section-header .header {
+    max-width: none;
+    padding-inline: var(--page-gutter);
+  }
   @media screen and (min-width: 990px) {
     .section-header .header {
-      max-width: none;
-      padding-inline: 4rem;
       column-gap: 3rem;
     }
   }

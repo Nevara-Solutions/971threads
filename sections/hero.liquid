@@ -65,7 +65,7 @@
             <span class="hero__scrim"></span>
           </div>
 
-          <div class="hero__inner page-width">
+          <div class="hero__inner">
             <div class="hero__content">
               {%- if block.settings.kicker != blank -%}
                 <p class="hero__kicker">{{ block.settings.kicker }}</p>
@@ -156,6 +156,7 @@
     position: relative;
     z-index: 1;
     width: 100%;
+    padding-inline: var(--page-gutter);
     padding-top: 7rem;
     padding-bottom: 7rem;
   }

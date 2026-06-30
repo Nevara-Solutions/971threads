@@ -89,6 +89,11 @@
 </div>
 
 {%- stylesheet -%}
+  /* Align to the shared site gutter (matches the header + other sections). */
+  .lookbook .page-width {
+    max-width: none;
+    padding-inline: var(--page-gutter);
+  }
   .lookbook__header {
     text-align: center;
     margin-bottom: 2.4rem;

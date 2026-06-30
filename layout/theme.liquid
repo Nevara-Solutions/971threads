@@ -289,6 +289,12 @@
         --font-body-weight-bold: 700;
         --font-heading-family: 'Inter', sans-serif;
         --font-heading-weight: 700;
+
+        /* Shared horizontal gutter — header + all sections align to this. */
+        --page-gutter: 1.5rem;
+      }
+      @media screen and (min-width: 750px) {
+        :root { --page-gutter: 4rem; }
       }
 
       {%- comment -%} 971threads: Berlin-style announcement bar — uppercase, wide tracking. {%- endcomment -%}

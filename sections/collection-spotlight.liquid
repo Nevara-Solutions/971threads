@@ -96,9 +96,10 @@
     grid-template-columns: 1fr;
     gap: 3rem;
     align-items: start;
+    padding-inline: var(--page-gutter);
   }
   .cspot__intro {
-    padding-inline: 1.5rem;
+    padding-inline: 0;
   }
   .cspot__kicker {
     margin: 0 0 1rem;
@@ -144,13 +145,14 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    padding: 0 1.5rem 1.5rem;
-    scrollbar-width: thin;
+    padding-bottom: 0.5rem;
+    scrollbar-width: none; /* hide scrollbar (Firefox) */
   }
+  .cspot__row::-webkit-scrollbar { display: none; } /* hide scrollbar (WebKit) */
   .cspot__card {
     flex: 0 0 auto;
-    width: 30rem;
-    max-width: 78vw;
+    width: 80vw;
+    max-width: 34rem;
     scroll-snap-align: start;
     text-decoration: none;
     color: inherit;
@@ -200,12 +202,16 @@
   @media screen and (min-width: 990px) {
     .cspot__grid {
       grid-template-columns: minmax(26rem, 1fr) 2.6fr;
-      gap: 2rem;
+      gap: 4rem;
     }
     .cspot__intro {
       position: sticky;
       top: 12rem;
-      padding-inline: 0 2rem;
+    }
+    /* Show exactly 3 cards in the slider column; the rest scroll. */
+    .cspot__card {
+      width: calc((100% - 3.2rem) / 3);
+      max-width: none;
     }
   }
 {%- endstylesheet -%}
