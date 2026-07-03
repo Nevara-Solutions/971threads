@@ -5,6 +5,7 @@
 *~
 *.swp
 .DS_Store
+*.zip
 
 # Repo / tooling files that aren't part of the theme:
 .git/

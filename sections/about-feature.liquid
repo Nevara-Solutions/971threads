@@ -38,7 +38,7 @@
       {%- if section.settings.image != blank -%}
         {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(min-width:990px) 45vw, 100vw', widths: '600,900,1200,1400', class: 'about__img' }}
       {%- else -%}
-        <img src="{{ 'tee-graphic-cream.jpg' | asset_url }}" alt="" class="about__img" loading="lazy" width="1200" height="1500">
+        <img src="{{ 'brand-about.webp' | asset_url }}" alt="" class="about__img" loading="lazy" width="1300" height="2240">
       {%- endif -%}
     </div>
   </div>

@@ -34,7 +34,7 @@
 >
   <div class="hero__viewport">
     <div class="hero__track">
-      {%- assign fallbacks = 'tee-black-model.jpg,hero-hoodie-grey.jpg,hero-hoodie-tan.jpg' | split: ',' -%}
+      {%- assign fallbacks = 'brand-hero-1.webp,brand-shot-03.webp,brand-shot-07.webp' | split: ',' -%}
       {%- for block in section.blocks -%}
         {%- assign fb = forloop.index0 | modulo: fallbacks.size -%}
         {%- assign fb_image = fallbacks[fb] -%}
@@ -117,7 +117,9 @@
   .hero__viewport {
     overflow: hidden;
     min-height: var(--hero-vh);
+    touch-action: pan-y;
   }
+  .hero__img { -webkit-user-drag: none; user-select: none; }
   .hero__track {
     display: flex;
     min-height: var(--hero-vh);
@@ -193,7 +195,9 @@
     font-size: clamp(1.5rem, 1.6vw, 1.9rem);
     letter-spacing: 0.04em;
     max-width: 52ch;
-    opacity: 0.95;
+    color: #fff;
+    font-weight: 500;
+    text-shadow: 0 1px 16px rgba(0, 0, 0, 0.55), 0 0 2px rgba(0, 0, 0, 0.4);
   }
   .hero__btn {
     display: inline-flex;

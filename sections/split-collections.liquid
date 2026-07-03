@@ -1,0 +1,108 @@
+{%- comment -%}
+  971threads — Split collections. Full-bleed row of panels (one per collection): each a
+  background image + heading + link. Default 2 panels (Hoodies / T-shirts). Each block = a panel.
+{%- endcomment -%}
+
+{%- style -%}
+  #splitc-{{ section.id }} {
+    --splitc-h: {{ section.settings.height }}svh;
+    --splitc-cols: {{ section.blocks.size | at_least: 1 }};
+    --splitc-scrim: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+  }
+{%- endstyle -%}
+
+<section id="splitc-{{ section.id }}" class="splitc color-{{ section.settings.color_scheme }}">
+  <div class="splitc__grid">
+    {%- assign fallbacks = 'brand-hero-2.webp,brand-black-01.webp,brand-white-08.webp' | split: ',' -%}
+    {%- for block in section.blocks -%}
+      {%- assign c = block.settings.collection -%}
+      {%- assign fb = forloop.index0 | modulo: fallbacks.size -%}
+      <a
+        class="splitc__panel"
+        href="{{ block.settings.link | default: c.url | default: '#' }}"
+        {{ block.shopify_attributes }}
+      >
+        <div class="splitc__media">
+          {%- if block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 50vw, 100vw', widths: '600,900,1200,1600', class: 'splitc__img' }}
+          {%- else -%}
+            <img src="{{ fallbacks[fb] | asset_url }}" alt="" class="splitc__img" loading="lazy" width="1400" height="1750">
+          {%- endif -%}
+          <span class="splitc__scrim"></span>
+        </div>
+        <div class="splitc__content">
+          {%- if block.settings.subheading != blank -%}<p class="splitc__sub">{{ block.settings.subheading }}</p>{%- endif -%}
+          {%- if block.settings.heading != blank -%}<h2 class="splitc__title">{{ block.settings.heading }}</h2>{%- endif -%}
+          {%- if block.settings.text != blank -%}<p class="splitc__desc">{{ block.settings.text }}</p>{%- endif -%}
+          {%- if block.settings.button_label != blank -%}
+            <span class="splitc__btn">{{ block.settings.button_label }}</span>
+          {%- endif -%}
+        </div>
+      </a>
+    {%- endfor -%}
+  </div>
+</section>
+
+{%- stylesheet -%}
+  .splitc__grid { display: grid; grid-template-columns: 1fr; }
+  .splitc__panel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--splitc-h);
+    overflow: hidden;
+    text-decoration: none;
+    color: #fff;
+  }
+  .splitc__media, .splitc__img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .splitc__img { object-fit: cover; transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .splitc__panel:hover .splitc__img { transform: scale(1.05); }
+  .splitc__scrim { position: absolute; inset: 0; background: rgba(0, 0, 0, var(--splitc-scrim)); }
+  .splitc__content { position: relative; z-index: 1; text-align: center; padding: 2rem; }
+  .splitc__sub { margin: 0 0 1rem; text-transform: uppercase; letter-spacing: 0.28em; font-size: 1.2rem; opacity: 0.9; }
+  .splitc__title { margin: 0; font-family: var(--font-display-family); text-transform: uppercase; line-height: 0.95; letter-spacing: 0.01em; font-size: clamp(3.2rem, 4.5vw, 5.6rem); text-shadow: 0 2px 24px rgba(0,0,0,0.35); }
+  .splitc__desc { margin: 1.2rem auto 0; max-width: 34ch; opacity: 0.92; line-height: 1.5; font-size: 1.5rem; text-shadow: 0 1px 12px rgba(0,0,0,0.4); }
+  .splitc__btn { display: inline-block; margin-top: 1.6rem; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 700; font-size: 1.3rem; border-bottom: 0.15rem solid rgba(255,255,255,0.9); padding-bottom: 0.4rem; }
+  .splitc__panel:hover .splitc__btn { border-color: #fff; }
+  @media screen and (min-width: 750px) {
+    .splitc__grid { grid-template-columns: repeat(var(--splitc-cols), 1fr); }
+  }
+{%- endstylesheet -%}
+
+{% schema %}
+{
+  "name": "Split collections",
+  "tag": "section",
+  "class": "section-splitc",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-4" },
+    { "type": "range", "id": "height", "label": "Panel height", "min": 40, "max": 90, "step": 5, "unit": "svh", "default": 70 },
+    { "type": "range", "id": "overlay_opacity", "label": "Image darken", "min": 0, "max": 70, "step": 5, "unit": "%", "default": 30 }
+  ],
+  "blocks": [
+    {
+      "type": "panel",
+      "name": "Panel",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Leave empty to use a built-in image." },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "subheading", "label": "Subheading" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Hoodies" },
+        { "type": "textarea", "id": "text", "label": "Description" },
+        { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop now" },
+        { "type": "url", "id": "link", "label": "Link (optional, defaults to collection)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Split collections",
+      "blocks": [
+        { "type": "panel", "settings": { "heading": "Hoodies", "subheading": "Heavyweight & relaxed", "button_label": "Shop hoodies" } },
+        { "type": "panel", "settings": { "heading": "T-shirts", "subheading": "Everyday heavyweight cotton", "button_label": "Shop tees" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

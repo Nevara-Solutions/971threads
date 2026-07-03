@@ -1,0 +1,51 @@
+{%- comment -%}
+  971threads — shared mini product card (used by collection-spotlight + collection-tabs).
+  Params:
+    product — the product object
+    sub     — small label shown above the title (e.g. the collection name)
+{%- endcomment -%}
+{%- liquid
+  assign size_option = null
+  for option in product.options_with_values
+    assign oname = option.name | downcase
+    if oname == 'size'
+      assign size_option = option
+    endif
+  endfor
+-%}
+<div class="cspot__card">
+  <div class="cspot__media">
+    <a href="{{ product.url }}" class="cspot__media-link" aria-label="{{ product.title | escape }}">
+      {%- if product.featured_media -%}
+        {{ product.featured_media | image_url: width: 800 | image_tag: loading: 'lazy', widths: '300, 500, 700, 800', class: 'cspot__img cspot__img--primary', alt: product.title }}
+        {%- if product.media[1] != blank -%}
+          {{ product.media[1].preview_image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '300, 500, 700, 800', class: 'cspot__img cspot__img--hover', alt: product.title }}
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-apparel-1' | placeholder_svg_tag: 'cspot__img placeholder' }}
+      {%- endif -%}
+    </a>
+    {%- if product.compare_at_price > product.price -%}<span class="cspot__badge">Sale</span>{%- endif -%}
+    <button type="button" class="cspot__qv" data-quick-view data-product-url="{{ product.url }}">Quick view</button>
+  </div>
+  <a href="{{ product.url }}" class="cspot__info">
+    {%- if sub != blank -%}<p class="cspot__vendor">{{ sub }}</p>{%- endif -%}
+    <h3 class="cspot__title">{{ product.title }}</h3>
+    <p class="cspot__price">
+      {%- if product.compare_at_price > product.price -%}
+        <span class="cspot__price-sale">{{ product.price | money }}</span>
+        <s class="cspot__price-was">{{ product.compare_at_price | money }}</s>
+      {%- else -%}
+        {{ product.price | money }}
+      {%- endif -%}
+    </p>
+    {%- if size_option -%}
+      <ul class="cspot__sizes">
+        {%- comment -%} value is an option-value drop; value.available = has an in-stock variant. {%- endcomment -%}
+        {%- for value in size_option.values -%}
+          <li class="cspot__size{% unless value.available %} is-unavailable{% endunless %}">{{ value }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </a>
+</div>

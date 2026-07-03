@@ -6,6 +6,13 @@
       | plus: predictive_search.resources.pages.size
       | plus: predictive_search.resources.articles.size
     %}
+    {%- comment -%} 971threads: visible empty state when the drop has no match. {%- endcomment -%}
+    {%- if first_column_results_size == 0 and predictive_search.resources.products.size == 0 -%}
+      <div class="predictive-search__no-results">
+        <p class="predictive-search__no-results-heading">No match for &ldquo;{{ predictive_search.terms | escape }}&rdquo;</p>
+        <p class="predictive-search__no-results-text">Nothing in the 971 under that name. Try another search — the drop moves fast.</p>
+      </div>
+    {%- endif -%}
     {%- if first_column_results_size > 0 or predictive_search.resources.products.size > 0 -%}
       <div
         id="predictive-search-results-groups-wrapper"

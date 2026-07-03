@@ -27,7 +27,7 @@
     {%- if section.settings.image != blank -%}
       {{ section.settings.image | image_url: width: 3000 | image_tag: loading: 'lazy', sizes: '100vw', widths: '800,1200,1600,2000,2600,3000', class: 'cdb__img' }}
     {%- else -%}
-      <img src="{{ 'hero-hoodie-grey.jpg' | asset_url }}" alt="" class="cdb__img" loading="lazy" width="1600" height="1067">
+      <img src="{{ 'brand-countdown.webp' | asset_url }}" alt="" class="cdb__img" loading="lazy" width="1600" height="2400">
     {%- endif -%}
     <span class="cdb__scrim"></span>
   </div>

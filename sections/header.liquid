@@ -39,6 +39,10 @@
       backdrop-filter: saturate(160%) blur(14px);
       box-shadow: 0 1px 24px rgba(0, 0, 0, 0.1);
     }
+    /* Smoother hide-on-scroll-down / reveal-on-scroll-up (Dawn default is a quick 0.15s). */
+    .section-header.animate {
+      transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
   {%- endif -%}
 
   {%- if section.settings.menu_type_desktop != "drawer" -%}
@@ -143,6 +147,139 @@
       border-inline-start: 0.1rem solid rgba(var(--color-foreground), 0.15);
     }
   }
+
+  {%- comment -%} 971threads: search opens as a right-side drawer (overlay + sliding panel). {%- endcomment -%}
+  {%- comment -%}
+    971threads: the announcement-bar section carries z-index:4 and the header section z-index:3
+    (base.css), so the drawer — trapped inside the header's z-3 context — can't paint over the
+    announcement bar. Lift the HEADER SECTION above it while the drawer is open, and drop the
+    header's backdrop-filter so the blur can't become a containing block for the fixed drawer.
+  {%- endcomment -%}
+  .section-header:has(.header__search details[open]) { position: relative; z-index: 1001; }
+  .header-wrapper:has(.header__search details[open]) {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .header__search .search-modal {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100dvh;
+    min-height: 0;
+    border: 0;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    animation: none !important;
+    z-index: 1000;
+  }
+  {%- comment -%} Slide is gated on .search-open (added a frame after open by search-drawer.js). {%- endcomment -%}
+  .header__search.search-open .search-modal {
+    opacity: 1;
+    visibility: visible;
+  }
+  .header__search .modal-overlay { position: absolute; inset: 0; display: block; }
+  .header__search .modal-overlay::after { display: none; }
+  .header__search .search-modal__content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: auto;
+    width: min(92vw, 42rem);
+    height: 100dvh;
+    background: rgb(var(--color-background));
+    box-shadow: -1rem 0 4rem rgba(0, 0, 0, 0.18);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 9rem 2.6rem 3rem;
+    transform: translateX(100%);
+    transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .header__search.search-open .search-modal__content {
+    transform: translateX(0);
+  }
+  .header__search .search-modal__close-button {
+    position: absolute;
+    top: 2.2rem;
+    right: 2.2rem;
+  }
+  /* Predictive results: inline vertical list inside the drawer (not a wide dropdown).
+     The panel itself does NOT scroll — the input row + close button stay pinned at the top;
+     only the results list scrolls. Flex column, passed through the predictive-search/form wrappers. */
+  .header__search .search-modal__content { overflow: hidden; }
+  .header__search .search-modal__form {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+  }
+  .header__search .field { flex: 0 0 auto; }
+  .header__search .predictive-search {
+    position: static;
+    width: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 0;
+    box-shadow: none;
+    margin-top: 1.6rem;
+  }
+  .header__search .predictive-search__results-groups-wrapper {
+    flex-direction: column;
+    gap: 0.4rem;
+    border: 0;
+    padding-bottom: 0;
+  }
+  .header__search .predictive-search__result-group,
+  .header__search .predictive-search__result-group:first-child {
+    flex: 1 1 auto;
+    gap: 0.4rem;
+  }
+  .header__search .predictive-search__heading {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border: 0;
+    margin: 1.8rem 0 0.4rem;
+    padding: 0;
+    color: rgba(var(--color-foreground), 0.5);
+  }
+  .header__search .predictive-search__item { padding: 0.9rem 0; }
+  {%- comment -%} Predictive-only search: hide the "Search for X" link that goes to the search page. {%- endcomment -%}
+  .header__search .predictive-search__item--term { display: none; }
+  {%- comment -%} Query suggestions fill the input (search-drawer.js) — show they're clickable. {%- endcomment -%}
+  .header__search #predictive-search-results-queries-list .predictive-search__item { cursor: pointer; }
+  .header__search #predictive-search-results-queries-list .predictive-search__item:hover .predictive-search__item-heading { text-decoration: underline; }
+  {%- comment -%} The drawer has its own close (X) — hide the floating header search toggle while it's open. {%- endcomment -%}
+  .header__search:has(details[open]) .header__icon--summary { opacity: 0; visibility: hidden; pointer-events: none; }
+  {%- comment -%} Visible empty state (Dawn only renders "no results" in a screen-reader region). {%- endcomment -%}
+  .header__search .predictive-search__no-results { padding: 3rem 0 1rem; }
+  .header__search .predictive-search__no-results-heading { margin: 0 0 0.6rem; font-weight: 700; font-size: 1.6rem; }
+  .header__search .predictive-search__no-results-text { margin: 0; color: rgba(var(--color-foreground), 0.6); font-size: 1.4rem; }
+  .header__search .predictive-search__item--link-with-thumbnail { grid-template-columns: 6rem 1fr; grid-column-gap: 1.4rem; align-items: center; }
+  /* Single scroll region = .predictive-search (the results). Its inner containers use
+     overflow:visible on BOTH axes — never mix hidden-x with visible-y, or the visible axis
+     computes to `auto` and silently becomes a second scroll container. Any stray horizontal
+     overflow bubbles up and is clipped by the .predictive-search scroll box (overflow-x:hidden). */
+  .header__search .predictive-search__results,
+  .header__search .predictive-search__results-groups-wrapper,
+  .header__search .predictive-search__result-group,
+  .header__search .predictive-search__results-list {
+    max-width: 100%;
+    max-height: none;
+    overflow: visible;
+  }
+  /* Let long titles shrink/wrap inside the thumbnail grid instead of pushing width. */
+  .header__search .predictive-search__item-content { min-width: 0; }
+  .header__search .predictive-search__item-heading { overflow-wrap: anywhere; }
 </style>
 
 {%- style -%}
@@ -170,6 +307,8 @@
 {%- endstyle -%}
 
 <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
+{%- comment -%} 971threads: slide-in/out transition for the search drawer (extends DetailsModal). {%- endcomment -%}
+<script src="{{ 'search-drawer.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
   for block in section.blocks
@@ -416,6 +555,20 @@
       this.createObserver();
     }
 
+    ensureHeroObserver() {
+      // 971threads: watch the hero — the header may only hide once the hero is fully out of view.
+      // (The hero isn't in the DOM yet when the header first connects, so this runs lazily.)
+      if (this.heroObserver) return;
+      var hero = document.querySelector('.hero');
+      if (!hero) { this.heroPresent = false; return; }
+      this.heroPresent = true;
+      this.heroInView = true;
+      this.heroObserver = new IntersectionObserver((entries) => {
+        this.heroInView = entries[0].isIntersecting;
+      });
+      this.heroObserver.observe(hero);
+    }
+
     setHeaderHeight() {
       document.documentElement.style.setProperty('--header-height', `${this.header.offsetHeight}px`);
     }
@@ -438,6 +591,30 @@
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
       if (this.predictiveSearch && this.predictiveSearch.isOpen) return;
+
+      // 971threads: never hide/reveal while the search DRAWER is open. Opening it adds
+      // overflow-hidden to <body>, which fires a scroll event; without this guard onScroll
+      // would call hide() -> closeSearchModal() and slam the drawer shut. (Dawn's guard above
+      // only covers open predictive RESULTS, not the drawer opened with an empty query.)
+      if (this.searchDetails === undefined) this.searchDetails = this.header.querySelector('.header__search details');
+      if (this.searchDetails && this.searchDetails.hasAttribute('open')) return;
+
+      this.ensureHeroObserver();
+
+      // 971threads: while any part of the hero is on screen, keep the header PINNED and visible
+      // (sticky, never hidden). It must not scroll away like a static bar. The hide-on-scroll-down
+      // / reveal-on-scroll-up behaviour only begins once the hero is fully scrolled past.
+      if (this.heroPresent && this.heroInView) {
+        this.header.classList.add('shopify-section-header-sticky');
+        this.header.classList.remove('shopify-section-header-hidden', 'animate');
+        if (scrollTop > this.headerBounds.bottom) {
+          this.header.classList.add('scrolled-past-header');
+        } else {
+          this.header.classList.remove('scrolled-past-header');
+        }
+        this.currentScrollTop = scrollTop;
+        return;
+      }
 
       if (scrollTop > this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
         this.header.classList.add('scrolled-past-header');
@@ -466,7 +643,7 @@
 
     hide() {
       if (this.headerIsAlwaysSticky) return;
-      this.header.classList.add('shopify-section-header-hidden', 'shopify-section-header-sticky');
+      this.header.classList.add('shopify-section-header-hidden', 'shopify-section-header-sticky', 'animate');
       this.closeMenuDisclosure();
       this.closeSearchModal();
     }

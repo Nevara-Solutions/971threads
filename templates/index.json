@@ -6,7 +6,7 @@
         "s1": {
           "type": "slide",
           "settings": {
-            "kicker": "SS26 Collection",
+            "kicker": "",
             "heading": "From Sands to Street",
             "subheading": "Streetwear born in the 971. Heavyweight tees and hoodies, built for the heat and the late nights.",
             "button_label": "Shop the collection",
@@ -16,7 +16,7 @@
         "s2": {
           "type": "slide",
           "settings": {
-            "kicker": "The Hoodies",
+            "kicker": "",
             "heading": "Heavyweight, never heavy-handed",
             "subheading": "Premium heavyweight hoodies with a relaxed fit. Made to layer, made to last.",
             "button_label": "Shop hoodies",
@@ -26,7 +26,7 @@
         "s3": {
           "type": "slide",
           "settings": {
-            "kicker": "Limited Drops",
+            "kicker": "",
             "heading": "When it's gone, it's gone",
             "subheading": "Every release is a limited run. No restocks — just the next drop.",
             "button_label": "Shop tees",
@@ -44,24 +44,74 @@
         "autoplay_speed": 5
       }
     },
-    "collection_spotlight": {
-      "type": "collection-spotlight",
+    "collection_tabs": {
+      "type": "collection-tabs",
+      "blocks": {
+        "tab_hoodies": {
+          "type": "tab",
+          "settings": {
+            "label": "Hoodies",
+            "collection": "hoodie",
+            "button_label": "Shop hoodies",
+            "button_link": "shopify://collections/hoodie"
+          }
+        },
+        "tab_tees": {
+          "type": "tab",
+          "settings": {
+            "label": "T-shirts",
+            "collection": "t-shirt",
+            "button_label": "Shop tees",
+            "button_link": "shopify://collections/t-shirt"
+          }
+        }
+      },
+      "block_order": ["tab_hoodies", "tab_tees"],
       "settings": {
-        "collection": "all",
-        "products_to_show": 8,
-        "show_vendor": false,
         "color_scheme": "scheme-1",
-        "kicker": "The SS26 Drop",
-        "heading": "Your new go-to fits",
-        "description": "Heavyweight tees and hoodies, built for the heat and the late nights. Limited runs — once they're gone, they're gone.",
-        "button_label": "Shop the collection",
-        "button_link": "shopify://collections/all",
-        "padding_top": 64,
-        "padding_bottom": 64
+        "heading": "New Arrivals",
+        "description": "Discover the latest drop — heavyweight tees and hoodies, built from sands to street.",
+        "products_to_show": 10,
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    },
+    "split_collections": {
+      "type": "split-collections",
+      "blocks": {
+        "panel_hoodies": {
+          "type": "panel",
+          "settings": {
+            "collection": "hoodie",
+            "subheading": "The 971 collection",
+            "heading": "Hoodies",
+            "text": "Premium heavyweight hoodies with a relaxed fit — made to layer, made to last.",
+            "button_label": "Shop hoodies",
+            "link": "shopify://collections/hoodie"
+          }
+        },
+        "panel_tees": {
+          "type": "panel",
+          "settings": {
+            "collection": "t-shirt",
+            "subheading": "The 971 collection",
+            "heading": "T-shirts",
+            "text": "Everyday heavyweight cotton tees, built for the heat and the late nights.",
+            "button_label": "Shop tees",
+            "link": "shopify://collections/t-shirt"
+          }
+        }
+      },
+      "block_order": ["panel_hoodies", "panel_tees"],
+      "settings": {
+        "color_scheme": "scheme-4",
+        "height": 80,
+        "overlay_opacity": 35
       }
     },
     "countdown_banner": {
       "type": "countdown-banner",
+      "disabled": true,
       "settings": {
         "heading": "Mid-Season Sale",
         "end_date": "2026-07-31",
@@ -75,6 +125,7 @@
     },
     "collection_spotlight_sale": {
       "type": "collection-spotlight",
+      "disabled": true,
       "settings": {
         "collection": "all",
         "products_to_show": 8,
@@ -92,6 +143,7 @@
     },
     "sale_split": {
       "type": "sale-split",
+      "disabled": true,
       "settings": {
         "color_scheme": "scheme-4",
         "min_height": 560,
@@ -153,7 +205,8 @@
   },
   "order": [
     "hero",
-    "collection_spotlight",
+    "collection_tabs",
+    "split_collections",
     "countdown_banner",
     "collection_spotlight_sale",
     "sale_split",

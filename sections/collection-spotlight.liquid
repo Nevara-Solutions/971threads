@@ -45,42 +45,11 @@
 
     <div class="cspot__slider">
       <button class="cspot__arrow cspot__arrow--prev" type="button" aria-label="Previous products"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5 8 12l7 7" stroke-linecap="square"/></svg></button>
+    <div class="cspot__viewport">
     <div class="cspot__row">
       {%- if coll != blank and coll.products.size > 0 -%}
         {%- for product in coll.products limit: limit -%}
-          <div class="cspot__card">
-            <div class="cspot__media">
-              <a href="{{ product.url }}" class="cspot__media-link" aria-label="{{ product.title | escape }}">
-                {%- if product.featured_media -%}
-                  {{
-                    product.featured_media
-                    | image_url: width: 800
-                    | image_tag: loading: 'lazy', widths: '300, 500, 700, 800', class: 'cspot__img cspot__img--primary', alt: product.title
-                  }}
-                {%- else -%}
-                  {{ 'product-apparel-1' | placeholder_svg_tag: 'cspot__img placeholder' }}
-                {%- endif -%}
-              </a>
-              {%- if product.compare_at_price > product.price -%}
-                <span class="cspot__badge">Sale</span>
-              {%- endif -%}
-              <button type="button" class="cspot__qv" data-quick-view data-product-url="{{ product.url }}">Quick view</button>
-            </div>
-            <a href="{{ product.url }}" class="cspot__info">
-              {%- if section.settings.show_vendor and product.vendor != blank -%}
-                <p class="cspot__vendor">{{ product.vendor }}</p>
-              {%- endif -%}
-              <h3 class="cspot__title">{{ product.title }}</h3>
-              <p class="cspot__price">
-                {%- if product.compare_at_price > product.price -%}
-                  <span class="cspot__price-sale">{{ product.price | money }}</span>
-                  <s class="cspot__price-was">{{ product.compare_at_price | money }}</s>
-                {%- else -%}
-                  {{ product.price | money }}
-                {%- endif -%}
-              </p>
-            </a>
-          </div>
+          {%- render 'mini-product-card', product: product, sub: coll.title -%}
         {%- endfor -%}
       {%- else -%}
         {%- for i in (1..4) -%}
@@ -93,6 +62,7 @@
           </div>
         {%- endfor -%}
       {%- endif -%}
+      </div>
       </div>
       <button class="cspot__arrow cspot__arrow--next" type="button" aria-label="Next products"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m9 5 7 7-7 7" stroke-linecap="square"/></svg></button>
     </div>
@@ -174,18 +144,19 @@
   .cspot--top .cspot__btn svg { display: none; }
   .cspot--top .cspot__btn:hover { background: transparent; color: inherit; opacity: 0.65; }
 
+  /* Transform-based carousel: viewport clips, row is the sliding track. */
+  .cspot__slider { position: relative; }
+  .cspot__viewport { overflow: hidden; touch-action: pan-y; }
   .cspot__row {
     display: flex;
     gap: 1.6rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 0.5rem;
-    scrollbar-width: none; /* hide scrollbar (Firefox) */
+    align-items: stretch;
+    transition: transform 0.5s cubic-bezier(0.65, 0.05, 0.36, 1);
+    will-change: transform;
   }
-  .cspot__row::-webkit-scrollbar { display: none; } /* hide scrollbar (WebKit) */
+  .cspot__row.is-dragging { transition: none; }
+  .cspot__img { -webkit-user-drag: none; user-select: none; }
 
-  .cspot__slider { position: relative; }
   .cspot__arrow {
     position: absolute;
     top: 38%;
@@ -202,13 +173,20 @@
     color: #111;
     box-shadow: 0 0.2rem 1.4rem rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.15s ease;
+    transition: background 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
   }
   .cspot__arrow:hover { transform: translateY(-50%) scale(1.06); }
   .cspot__arrow--prev { left: -1rem; }
   .cspot__arrow--next { right: -1rem; }
+  /* Arrows only when there's overflow (JS adds .is-scrollable). */
   .cspot__slider.is-scrollable .cspot__arrow { display: flex; }
+  .cspot__arrow[disabled] { opacity: 0.35; pointer-events: none; }
+
+  /* Mobile: no slider — stack products in a plain column. */
   @media screen and (max-width: 749px) {
+    .cspot__viewport { overflow: visible; cursor: auto; }
+    .cspot__row { flex-direction: column; transform: none !important; gap: 3rem; }
+    .cspot__card { width: 100% !important; max-width: none !important; }
     .cspot__arrow { display: none !important; }
   }
   .cspot__card {
@@ -221,7 +199,7 @@
   }
   .cspot__media {
     position: relative;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 4 / 5;
     overflow: hidden;
     background: rgba(var(--color-foreground), 0.05);
     margin-bottom: 1.2rem;
@@ -233,8 +211,10 @@
     height: 100%;
     object-fit: cover;
   }
-  .cspot__img--primary { transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1); }
-  .cspot__card:hover .cspot__img--primary { transform: scale(1.07); }
+  .cspot__img { transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.45s ease; }
+  .cspot__img--hover { opacity: 0; }
+  .cspot__card:hover .cspot__img { transform: scale(1.06); }
+  .cspot__card:hover .cspot__img--hover { opacity: 1; }
   .cspot__media-link { position: absolute; inset: 0; z-index: 1; display: block; }
   .cspot__info { display: block; text-decoration: none; color: inherit; }
   .cspot__badge {
@@ -295,6 +275,28 @@
   }
   .cspot__price-sale { color: rgb(var(--color-foreground)); }
   .cspot__price-was { opacity: 0.5; margin-inline-start: 0.6rem; }
+  .cspot__sizes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    list-style: none;
+    margin: 0.9rem 0 0;
+    padding: 0;
+  }
+  .cspot__sizes li {
+    font-size: 1.05rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.75;
+    border: 0.1rem solid rgba(var(--color-foreground), 0.25);
+    padding: 0.2rem 0.7rem;
+  }
+  /* Size not available for this product -> struck through + muted. */
+  .cspot__sizes li.is-unavailable {
+    opacity: 0.3;
+    text-decoration: line-through;
+    border-style: dashed;
+  }
 
   @media screen and (min-width: 990px) {
     .cspot__grid {
