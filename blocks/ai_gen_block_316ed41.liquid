@@ -1,0 +1,524 @@
+{% doc %}
+  @prompt
+    Act as a Shopify Liquid and CSS expert. I need a clean, responsive 'Social Media Feed' section for my Shopify store.
+    
+    Requirements:
+    
+    Structure: Create a section that displays a grid of 4 video cards on desktop and 2 cards on mobile.
+    
+    Functionality: This section should allow me to paste multiple Instagram or TikTok Embed Codes (the <blockquote> or <iframe> snippets).
+    
+    Responsive Design: >    - The cards must automatically adjust their size to fit mobile screens.
+    
+    Use a flexbox or CSS grid layout to ensure the videos don't overflow the container.
+    
+    Add a 'Follow Us' button at the top of the section.
+    
+    Code Format: Please provide the full code in a single block, including the CSS for styling and the HTML structure.
+    
+    Clean Code: Use a container class like .social-feed-grid and ensure the CSS is scoped so it doesn't break my other theme settings.
+    
+    Simplicity: Don't use complex APIs. Just create a layout that holds these embeds perfectly."
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-social-feed-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: {{ block.settings.section_padding }}px 0;
+  }
+
+  .ai-social-feed-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: {{ block.settings.header_spacing }}px;
+  }
+
+  .ai-social-feed-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 {{ block.settings.title_margin }}px;
+    font-weight: 600;
+  }
+
+  .ai-social-feed-button-{{ ai_gen_id }} {
+    display: inline-block;
+    padding: {{ block.settings.button_padding_vertical }}px {{ block.settings.button_padding_horizontal }}px;
+    background-color: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    text-decoration: none;
+    border-radius: {{ block.settings.button_radius }}px;
+    font-size: {{ block.settings.button_font_size }}px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-social-feed-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_bg_color }};
+    color: {{ block.settings.button_hover_text_color }};
+  }
+
+  .ai-social-feed-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat({{ block.settings.desktop_columns }}, 1fr);
+    gap: {{ block.settings.grid_gap }}px;
+    width: 100%;
+  }
+
+  .ai-social-feed-card-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    background-color: {{ block.settings.card_bg_color }};
+    border-radius: {{ block.settings.card_radius }}px;
+    overflow: hidden;
+    box-shadow: 0 {{ block.settings.card_shadow_vertical }}px {{ block.settings.card_shadow_blur }}px rgba(0, 0, 0, {{ block.settings.card_shadow_opacity }});
+  }
+
+  .ai-social-feed-embed-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+  }
+
+  .ai-social-feed-embed-{{ ai_gen_id }} iframe,
+  .ai-social-feed-embed-{{ ai_gen_id }} blockquote {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .ai-social-feed-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    min-height: 300px;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .ai-social-feed-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 200px;
+    max-height: 200px;
+  }
+
+  .ai-social-feed-empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-social-feed-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat({{ block.settings.mobile_columns }}, 1fr);
+      gap: {{ block.settings.mobile_grid_gap }}px;
+    }
+
+    .ai-social-feed-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.8 }}px;
+    }
+
+    .ai-social-feed-embed-{{ ai_gen_id }} {
+      min-height: 250px;
+    }
+
+    .ai-social-feed-placeholder-{{ ai_gen_id }} {
+      min-height: 250px;
+    }
+  }
+{% endstyle %}
+
+<social-feed-{{ ai_gen_id }} class="ai-social-feed-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.section_title != blank or block.settings.button_url != blank %}
+    <div class="ai-social-feed-header-{{ ai_gen_id }}">
+      {% if block.settings.section_title != blank %}
+        <h2 class="ai-social-feed-title-{{ ai_gen_id }}">{{ block.settings.section_title }}</h2>
+      {% endif %}
+      
+      {% if block.settings.button_url != blank and block.settings.button_text != blank %}
+        <a href="{{ block.settings.button_url }}" class="ai-social-feed-button-{{ ai_gen_id }}">
+          {{ block.settings.button_text }}
+        </a>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="ai-social-feed-grid-{{ ai_gen_id }}">
+    {% for i in (1..4) %}
+      {% liquid
+        assign embed_key = 'embed_code_' | append: i
+        assign embed_code = block.settings[embed_key]
+      %}
+      
+      <div class="ai-social-feed-card-{{ ai_gen_id }}">
+        {% if embed_code != blank %}
+          <div class="ai-social-feed-embed-{{ ai_gen_id }}">
+            {{ embed_code }}
+          </div>
+        {% else %}
+          <div class="ai-social-feed-placeholder-{{ ai_gen_id }}">
+            {{ 'image' | placeholder_svg_tag }}
+            <div class="ai-social-feed-empty-state-{{ ai_gen_id }}">
+              Add embed code {{ i }}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</social-feed-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class SocialFeed{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.loadEmbedScripts();
+      }
+
+      loadEmbedScripts() {
+        const embedContainers = this.querySelectorAll('.ai-social-feed-embed-{{ ai_gen_id }}');
+        
+        embedContainers.forEach((container) => {
+          const blockquote = container.querySelector('blockquote');
+          
+          if (blockquote) {
+            const className = blockquote.className;
+            
+            if (className.includes('instagram-media')) {
+              this.loadInstagramScript();
+            } else if (className.includes('tiktok-embed')) {
+              this.loadTikTokScript();
+            }
+          }
+        });
+      }
+
+      loadInstagramScript() {
+        if (!window.instgrm && !document.querySelector('script[src*="instagram.com/embed.js"]')) {
+          const script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.instagram.com/embed.js';
+          document.body.appendChild(script);
+        } else if (window.instgrm) {
+          window.instgrm.Embeds.process();
+        }
+      }
+
+      loadTikTokScript() {
+        if (!window.tiktokEmbed && !document.querySelector('script[src*="tiktok.com/embed.js"]')) {
+          const script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.tiktok.com/embed.js';
+          document.body.appendChild(script);
+        }
+      }
+    }
+
+    customElements.define('social-feed-{{ ai_gen_id }}', SocialFeed{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Social media feed",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Title",
+      "default": "Follow Us"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Title size",
+      "default": 32
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#121212"
+    },
+    {
+      "type": "range",
+      "id": "title_margin",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Title bottom spacing",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Follow button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Follow Us"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Background color",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Hover background color",
+      "default": "#334FB4"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Hover text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Vertical padding",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal",
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "Horizontal padding",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "min": 16,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "label": "Header bottom spacing",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "Embed codes"
+    },
+    {
+      "type": "html",
+      "id": "embed_code_1",
+      "label": "Embed code 1"
+    },
+    {
+      "type": "html",
+      "id": "embed_code_2",
+      "label": "Embed code 2"
+    },
+    {
+      "type": "html",
+      "id": "embed_code_3",
+      "label": "Embed code 3"
+    },
+    {
+      "type": "html",
+      "id": "embed_code_4",
+      "label": "Embed code 4"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "desktop_columns",
+      "label": "Desktop columns",
+      "options": [
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Mobile columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 8,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Desktop grid gap",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_grid_gap",
+      "min": 4,
+      "max": 24,
+      "step": 4,
+      "unit": "px",
+      "label": "Mobile grid gap",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Section padding",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Card style"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "card_shadow_opacity",
+      "min": 0,
+      "max": 0.5,
+      "step": 0.1,
+      "label": "Shadow opacity",
+      "default": 0.1
+    },
+    {
+      "type": "range",
+      "id": "card_shadow_vertical",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Shadow vertical offset",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "card_shadow_blur",
+      "min": 0,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "label": "Shadow blur",
+      "default": 10
+    }
+  ],
+  "presets": [
+    {
+      "name": "Social media feed"
+    }
+  ]
+}
+{% endschema %}

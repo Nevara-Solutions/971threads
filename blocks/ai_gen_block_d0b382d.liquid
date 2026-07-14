@@ -1,0 +1,737 @@
+{% doc %}
+  @prompt
+    "Act as a Shopify developer. I want to add a 'Social Feed' section to my Shopify homepage that showcases my Instagram Reels and TikTok videos.
+    
+    Requirements:
+    
+    Layout: A grid-style layout for desktop (e.g., 4 columns) and a slider or grid layout for mobile that allows users to swipe through 5–10 videos.
+    
+    Responsiveness: It MUST be fully responsive. Videos should maintain their aspect ratio on mobile without breaking the layout.
+    
+    Functionality: >    - Embed videos from Instagram and TikTok directly.
+    
+    Ensure the layout is clean, minimalist, and matches a streetwear aesthetic.
+    
+    Add a 'Play' overlay icon so users know they are clickable videos.
+    
+    Shopify Integration: Provide the code as a 'Custom Liquid' section so I can easily add it to my theme without needing external paid apps.
+    
+    User Experience: Ensure it loads efficiently (lazy loading) so it doesn't slow down my website speed.
+    
+    Schema: Include Shopify Schema settings so I can easily update the video links in the Theme Customizer."
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-social-feed-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding: {{ block.settings.section_padding_top }}px 0 {{ block.settings.section_padding_bottom }}px;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-social-feed-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.container_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-social-feed-header-{{ ai_gen_id }} {
+    text-align: {{ block.settings.heading_alignment }};
+    margin-bottom: 40px;
+  }
+
+  .ai-social-feed-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .ai-social-feed-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subheading_size }}px;
+    color: {{ block.settings.subheading_color }};
+    margin: 0;
+  }
+
+  .ai-social-feed-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat({{ block.settings.desktop_columns }}, 1fr);
+    gap: {{ block.settings.grid_gap }}px;
+  }
+
+  .ai-social-feed-item-{{ ai_gen_id }} {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    overflow: hidden;
+    border-radius: {{ block.settings.video_border_radius }}px;
+    background-color: #000;
+    cursor: pointer;
+  }
+
+  .ai-social-feed-video-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ai-social-feed-video-wrapper-{{ ai_gen_id }} iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .ai-social-feed-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .ai-social-feed-play-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background-color: {{ block.settings.play_button_color }};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: {{ block.settings.play_button_opacity }};
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .ai-social-feed-item-{{ ai_gen_id }}:hover .ai-social-feed-play-overlay-{{ ai_gen_id }} {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  .ai-social-feed-play-icon-{{ ai_gen_id }} {
+    width: 0;
+    height: 0;
+    border-left: 18px solid {{ block.settings.play_icon_color }};
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    margin-left: 4px;
+  }
+
+  .ai-social-feed-platform-badge-{{ ai_gen_id }} {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    z-index: 2;
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-social-feed-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat({{ block.settings.tablet_columns }}, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-social-feed-grid-{{ ai_gen_id }} {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 16px;
+      padding-bottom: 10px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .ai-social-feed-item-{{ ai_gen_id }} {
+      flex: 0 0 280px;
+      scroll-snap-align: start;
+    }
+
+    .ai-social-feed-title-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.heading_size }}px * 0.8);
+    }
+
+    .ai-social-feed-subtitle-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.subheading_size }}px * 0.9);
+    }
+  }
+{% endstyle %}
+
+<social-feed-{{ ai_gen_id }} class="ai-social-feed-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-social-feed-container-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank or block.settings.subheading != blank %}
+      <div class="ai-social-feed-header-{{ ai_gen_id }}">
+        {% if block.settings.heading != blank %}
+          <h2 class="ai-social-feed-title-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+        {% endif %}
+        {% if block.settings.subheading != blank %}
+          <p class="ai-social-feed-subtitle-{{ ai_gen_id }}">{{ block.settings.subheading }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="ai-social-feed-grid-{{ ai_gen_id }}">
+      {% for i in (1..10) %}
+        {% liquid
+          assign video_url_key = 'video_url_' | append: i
+          assign platform_key = 'platform_' | append: i
+          assign video_url = block.settings[video_url_key]
+          assign platform = block.settings[platform_key]
+        %}
+
+        {% if video_url != blank %}
+          <div class="ai-social-feed-item-{{ ai_gen_id }}" data-video-index="{{ i }}">
+            {% if block.settings.show_platform_badge %}
+              <div class="ai-social-feed-platform-badge-{{ ai_gen_id }}">
+                {% if platform == 'instagram' %}
+                  Instagram
+                {% elsif platform == 'tiktok' %}
+                  TikTok
+                {% endif %}
+              </div>
+            {% endif %}
+
+            <div class="ai-social-feed-video-wrapper-{{ ai_gen_id }}">
+              {% if platform == 'instagram' %}
+                <iframe
+                  src="{{ video_url }}"
+                  frameborder="0"
+                  scrolling="no"
+                  allowtransparency="true"
+                  loading="lazy"
+                ></iframe>
+              {% elsif platform == 'tiktok' %}
+                <iframe
+                  src="{{ video_url }}"
+                  frameborder="0"
+                  scrolling="no"
+                  allowfullscreen
+                  loading="lazy"
+                ></iframe>
+              {% endif %}
+            </div>
+
+            {% if block.settings.show_play_overlay %}
+              <div class="ai-social-feed-play-overlay-{{ ai_gen_id }}">
+                <div class="ai-social-feed-play-icon-{{ ai_gen_id }}"></div>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</social-feed-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class SocialFeed{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.videoItems = this.querySelectorAll('.ai-social-feed-item-{{ ai_gen_id }}');
+        this.setupLazyLoading();
+      }
+
+      setupLazyLoading() {
+        if ('IntersectionObserver' in window) {
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const iframe = entry.target.querySelector('iframe');
+                if (iframe && !iframe.src) {
+                  iframe.src = iframe.dataset.src;
+                }
+                observer.unobserve(entry.target);
+              }
+            });
+          }, {
+            rootMargin: '50px'
+          });
+
+          this.videoItems.forEach((item) => {
+            observer.observe(item);
+          });
+        }
+      }
+    }
+
+    customElements.define('social-feed-{{ ai_gen_id }}', SocialFeed{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Social feed",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Follow the Movement"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "See what's happening on our socials"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subheading size",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color",
+      "default": "#121212"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "Desktop columns",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "tablet_columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Tablet columns",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 8,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Grid gap",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 100,
+      "unit": "px",
+      "label": "Container width",
+      "default": 1200
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "video_border_radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Video border radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Play overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_play_overlay",
+      "label": "Show play overlay",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "play_button_color",
+      "label": "Play button color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "play_icon_color",
+      "label": "Play icon color",
+      "default": "#121212"
+    },
+    {
+      "type": "range",
+      "id": "play_button_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Play button opacity",
+      "default": 0.8
+    },
+    {
+      "type": "header",
+      "content": "Platform badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_platform_badge",
+      "label": "Show platform badge",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Video 1"
+    },
+    {
+      "type": "select",
+      "id": "platform_1",
+      "label": "Platform",
+      "options": [
+        {
+          "value": "instagram",
+          "label": "Instagram"
+        },
+        {
+          "value": "tiktok",
+          "label": "TikTok"
+        }
+      ],
+      "default": "instagram"
+    },
+    {
+      "type": "url",
+      "id": "video_url_1",
+      "label": "Embed URL"
+    },
+    {
+      "type": "header",
+      "content": "Video 2"
+    },
+    {
+      "type": "select",
+      "id": "platform_2",
+      "label": "Platform",
+      "options": [
+        {
+          "value": "instagram",
+          "label": "Instagram"
+        },
+        {
+          "value": "tiktok",
+          "label": "TikTok"
+        }
+      ],
+      "default": "instagram"
+    },
+    {
+      "type": "url",
+      "id": "video_url_2",
+      "label": "Embed URL"
+    },
+    {
+      "type": "header",
+      "content": "Video 3"
+    },
+    {
+      "type": "select",
+      "id": "platform_3",
+      "label": "Platform",
+      "options": [
+        {
+          "value": "instagram",
+          "label": "Instagram"
+        },
+        {
+          "value": "tiktok",
+          "label": "TikTok"
+        }
+      ],
+      "default": "instagram"
+    },
+    {
+      "type": "url",
+      "id": "video_url_3",
+      "label": "Embed URL"
+    },
+    {
+      "type": "header",
+      "content": "Video 4"
+    },
+    {
+      "type": "select",
+      "id": "platform_4",
+      "label": "Platform",
+      "options": [
+        {
+          "value": "instagram",
+          "label": "Instagram"
+        },
+        {
+          "value": "tiktok",
+          "label": "TikTok"
+        }
+      ],
+      "default": "instagram"
+    },
+    {
+      "type": "url",
+      "id": "video_url_4",
+      "label": "Embed URL"
+    },
+    {
+      "type": "header",
+      "content": "Video 5"
+    },
+    {
+      "type": "select",
+      "id": "platform_5",
+      "label": "Platform",
+      "options": [
+        {
+          "value": "instagram",
+          "label": "Instagram"
+        },
+        {
+          "value": "tiktok",
+          "label": "TikTok"
+        }
+      ],
+      "default": "tiktok"
+    },
+    {
+      "type": "url",
+      "id": "video_url_5",
+      "label": "Embed URL"
+    },
+    {
+      "type": "header",
+      "content": "Video 6"
+    },
+    {
+      "type": "select",
+      "id": "platform_6",
+      "label": "Platform",
+      "options": [
+        {
+          "value": "instagram",
+          "label": "Instagram"
+        },
+        {
+          "value": "tiktok",
+          "label": "TikTok"
+        }
+      ],
+      "default": "tiktok"
+    },
+    {
+      "type": "url",
+      "id": "video_url_6",
+      "label": "Embed URL"
+    },
+    {
+      "type": "header",
+      "content": "Video 7"
+    },
+    {
+      "type": "select",
+      "id": "platform_7",
+      "label": "Platform",
+      "options": [
+        {
+          "value": "instagram",
+          "label": "Instagram"
+        },
+        {
+          "value": "tiktok",
+          "label": "TikTok"
+        }
+      ],
+      "default": "tiktok"
+    },
+    {
+      "type": "url",
+      "id": "video_url_7",
+      "label": "Embed URL"
+    },
+    {
+      "type": "header",
+      "content": "Video 8"
+    },
+    {
+      "type": "select",
+      "id": "platform_8",
+      "label": "Platform",
+      "options": [
+        {
+          "value": "instagram",
+          "label": "Instagram"
+        },
+        {
+          "value": "tiktok",
+          "label": "TikTok"
+        }
+      ],
+      "default": "tiktok"
+    },
+    {
+      "type": "url",
+      "id": "video_url_8",
+      "label": "Embed URL"
+    },
+    {
+      "type": "header",
+      "content": "Video 9"
+    },
+    {
+      "type": "select",
+      "id": "platform_9",
+      "label": "Platform",
+      "options": [
+        {
+          "value": "instagram",
+          "label": "Instagram"
+        },
+        {
+          "value": "tiktok",
+          "label": "TikTok"
+        }
+      ],
+      "default": "instagram"
+    },
+    {
+      "type": "url",
+      "id": "video_url_9",
+      "label": "Embed URL"
+    },
+    {
+      "type": "header",
+      "content": "Video 10"
+    },
+    {
+      "type": "select",
+      "id": "platform_10",
+      "label": "Platform",
+      "options": [
+        {
+          "value": "instagram",
+          "label": "Instagram"
+        },
+        {
+          "value": "tiktok",
+          "label": "TikTok"
+        }
+      ],
+      "default": "instagram"
+    },
+    {
+      "type": "url",
+      "id": "video_url_10",
+      "label": "Embed URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Social feed"
+    }
+  ]
+}
+{% endschema %}

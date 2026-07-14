@@ -1,12 +1,101 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
+    "178353546346b9fcc6": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_52f1d30_jE3EYn": {
+          "type": "ai_gen_block_52f1d30",
+          "settings": {
+            "container_width": 1200,
+            "desktop_width_percent": 100,
+            "logo": "shopify://shop_images/IMG_20251108_095550_196_1.jpg",
+            "logo_width": 150,
+            "brand_description": "<p>Streetwear from sands to street. Heavyweight tees and hoodies, born in the 971 — limited drops, built to last.</p>",
+            "social_instagram": "https://www.instagram.com/971threads.ae",
+            "social_facebook": "https://www.facebook.com/share/1DGdzPMZn6/",
+            "social_twitter": "",
+            "social_tiktok": "https://www.tiktok.com/@971.threads?_r=1&_d=ei5ah90fd83jjl&sec_uid=MS4wLjABAAAAEEpqU7V9BEW5tUQuxTA4DVz1HIde4nbWXsLb6f_jtfp-YbTr0oCxdiOPDddRoQJ8&share_author_id=7580312729903219720&sharer_language=en&source=h5_m&u_code=f0kh3ic78l4bkg&timestamp=1783532397&user_id=7580312729903219720&sec_user_id=MS4wLjABAAAAEEpqU7V9BEW5tUQuxTA4DVz1HIde4nbWXsLb6f_jtfp-YbTr0oCxdiOPDddRoQJ8&item_author_type=1&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7659764875182753543&share_link_id=cb783e5f-1a77-4ac6-9f2d-7c33fd71964f&share_app_id=1233&ugbiz_name=ACCOUNT&ug_btm=b8727%2Cb7360&social_share_type=5&enable_checksum=1",
+            "social_youtube": "",
+            "column_2_heading": "Quick Links",
+            "link_2_1_text": "Collections",
+            "link_2_1_url": "shopify://collections",
+            "link_2_2_text": "New Arivals",
+            "link_2_2_url": "shopify://collections/new-arrivals",
+            "link_2_3_text": "🔥SUPER SALE",
+            "link_2_3_url": "shopify://collections/🔥super-sale",
+            "link_2_4_text": "Mens Casual Wear",
+            "link_2_4_url": "shopify://collections/mens-casual-wear-example-products",
+            "link_2_5_text": "FAQ",
+            "link_2_5_url": "shopify://pages/faq",
+            "column_3_heading": "Customer Service",
+            "link_3_1_text": "Shipping Policy",
+            "link_3_1_url": "shopify://pages/shipping-policy",
+            "link_3_2_text": "Returns & Exchanges",
+            "link_3_2_url": "https://971threads.com/pages/exchange-refund-policy",
+            "link_3_3_text": "Privacy Policy",
+            "link_3_3_url": "https://971threads.com/pages/privacy-policy",
+            "link_3_4_text": "About Us",
+            "link_3_4_url": "shopify://pages/about-us",
+            "link_3_5_text": "Contact Us",
+            "link_3_5_url": "shopify://pages/contact",
+            "newsletter_heading": "Newsletter",
+            "newsletter_placeholder": "Enter your email",
+            "newsletter_button_text": "Subscribe",
+            "newsletter_success_message": "Thanks for subscribing!",
+            "copyright_text": "© 2026 971 Threads. All rights reserved.",
+            "show_visa": true,
+            "show_mastercard": true,
+            "show_amex": true,
+            "show_apple_pay": true,
+            "show_google_pay": true,
+            "show_paypal": true,
+            "show_shopify_pay": true,
+            "background_color": "#121212",
+            "text_color": "#ffffff",
+            "heading_color": "#ffffff",
+            "link_color": "#ffffff",
+            "link_hover_color": "#cccccc",
+            "border_color": "#333333",
+            "social_bg_color": "#ffffff",
+            "social_icon_color": "#121212",
+            "social_hover_bg_color": "#cccccc",
+            "social_hover_icon_color": "#121212",
+            "input_bg_color": "#000000",
+            "input_border_color": "#F1EEEE",
+            "input_border_radius": 14,
+            "button_bg_color": "#ffffff",
+            "button_text_color": "#121212",
+            "button_hover_bg_color": "#cccccc",
+            "button_border_radius": 0,
+            "success_color": "#4caf50",
+            "error_color": "#f44336",
+            "heading_size": 14
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_52f1d30_jE3EYn"
+      ],
+      "settings": {}
+    },
     "footer": {
       "type": "site-footer",
+      "disabled": true,
       "settings": {
         "color_scheme": "scheme-1",
-        "brand_text": "Streetwear from sands to street. Heavyweight tees and hoodies, born in the 971 — limited drops, built to last.",
+        "brand_text": "Streetwear, from sands to street. Premium Cotton tees and hoodies, born in the Emirates - limited drops, built to last.",
         "shop_heading": "Shop",
         "shop_menu": "footer",
         "company_heading": "Company",
@@ -20,6 +109,7 @@
     }
   },
   "order": [
+    "178353546346b9fcc6",
     "footer"
   ]
 }

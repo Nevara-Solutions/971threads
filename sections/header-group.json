@@ -1,25 +1,43 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
+    "header": {
+      "type": "header",
+      "disabled": true,
+      "settings": {
+        "logo_position": "middle-center",
+        "mobile_logo_position": "center",
+        "menu": "main-menu",
+        "menu_type_desktop": "dropdown",
+        "sticky_header_type": "on-scroll-up",
+        "show_line_separator": true,
+        "color_scheme": "scheme-1",
+        "menu_color_scheme": "scheme-1",
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "enable_customer_avatar": true,
+        "margin_bottom": 0,
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    },
     "announcement-bar": {
       "type": "announcement-bar",
-      "settings": {
-        "color_scheme": "scheme-4",
-        "show_line_separator": false,
-        "show_social": false,
-        "auto_rotate": true,
-        "change_slides_speed": 4,
-        "enable_country_selector": false,
-        "enable_language_selector": false
-      },
       "blocks": {
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
             "text": "Free shipping across the UAE on orders over AED 200",
-            "text_alignment": "center",
-            "color_scheme": "scheme-4",
             "link": ""
           }
         },
@@ -27,8 +45,6 @@
           "type": "announcement",
           "settings": {
             "text": "SS26 just dropped — shop new arrivals",
-            "text_alignment": "center",
-            "color_scheme": "scheme-4",
             "link": "shopify://collections/all"
           }
         },
@@ -36,8 +52,6 @@
           "type": "announcement",
           "settings": {
             "text": "971 Threads — From Sands to Street",
-            "text_alignment": "center",
-            "color_scheme": "scheme-4",
             "link": ""
           }
         }
@@ -46,30 +60,88 @@
         "announcement-bar-0",
         "announcement-bar-1",
         "announcement-bar-2"
-      ]
-    },
-    "header": {
-      "type": "header",
+      ],
       "settings": {
-        "color_scheme": "scheme-1",
-        "menu_color_scheme": "scheme-1",
-        "logo_position": "middle-center",
-        "menu": "main-menu",
-        "menu_type_desktop": "dropdown",
-        "sticky_header_type": "on-scroll-up",
-        "show_line_separator": true,
-        "enable_country_selector": true,
-        "enable_language_selector": true,
-        "enable_customer_avatar": true,
-        "mobile_logo_position": "center",
-        "margin_bottom": 0,
-        "padding_top": 20,
-        "padding_bottom": 20
+        "auto_rotate": true,
+        "change_slides_speed": 4,
+        "color_scheme": "scheme-4",
+        "show_line_separator": false,
+        "show_social": false,
+        "enable_country_selector": false,
+        "enable_language_selector": false
       }
+    },
+    "17835317207c919e60": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_3a82798_6AHyaU": {
+          "type": "ai_gen_block_3a82798",
+          "settings": {
+            "logo": "shopify://shop_images/IMG_20251108_095550_196_1.jpg",
+            "logo_width": 120,
+            "logo_text": "",
+            "logo_text_size": 24,
+            "logo_text_color": "#121212",
+            "show_home_link": true,
+            "home_text": "Home",
+            "home_link": "https://971threads.com/",
+            "show_shop_link": true,
+            "shop_text": "Shop",
+            "shop_link": "https://971threads.com/collections",
+            "show_about_link": true,
+            "about_text": "🔥SUPER SALE",
+            "about_link": "shopify://collections/🔥super-sale",
+            "enable_mega_menu": true,
+            "mega_menu_columns": 3,
+            "new_arrivals_text": "Hoodie",
+            "new_arrivals_collection": "hoodie",
+            "new_arrivals_image": "shopify://shop_images/20-DSC_0508_6141d786-55dc-4c95-adcc-1bf811288751.jpg",
+            "best_sellers_text": "Men Casual Wear",
+            "best_sellers_collection": "mens-casual-wear-example-products",
+            "best_sellers_image": "shopify://shop_images/6-DSC_0713.jpg",
+            "show_category_3": true,
+            "category_3_title": "T-Shirts",
+            "category_3_collection": "t-shirt",
+            "category_3_image": "shopify://shop_images/55-DSC_0343.jpg",
+            "show_search": true,
+            "show_account": false,
+            "show_cart": true,
+            "header_bg_color": "#ffffff",
+            "header_scrolled_bg_color": "#ffffff",
+            "nav_text_color": "#121212",
+            "nav_hover_color": "#666666",
+            "best_sellers_color": "#ff0000",
+            "icon_color": "#121212",
+            "icon_hover_color": "#666666",
+            "mega_menu_bg_color": "#ffffff",
+            "mega_menu_text_color": "#121212",
+            "mobile_menu_bg_color": "#ffffff",
+            "nav_font_size": 14,
+            "mobile_nav_font_size": 18,
+            "mega_menu_title_size": 16,
+            "mega_menu_link_size": 14,
+            "letter_spacing": 1.5,
+            "container_width": 1400,
+            "header_height": 80,
+            "mobile_header_height": 60,
+            "nav_spacing": 30,
+            "icon_spacing": 20,
+            "icon_size": 22,
+            "desktop_width_percent": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_3a82798_6AHyaU"
+      ],
+      "name": "Updated Header",
+      "settings": {}
     }
   },
   "order": [
+    "header",
     "announcement-bar",
-    "header"
+    "17835317207c919e60"
   ]
 }
