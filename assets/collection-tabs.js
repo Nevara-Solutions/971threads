@@ -9,6 +9,7 @@
     var tabs = root.querySelectorAll('.ctabs__tab');
     var panels = root.querySelectorAll('.ctabs__panel');
     var shop = root.querySelector('.ctabs__shop');
+    var guide = root.querySelector('.ctabs__sizeguide');
 
     for (var i = 0; i < tabs.length; i++) {
       tabs[i].addEventListener('click', function () {
@@ -18,6 +19,11 @@
         if (shop) {
           shop.textContent = this.getAttribute('data-shop-label');
           shop.setAttribute('href', this.getAttribute('data-shop-link'));
+        }
+        // point the size-guide trigger at the active tab's chart (hoodie/tee)
+        if (guide) {
+          var chartModal = this.getAttribute('data-chart-modal');
+          if (chartModal) guide.setAttribute('data-modal', chartModal);
         }
         // let the now-visible slider recalculate its arrows
         window.dispatchEvent(new Event('resize'));

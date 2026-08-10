@@ -27,12 +27,15 @@
         <div class="ctabs__tabs" role="tablist">
           {%- for block in section.blocks -%}
             {%- assign c = block.settings.collection -%}
+            {%- assign probe = c.handle | append: ' ' | append: c.title | append: ' ' | append: block.settings.label | downcase -%}
+            {%- if probe contains 'hood' -%}{%- assign chart_slug = 'hoodie' -%}{%- else -%}{%- assign chart_slug = 'tee' -%}{%- endif -%}
             <button
               type="button"
               class="ctabs__tab{% if forloop.first %} is-active{% endif %}"
               data-tab="{{ forloop.index0 }}"
               data-shop-label="{{ block.settings.button_label | escape }}"
               data-shop-link="{{ block.settings.button_link | default: c.url | default: '#' }}"
+              data-chart-modal="#SizeChartModal-{{ section.id }}-{{ chart_slug }}"
               {{ block.shopify_attributes }}
             >{{ block.settings.label }}</button>
             {%- unless forloop.last -%}<span class="ctabs__sep" aria-hidden="true">/</span>{%- endunless -%}
@@ -40,6 +43,16 @@
         </div>
       {%- endif -%}
       {%- if first_block -%}
+        {%- assign fc = first_block.settings.collection -%}
+        {%- assign fprobe = fc.handle | append: ' ' | append: fc.title | append: ' ' | append: first_block.settings.label | downcase -%}
+        {%- if fprobe contains 'hood' -%}{%- assign first_chart = 'hoodie' -%}{%- else -%}{%- assign first_chart = 'tee' -%}{%- endif -%}
+        {%- comment -%} 971threads: size guide (swaps hoodie/tee with the active tab via collection-tabs.js). {%- endcomment -%}
+        <modal-opener class="ctabs__sizeguide" data-modal="#SizeChartModal-{{ section.id }}-{{ first_chart }}">
+          <button type="button" class="ctabs__sizeguide-btn" aria-haspopup="dialog">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2" y="8" width="20" height="8" rx="1"/><path d="M7 8v3M12 8v4M17 8v3" stroke-linecap="round"/></svg>
+            <span>Size guide</span>
+          </button>
+        </modal-opener>
         <a class="ctabs__shop" href="{{ first_block.settings.button_link | default: first_block.settings.collection.url | default: '#' }}">
           <span>{{ first_block.settings.button_label }}</span>
           <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8" stroke-linecap="square"/></svg>
@@ -75,6 +88,12 @@
       {%- endfor -%}
     </div>
   </div>
+
+  {%- comment -%} 971threads: shared size-guide modals (opener above swaps between them per tab). {%- endcomment -%}
+  {%- assign hoodie_uid = section.id | append: '-hoodie' -%}
+  {%- assign tee_uid = section.id | append: '-tee' -%}
+  {% render 'size-chart', chart: 'hoodie', uid: hoodie_uid %}
+  {% render 'size-chart', chart: 'tee', uid: tee_uid %}
 </section>
 
 {%- stylesheet -%}
@@ -85,6 +104,9 @@
   .ctabs__tab { background: none; border: none; padding: 0; cursor: pointer; font-family: var(--font-heading-family); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; font-size: 1.5rem; color: rgba(var(--color-foreground), 0.4); transition: color 0.15s ease; }
   .ctabs__tab.is-active { color: rgb(var(--color-foreground)); text-decoration: underline; text-underline-offset: 0.5rem; text-decoration-thickness: 0.15rem; }
   .ctabs__sep { opacity: 0.3; }
+  .ctabs__sizeguide { display: block; margin-bottom: 1.6rem; }
+  .ctabs__sizeguide-btn { display: inline-flex; align-items: center; gap: 0.7rem; padding: 0; background: none; border: 0; cursor: pointer; color: rgb(var(--color-foreground)); font-size: 1.2rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: underline; text-underline-offset: 3px; }
+  .ctabs__sizeguide-btn:hover { opacity: 0.7; }
   .ctabs__shop { display: inline-flex; align-items: center; gap: 0.7rem; padding: 1.3rem 2.6rem; background: rgb(var(--color-foreground)); color: rgb(var(--color-background)); border: 1.5px solid rgb(var(--color-foreground)); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; font-size: 1.3rem; text-decoration: none; transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease; }
   .ctabs__shop:hover { background: #fff; color: #000; border-color: #000; }
   .ctabs__panel { display: none; }

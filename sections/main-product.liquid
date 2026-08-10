@@ -491,6 +491,8 @@
                     block: block,
                     product_form_id: product_form_id
                   %}
+                  {%- comment -%} 971threads: size-guide link + modal under the size selector. {%- endcomment -%}
+                  {% render 'size-chart', product: product, uid: section.id %}
                 {%- when 'buy_buttons' -%}
                   {%- render 'buy-buttons',
                     block: block,

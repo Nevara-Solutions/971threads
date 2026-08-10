@@ -1,0 +1,173 @@
+{%- comment -%}
+  971threads — Size guide modal. Self-contained (own overlay CSS + Dawn's <modal-dialog>
+  from global.js for open/close/focus-trap), so it works on ANY page — product or homepage.
+
+  Two modes:
+    A) Product page — pass `product` (+ `uid`): auto-detects hoodie/tee, renders a
+       "Size guide" trigger AND the modal. Only renders if the product has a Size option.
+    B) Modal-only — pass `chart` ('hoodie'|'tee') (+ `uid`): renders just the modal, no
+       trigger (the caller supplies its own opener pointing at #SizeChartModal-{uid}).
+
+  Params:
+    uid     — unique string for the modal id (required)
+    product — (mode A) the product object
+    chart   — (mode B) 'hoodie' or 'tee'
+{%- endcomment -%}
+{%- liquid
+  assign do_render = false
+  assign render_trigger = false
+  assign is_hoodie = false
+
+  if chart != blank
+    assign do_render = true
+    if chart == 'hoodie'
+      assign is_hoodie = true
+    endif
+  elsif product != blank
+    assign option_names = product.options | join: ',' | downcase
+    if option_names contains 'size'
+      assign do_render = true
+      assign render_trigger = true
+      assign ptags = product.tags | join: ' '
+      assign probe = product.type | append: ' ' | append: product.title | append: ' ' | append: ptags | downcase
+      if probe contains 'hood'
+        assign is_hoodie = true
+      endif
+    endif
+  endif
+-%}
+{%- if do_render -%}
+  {%- liquid
+    if is_hoodie
+      assign chart_image = 'size-chart-hoodie.png'
+      assign chart_label = 'Hoodie size guide'
+    else
+      assign chart_image = 'size-chart-tee.png'
+      assign chart_label = 'Tee size guide'
+    endif
+    assign modal_id = 'SizeChartModal-' | append: uid
+  -%}
+
+  {%- if render_trigger -%}
+    <modal-opener class="size-guide" data-modal="#{{ modal_id }}">
+      <button class="size-guide__trigger" type="button" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <rect x="2" y="8" width="20" height="8" rx="1" />
+          <path d="M7 8v3M12 8v4M17 8v3" stroke-linecap="round" />
+        </svg>
+        <span>Size guide</span>
+      </button>
+    </modal-opener>
+  {%- endif -%}
+
+  <modal-dialog id="{{ modal_id }}" class="size-guide-modal">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="{{ chart_label | escape }}"
+      class="size-guide-modal__panel"
+      tabindex="-1"
+    >
+      <button
+        id="ModalClose-sizeguide-{{ uid }}"
+        type="button"
+        class="size-guide-modal__close"
+        aria-label="{{ 'accessibility.close' | t }}"
+      >
+        {{- 'icon-close.svg' | inline_asset_content -}}
+      </button>
+      <p class="size-guide-modal__heading">{{ chart_label }}</p>
+      <img
+        src="{{ chart_image | asset_url }}"
+        alt="{{ chart_label | escape }}"
+        class="size-guide-modal__img"
+        loading="lazy"
+        width="1080"
+        height="1920"
+      >
+    </div>
+  </modal-dialog>
+
+  {%- style -%}
+    .size-guide { display: inline-block; }
+    .size-guide__trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-top: 1.4rem;
+      padding: 0;
+      background: none;
+      border: 0;
+      cursor: pointer;
+      color: rgb(var(--color-foreground));
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .size-guide__trigger:hover { opacity: 0.7; }
+
+    /* Self-contained overlay (works on any page; Dawn's <modal-dialog> toggles [open]). */
+    .size-guide-modal {
+      box-sizing: border-box;
+      display: block;
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      border: 0;
+      padding: 0;
+      background: rgba(0, 0, 0, 0.55);
+      opacity: 0;
+      visibility: hidden;
+      z-index: -1;
+      overflow: auto;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+    .size-guide-modal[open] { opacity: 1; visibility: visible; z-index: 110; }
+    .size-guide-modal__panel {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: min(92vw, 46rem);
+      max-height: 90vh;
+      margin: 5vh auto;
+      padding: 3.6rem 2.4rem 2.8rem;
+      background: rgb(var(--color-background));
+      overflow: auto;
+    }
+    .size-guide-modal__close {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      display: flex;
+      padding: 0.6rem;
+      background: none;
+      border: 0;
+      cursor: pointer;
+      color: rgb(var(--color-foreground));
+    }
+    .size-guide-modal__close svg { width: 1.8rem; height: 1.8rem; }
+    .size-guide-modal__heading {
+      margin: 0 0 1.4rem;
+      font-family: var(--font-heading-family);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 1.8rem;
+    }
+    .size-guide-modal__img {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 74vh;
+      object-fit: contain;
+    }
+  {%- endstyle -%}
+{%- endif -%}
