@@ -6,17 +6,16 @@
 {% style %}
   .ai-streetwear-header-{{ ai_gen_id }} {
     display: block;
-    /* position: fixed; <-- Ye humne hata diya */
     position: -webkit-sticky; /* Safari support ke liye */
-    position: sticky;         /* Ye naya code hai */
-    top: 0;                   /* Ye screen ke top par rahega lekin content ko dhake ga nahi */
+    position: sticky;         /* Sticky positioning */
+    top: 0;                   
     left: 0;
     right: 0;
     width: 100%;
     background-color: {{ block.settings.header_bg_color }};
     z-index: 1000;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
+  }
 
   .ai-streetwear-header-{{ ai_gen_id }}.scrolled {
     background-color: {{ block.settings.header_scrolled_bg_color }};
@@ -31,23 +30,26 @@
 
   .ai-streetwear-header__inner-{{ ai_gen_id }} {
     display: grid;
-    grid-template-columns: 1fr auto 1fr; /* Ye left, center logo, aur right side ka structure hai */
+    grid-template-columns: 1.5fr auto 1fr; /* Links ke liye thodi space barhai hai */
     align-items: center;
-    justify-items: center; /* YE ADD KARNA HAI */
+    justify-items: start; 
     height: {{ block.settings.header_height }}px;
     gap: 20px;
+  }
+
+  /* Centering the logo */
+  .ai-streetwear-header__logo-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
   }
 
   .ai-streetwear-header__left-{{ ai_gen_id }} {
     display: flex;
     align-items: center;
     gap: {{ block.settings.nav_spacing }}px;
-  }
-
-  .ai-streetwear-header__logo-{{ ai_gen_id }} {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    justify-self: start;
   }
 
   .ai-streetwear-header__logo-{{ ai_gen_id }} img {
@@ -69,6 +71,7 @@
     align-items: center;
     justify-content: flex-end;
     gap: {{ block.settings.icon_spacing }}px;
+    justify-self: end;
   }
 
   .ai-streetwear-header__nav-{{ ai_gen_id }} {
@@ -100,33 +103,14 @@
     color: {{ block.settings.nav_hover_color }};
   }
 
-  .ai-streetwear-header__nav-link--new-arrivals-{{ ai_gen_id }} {
-    animation: ai-blink-{{ ai_gen_id }} 2s ease-in-out infinite;
-  }
-
-  @keyframes ai-blink-{{ ai_gen_id }} {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
-  }
-
-  .ai-streetwear-header__nav-link--best-sellers-{{ ai_gen_id }} {
-    color: {{ block.settings.best_sellers_color }};
-    font-weight: 700;
-  }
-
   .ai-streetwear-header__mega-menu-{{ ai_gen_id }} {
     position: absolute;
     top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
     background-color: {{ block.settings.mega_menu_bg_color }};
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    padding: 40px;
-    min-width: 600px;
+    padding: 30px;
+    min-width: 650px;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -138,16 +122,50 @@
     visibility: visible;
   }
 
-  .ai-streetwear-header__mega-menu-grid-{{ ai_gen_id }} {
+  /* Mega menu split layout */
+  .ai-streetwear-header__mega-menu-split-{{ ai_gen_id }} {
     display: grid;
-    grid-template-columns: repeat({{ block.settings.mega_menu_columns }}, 1fr);
-    gap: 40px;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
   }
 
-  .ai-streetwear-header__mega-menu-column-{{ ai_gen_id }} {
+  .ai-streetwear-header__mega-menu-left-{{ ai_gen_id }} {
+    border-right: 1px solid rgba(0,0,0,0.1);
+    padding-right: 30px;
+  }
+
+  .ai-streetwear-header__mega-menu-collection-title-{{ ai_gen_id }} {
+    font-size: 14px;
+    font-weight: 700;
+    color: {{ block.settings.mega_menu_text_color }};
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+
+  .ai-streetwear-header__mega-menu-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  /* Direct Anchor Tag as Column wrapper for full clickability */
+  .ai-streetwear-header__mega-menu-column-link-{{ ai_gen_id }} {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .ai-streetwear-header__mega-menu-column-link-{{ ai_gen_id }}:hover .ai-streetwear-header__mega-menu-image-{{ ai_gen_id }} {
+    transform: scale(1.02);
+  }
+
+  .ai-streetwear-header__mega-menu-column-link-{{ ai_gen_id }}:hover .ai-streetwear-header__mega-menu-link-text-{{ ai_gen_id }} {
+    color: {{ block.settings.nav_hover_color }};
+    text-decoration: underline;
   }
 
   .ai-streetwear-header__mega-menu-title-{{ ai_gen_id }} {
@@ -156,25 +174,61 @@
     color: {{ block.settings.mega_menu_text_color }};
     text-transform: uppercase;
     letter-spacing: {{ block.settings.letter_spacing }}px;
-    margin-bottom: 10px;
+    margin: 0 0 5px 0;
+  }
+
+  .ai-streetwear-header__mega-menu-image-container-{{ ai_gen_id }} {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 4px;
   }
 
   .ai-streetwear-header__mega-menu-image-{{ ai_gen_id }} {
     width: 100%;
-    height: 150px;
+    height: 100%;
     object-fit: cover;
-    margin-bottom: 10px;
+    transition: transform 0.3s ease;
   }
 
-  .ai-streetwear-header__mega-menu-link-{{ ai_gen_id }} {
+  .ai-streetwear-header__mega-menu-link-text-{{ ai_gen_id }} {
     font-size: {{ block.settings.mega_menu_link_size }}px;
     color: {{ block.settings.mega_menu_text_color }};
-    text-decoration: none;
+    font-weight: 500;
     transition: color 0.3s ease;
   }
 
-  .ai-streetwear-header__mega-menu-link-{{ ai_gen_id }}:hover {
+  /* Right column for "All Products" link */
+  .ai-streetwear-header__mega-menu-right-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-streetwear-header__all-products-btn-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    color: {{ block.settings.mega_menu_text_color }};
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: transform 0.3s ease, color 0.3s ease;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .ai-streetwear-header__all-products-btn-{{ ai_gen_id }}:hover {
     color: {{ block.settings.nav_hover_color }};
+    transform: scale(1.05);
+  }
+
+  .ai-streetwear-header__all-products-btn-{{ ai_gen_id }} svg {
+    width: 24px;
+    height: 24px;
   }
 
   .ai-streetwear-header__icon-{{ ai_gen_id }} {
@@ -292,13 +346,26 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   }
 
+  /* Custom Submenu Styles for mobile layout alignment */
   .ai-streetwear-header__mobile-submenu-{{ ai_gen_id }} {
     list-style: none;
-    margin: 15px 0 0 0;
-    padding: 0 0 0 20px;
+    margin: 10px 0 0 0;
+    padding: 0 0 0 15px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
+  }
+
+  .ai-streetwear-header__mobile-submenu-header-{{ ai_gen_id }} {
+    font-size: 14px;
+    font-weight: 800;
+    color: {{ block.settings.nav_text_color }};
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 1;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    list-style: none;
   }
 
   .ai-streetwear-header__mobile-submenu-link-{{ ai_gen_id }} {
@@ -306,6 +373,7 @@
     color: {{ block.settings.nav_text_color }};
     text-decoration: none;
     opacity: 0.8;
+    display: block;
   }
 
   @media screen and (max-width: 990px) {
@@ -345,7 +413,7 @@
         <ul class="ai-streetwear-header__nav-{{ ai_gen_id }}">
           {% if block.settings.show_home_link %}
             <li class="ai-streetwear-header__nav-item-{{ ai_gen_id }}">
-              <a href="{{ block.settings.home_link }}" class="ai-streetwear-header__nav-link-{{ ai_gen_id }}">
+              <a href="{{ block.settings.home_link | default: '/' }}" class="ai-streetwear-header__nav-link-{{ ai_gen_id }}">
                 {{ block.settings.home_text }}
               </a>
             </li>
@@ -353,71 +421,68 @@
 
           {% if block.settings.show_shop_link %}
             <li class="ai-streetwear-header__nav-item-{{ ai_gen_id }}">
-              <a href="{{ block.settings.shop_link }}" class="ai-streetwear-header__nav-link-{{ ai_gen_id }}">
+              <a href="{{ block.settings.shop_link | default: '#' }}" class="ai-streetwear-header__nav-link-{{ ai_gen_id }}">
                 {{ block.settings.shop_text }}
               </a>
 
               {% if block.settings.enable_mega_menu %}
                 <div class="ai-streetwear-header__mega-menu-{{ ai_gen_id }}">
-                  <div class="ai-streetwear-header__mega-menu-grid-{{ ai_gen_id }}">
-                    <div class="ai-streetwear-header__mega-menu-column-{{ ai_gen_id }}">
-                      <h3 class="ai-streetwear-header__mega-menu-title-{{ ai_gen_id }} ai-streetwear-header__nav-link--new-arrivals-{{ ai_gen_id }}">
-                        {{ block.settings.new_arrivals_text }}
-                      </h3>
-                      {% if block.settings.new_arrivals_image %}
-                        <img
-                          src="{{ block.settings.new_arrivals_image | image_url: width: 300 }}"
-                          alt="{{ block.settings.new_arrivals_text }}"
-                          class="ai-streetwear-header__mega-menu-image-{{ ai_gen_id }}"
-                          loading="lazy"
-                        >
-                      {% endif %}
-                      {% if block.settings.new_arrivals_collection %}
-                        <a href="{{ block.settings.new_arrivals_collection.url }}" class="ai-streetwear-header__mega-menu-link-{{ ai_gen_id }}">
-                          View All New Arrivals
-                        </a>
-                      {% endif %}
-                    </div>
-
-                    <div class="ai-streetwear-header__mega-menu-column-{{ ai_gen_id }}">
-                      <h3 class="ai-streetwear-header__mega-menu-title-{{ ai_gen_id }} ai-streetwear-header__nav-link--best-sellers-{{ ai_gen_id }}">
-                        {{ block.settings.best_sellers_text }}
-                      </h3>
-                      {% if block.settings.best_sellers_image %}
-                        <img
-                          src="{{ block.settings.best_sellers_image | image_url: width: 300 }}"
-                          alt="{{ block.settings.best_sellers_text }}"
-                          class="ai-streetwear-header__mega-menu-image-{{ ai_gen_id }}"
-                          loading="lazy"
-                        >
-                      {% endif %}
-                      {% if block.settings.best_sellers_collection %}
-                        <a href="{{ block.settings.best_sellers_collection.url }}" class="ai-streetwear-header__mega-menu-link-{{ ai_gen_id }}">
-                          View All Best Sellers
-                        </a>
-                      {% endif %}
-                    </div>
-
-                    {% if block.settings.show_category_3 %}
-                      <div class="ai-streetwear-header__mega-menu-column-{{ ai_gen_id }}">
-                        <h3 class="ai-streetwear-header__mega-menu-title-{{ ai_gen_id }}">
-                          {{ block.settings.category_3_title }}
-                        </h3>
-                        {% if block.settings.category_3_image %}
-                          <img
-                            src="{{ block.settings.category_3_image | image_url: width: 300 }}"
-                            alt="{{ block.settings.category_3_title }}"
-                            class="ai-streetwear-header__mega-menu-image-{{ ai_gen_id }}"
-                            loading="lazy"
-                          >
+                  <div class="ai-streetwear-header__mega-menu-split-{{ ai_gen_id }}">
+                    
+                    <div class="ai-streetwear-header__mega-menu-left-{{ ai_gen_id }}">
+                      <h4 class="ai-streetwear-header__mega-menu-collection-title-{{ ai_gen_id }}">
+                        {{ block.settings.collection_group_title }}
+                      </h4>
+                      <div class="ai-streetwear-header__mega-menu-grid-{{ ai_gen_id }}">
+                      <!-- Column 1: Hoodies (Fully Clickable Wrapper) -->
+                        {% if block.settings.hoodie_collection %}
+                          <a href="{{ block.settings.hoodie_collection.url }}" class="ai-streetwear-header__mega-menu-column-link-{{ ai_gen_id }}">
+                            <h3 class="ai-streetwear-header__mega-menu-title-{{ ai_gen_id }}">
+                              {{ block.settings.hoodie_text }}
+                            </h3>
+                            {% if block.settings.hoodie_image %}
+                              <div class="ai-streetwear-header__mega-menu-image-container-{{ ai_gen_id }}">
+                                <img
+                                  src="{{ block.settings.hoodie_image | image_url: width: 300 }}"
+                                  alt="{{ block.settings.hoodie_text }}"
+                                  class="ai-streetwear-header__mega-menu-image-{{ ai_gen_id }}"
+                                  loading="lazy"
+                                >
+                              </div>
+                            {% endif %}
+                          </a>
                         {% endif %}
-                        {% if block.settings.category_3_collection %}
-                          <a href="{{ block.settings.category_3_collection.url }}" class="ai-streetwear-header__mega-menu-link-{{ ai_gen_id }}">
-                            View All {{ block.settings.category_3_title }}
+
+<!-- Column 2: T-Shirts (Fully Clickable Wrapper) -->
+                        {% if block.settings.tshirt_collection %}
+                          <a href="{{ block.settings.tshirt_collection.url }}" class="ai-streetwear-header__mega-menu-column-link-{{ ai_gen_id }}">
+                            <h3 class="ai-streetwear-header__mega-menu-title-{{ ai_gen_id }}">
+                              {{ block.settings.tshirt_text }}
+                            </h3>
+                            {% if block.settings.tshirt_image %}
+                              <div class="ai-streetwear-header__mega-menu-image-container-{{ ai_gen_id }}">
+                                <img
+                                  src="{{ block.settings.tshirt_image | image_url: width: 300 }}"
+                                  alt="{{ block.settings.tshirt_text }}"
+                                  class="ai-streetwear-header__mega-menu-image-{{ ai_gen_id }}"
+                                  loading="lazy"
+                                >
+                              </div>
+                            {% endif %}
                           </a>
                         {% endif %}
                       </div>
-                    {% endif %}
+                    </div>
+
+                    <div class="ai-streetwear-header__mega-menu-right-{{ ai_gen_id }}">
+                      <a href="{{ block.settings.all_products_link | default: '/collections/all' }}" class="ai-streetwear-header__all-products-btn-{{ ai_gen_id }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                        </svg>
+                        All Products
+                      </a>
+                    </div>
+
                   </div>
                 </div>
               {% endif %}
@@ -430,6 +495,19 @@
                 {{ block.settings.about_text }}
               </a>
             </li>
+          {% endif %}
+
+          {% if block.settings.show_contact_link %}
+            <li class="ai-streetwear-header__nav-item-{{ ai_gen_id }}">
+              <a href="{{ block.settings.contact_link }}" class="ai-streetwear-header__nav-link-{{ ai_gen_id }}">
+                {{ block.settings.contact_text }}
+              </a>
+            </li>
+            <li class="ai-streetwear-header__nav-item-{{ ai_gen_id }}">
+            <a href="/pages/contact" class="ai-streetwear-header__nav-link-{{ ai_gen_id }}">
+              Contact Us
+            </a>
+          </li>
           {% endif %}
         </ul>
       </nav>
@@ -491,7 +569,7 @@
     <ul class="ai-streetwear-header__mobile-nav-{{ ai_gen_id }}">
       {% if block.settings.show_home_link %}
         <li>
-          <a href="{{ block.settings.home_link }}" class="ai-streetwear-header__mobile-nav-link-{{ ai_gen_id }}">
+          <a href="{{ block.settings.home_link | default: '/' }}" class="ai-streetwear-header__mobile-nav-link-{{ ai_gen_id }}">
             {{ block.settings.home_text }}
           </a>
         </li>
@@ -499,28 +577,37 @@
 
       {% if block.settings.show_shop_link %}
         <li>
-          <a href="{{ block.settings.shop_link }}" class="ai-streetwear-header__mobile-nav-link-{{ ai_gen_id }}">
+          <span class="ai-streetwear-header__mobile-nav-link-{{ ai_gen_id }}" style="cursor: default;">
             {{ block.settings.shop_text }}
-          </a>
+          </span>
           {% if block.settings.enable_mega_menu %}
             <ul class="ai-streetwear-header__mobile-submenu-{{ ai_gen_id }}">
-              <li>
-                <a href="{{ block.settings.new_arrivals_collection.url }}" class="ai-streetwear-header__mobile-submenu-link-{{ ai_gen_id }} ai-streetwear-header__nav-link--new-arrivals-{{ ai_gen_id }}">
-                  {{ block.settings.new_arrivals_text }}
-                </a>
+              
+              <li class="ai-streetwear-header__mobile-submenu-header-{{ ai_gen_id }}">
+                {{ block.settings.collection_group_title }}
               </li>
-              <li>
-                <a href="{{ block.settings.best_sellers_collection.url }}" class="ai-streetwear-header__mobile-submenu-link-{{ ai_gen_id }} ai-streetwear-header__nav-link--best-sellers-{{ ai_gen_id }}">
-                  {{ block.settings.best_sellers_text }}
-                </a>
-              </li>
-              {% if block.settings.show_category_3 %}
+
+              {% if block.settings.hoodie_collection %}
                 <li>
-                  <a href="{{ block.settings.category_3_collection.url }}" class="ai-streetwear-header__mobile-submenu-link-{{ ai_gen_id }}">
-                    {{ block.settings.category_3_title }}
+                  <a href="{{ block.settings.hoodie_collection.url }}" class="ai-streetwear-header__mobile-submenu-link-{{ ai_gen_id }}">
+                    {{ block.settings.hoodie_text }}
                   </a>
                 </li>
               {% endif %}
+
+              {% if block.settings.tshirt_collection %}
+                <li>
+                  <a href="{{ block.settings.tshirt_collection.url }}" class="ai-streetwear-header__mobile-submenu-link-{{ ai_gen_id }}">
+                    {{ block.settings.tshirt_text }}
+                  </a>
+                </li>
+              {% endif %}
+
+              <li>
+                <a href="{{ block.settings.all_products_link | default: '/collections/all' }}" class="ai-streetwear-header__mobile-submenu-link-{{ ai_gen_id }}" style="font-weight: 700;">
+                  All Products
+                </a>
+              </li>
             </ul>
           {% endif %}
         </li>
@@ -532,6 +619,19 @@
             {{ block.settings.about_text }}
           </a>
         </li>
+      {% endif %}
+
+      {% if block.settings.show_contact_link %}
+        <li>
+          <a href="{{ block.settings.contact_link }}" class="ai-streetwear-header__mobile-nav-link-{{ ai_gen_id }}">
+            {{ block.settings.contact_text }}
+          </a>
+        </li>
+        <li>
+        <a href="/pages/contact" class="ai-streetwear-header__mobile-nav-link-{{ ai_gen_id }}">
+          Contact Us
+        </a>
+      </li>
       {% endif %}
     </ul>
   </div>
@@ -631,7 +731,7 @@
       "type": "text",
       "id": "logo_text",
       "label": "Logo text",
-      "default": "971 Threads"
+      "default": "971 Heads"
     },
     {
       "type": "range",
@@ -680,7 +780,7 @@
       "type": "text",
       "id": "shop_text",
       "label": "Shop text",
-      "default": "Shop"
+      "default": "Collections"
     },
     {
       "type": "url",
@@ -697,12 +797,29 @@
       "type": "text",
       "id": "about_text",
       "label": "About text",
-      "default": "About"
+      "default": "About Us"
     },
     {
       "type": "url",
       "id": "about_link",
       "label": "About link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_contact_link",
+      "label": "Show Contact link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "contact_text",
+      "label": "Contact text",
+      "default": "Contact Us"
+    },
+    {
+      "type": "url",
+      "id": "contact_link",
+      "label": "Contact link"
     },
     {
       "type": "header",
@@ -715,67 +832,47 @@
       "default": true
     },
     {
-      "type": "range",
-      "id": "mega_menu_columns",
-      "label": "Columns",
-      "min": 2,
-      "max": 4,
-      "step": 1,
-      "default": 2
+      "type": "text",
+      "id": "collection_group_title",
+      "label": "Collection Sub-heading",
+      "default": "The Origin Collection"
     },
     {
       "type": "text",
-      "id": "new_arrivals_text",
-      "label": "New Arrivals text",
-      "default": "New Arrivals"
+      "id": "hoodie_text",
+      "label": "Hoodie Category text",
+      "default": "Hoodies"
     },
     {
       "type": "collection",
-      "id": "new_arrivals_collection",
-      "label": "New Arrivals collection"
+      "id": "hoodie_collection",
+      "label": "Hoodies collection"
     },
     {
       "type": "image_picker",
-      "id": "new_arrivals_image",
-      "label": "New Arrivals image"
+      "id": "hoodie_image",
+      "label": "Hoodies image"
     },
     {
       "type": "text",
-      "id": "best_sellers_text",
-      "label": "Best Sellers text",
-      "default": "Best Sellers"
+      "id": "tshirt_text",
+      "label": "T-Shirt Category text",
+      "default": "T-Shirts"
     },
     {
       "type": "collection",
-      "id": "best_sellers_collection",
-      "label": "Best Sellers collection"
+      "id": "tshirt_collection",
+      "label": "T-Shirts collection"
     },
     {
       "type": "image_picker",
-      "id": "best_sellers_image",
-      "label": "Best Sellers image"
+      "id": "tshirt_image",
+      "label": "T-Shirts image"
     },
     {
-      "type": "checkbox",
-      "id": "show_category_3",
-      "label": "Show third category",
-      "default": false
-    },
-    {
-      "type": "text",
-      "id": "category_3_title",
-      "label": "Category 3 title",
-      "default": "Featured"
-    },
-    {
-      "type": "collection",
-      "id": "category_3_collection",
-      "label": "Category 3 collection"
-    },
-    {
-      "type": "image_picker",
-      "id": "category_3_image",
-      "label": "Category 3 image"
+      "type": "url",
+      "id": "all_products_link",
+      "label": "All Products Link"
     },
     {
       "type": "header",
@@ -826,12 +923,6 @@
       "id": "nav_hover_color",
       "label": "Navigation hover color",
       "default": "#666666"
-    },
-    {
-      "type": "color",
-      "id": "best_sellers_color",
-      "label": "Best Sellers color",
-      "default": "#FF0000"
     },
     {
       "type": "color",
@@ -980,16 +1071,6 @@
       "step": 2,
       "unit": "px",
       "default": 22
-    },
-    {
-      "type": "range",
-      "id": "desktop_width_percent",
-      "label": "Desktop width",
-      "min": 50,
-      "max": 100,
-      "step": 5,
-      "unit": "%",
-      "default": 100
     }
   ],
   "presets": [

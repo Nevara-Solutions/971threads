@@ -11,6 +11,42 @@
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
+    "1784181405b7673e25": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_c682af7_LhCMTh": {
+          "type": "ai_gen_block_c682af7",
+          "settings": {
+            "phone_number": "971526563780",
+            "chat_name": "971 Threads Support",
+            "chat_status": "Typically replies instantly",
+            "welcome_message": "Hi there! 👋 How can we help you today?",
+            "default_message": "Hello! I have a question about your products.",
+            "button_text": "Start chat",
+            "bottom_position": 70,
+            "right_position": 20,
+            "button_size": 60,
+            "mobile_bottom_position": 15,
+            "mobile_right_position": 15,
+            "mobile_button_size": 55,
+            "button_color": "#25d366",
+            "icon_color": "#ffffff",
+            "popup_width": 320,
+            "popup_border_radius": 12,
+            "popup_bg_color": "#ffffff",
+            "header_bg_color": "#075e54",
+            "header_text_color": "#ffffff",
+            "message_bg_color": "#e5ddd5",
+            "message_text_color": "#000000"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_c682af7_LhCMTh"
+      ],
+      "settings": {}
+    },
     "178353546346b9fcc6": {
       "type": "_blocks",
       "blocks": {
@@ -19,9 +55,9 @@
           "settings": {
             "container_width": 1200,
             "desktop_width_percent": 100,
-            "logo": "shopify://shop_images/IMG_20251108_095550_196_1.jpg",
+            "logo": "shopify://shop_images/download_9f29569a-b7e3-4ed1-baa3-c68badb5b6f3.png",
             "logo_width": 150,
-            "brand_description": "<p>Streetwear from sands to street. Heavyweight tees and hoodies, born in the 971 — limited drops, built to last.</p>",
+            "brand_description": "<p>Streetwear from sands to street. Premium Cotton tees and hoodies, born in the Emirates - limited drops, built to last.</p>",
             "social_instagram": "https://www.instagram.com/971threads.ae",
             "social_facebook": "https://www.facebook.com/share/1DGdzPMZn6/",
             "social_twitter": "",
@@ -34,7 +70,7 @@
             "link_2_2_url": "shopify://collections/new-arrivals",
             "link_2_3_text": "🔥SUPER SALE",
             "link_2_3_url": "shopify://collections/🔥super-sale",
-            "link_2_4_text": "Mens Casual Wear",
+            "link_2_4_text": "",
             "link_2_4_url": "shopify://collections/mens-casual-wear-example-products",
             "link_2_5_text": "FAQ",
             "link_2_5_url": "shopify://pages/faq",
@@ -72,7 +108,7 @@
             "social_hover_bg_color": "#cccccc",
             "social_hover_icon_color": "#121212",
             "input_bg_color": "#000000",
-            "input_border_color": "#F1EEEE",
+            "input_border_color": "#f1eeee",
             "input_border_radius": 14,
             "button_bg_color": "#ffffff",
             "button_text_color": "#121212",
@@ -88,6 +124,7 @@
       "block_order": [
         "ai_gen_block_52f1d30_jE3EYn"
       ],
+      "custom_css": [],
       "settings": {}
     },
     "footer": {
@@ -109,6 +146,7 @@
     }
   },
   "order": [
+    "1784181405b7673e25",
     "178353546346b9fcc6",
     "footer"
   ]

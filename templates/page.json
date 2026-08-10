@@ -1,14 +1,106 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
+    "hero_JfbG3A": {
+      "type": "hero",
+      "blocks": {
+        "slide_afprwe": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/0733c857-b6b5-42e5-b033-995b57a867b5.jpg",
+            "kicker": "",
+            "heading": "About Us",
+            "subheading": "What does home feel like when you wear it?",
+            "button_label": "Shop all",
+            "button_link": "shopify://collections"
+          }
+        }
+      },
+      "block_order": [
+        "slide_afprwe"
+      ],
+      "disabled": true,
+      "name": "Hero slideshow",
+      "settings": {
+        "height": "full",
+        "text_align": "center",
+        "overlay_opacity": 35,
+        "color_scheme": "",
+        "autoplay": true,
+        "autoplay_speed": 5
+      }
+    },
     "main": {
       "type": "main-page",
+      "custom_css": [
+        "/* Page ka title hide karne ke liye */.page-header,.page-title,h1.page-title {display: none !important;}"
+      ],
       "settings": {
         "padding_top": 28,
         "padding_bottom": 28
       }
+    },
+    "image_with_text_KfW6WJ": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_cFUihi": {
+          "type": "heading",
+          "settings": {
+            "heading": "What does home feel like when you wear it?",
+            "heading_size": "h2"
+          }
+        },
+        "text_BmH9HU": {
+          "type": "text",
+          "settings": {
+            "text": "<p>For us, home is the UAE. The golden hour light over Dubai's skyline, the quiet vastness of the desert at dawn, the hum of creativity in every majlis and coffee shop. It's the blend of tradition and ambition, of heritage and reinvention, that makes this place unlike anywhere else.</p><p>We created <strong>971 Threads</strong> for the ones who carry that duality with them, who move between the majlis and the mall, the beach and the boardroom, the old souks and the new galleries. Our pieces are made for the in-between moments: soft enough to feel like second skin, bold enough to say something without shouting.</p><p>Every design is a love letter to modern UAE identity, not loud or literal, but present. Subtle references. Intentional cuts. Colors pulled from our landscape: sand, stone, sky, sea. This is streetwear with soul. Minimalism with memory.</p><p><br/>Whether you're from here or just feel at home here, we're building something that travels with you, but always brings you back.</p>",
+            "text_style": "body"
+          }
+        },
+        "button_JMRAjM": {
+          "type": "button",
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_cFUihi",
+        "text_BmH9HU",
+        "button_JMRAjM"
+      ],
+      "disabled": true,
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/0733c857-b6b5-42e5-b033-995b57a867b5.jpg",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "image_behavior": "none",
+        "content_layout": "no-overlap",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
-    "main"
+    "hero_JfbG3A",
+    "main",
+    "image_with_text_KfW6WJ"
   ]
 }
