@@ -95,10 +95,20 @@
   </div>
 
   <div class="sfooter__bottom">
-    {%- if section.settings.show_payment and shop.enabled_payment_types.size > 0 -%}
+    {%- if section.settings.show_payment -%}
+      {%- comment -%} Card badges are assets/payment-<name>.svg (aaronfagan/svg-credit-card-payment-icons, MIT). {%- endcomment -%}
+      {%- assign pay_icons = section.settings.payment_icons | default: 'visa,mastercard,amex,applepay' | split: ',' -%}
       <div class="sfooter__pay">
-        {%- for type in shop.enabled_payment_types -%}
-          {{ type | payment_type_svg_tag: class: 'sfooter__pay-icon' }}
+        {%- for name in pay_icons -%}
+          {%- assign n = name | strip | downcase -%}
+          <img
+            src="{{ 'payment-' | append: n | append: '.svg' | asset_url }}"
+            alt="{{ n }}"
+            class="sfooter__pay-img"
+            width="50"
+            height="32"
+            loading="lazy"
+          >
         {%- endfor -%}
       </div>
     {%- endif -%}
@@ -150,8 +160,8 @@
     padding: 2.4rem var(--page-gutter);
     border-top: 0.1rem solid rgba(var(--color-foreground), 0.12);
   }
-  .sfooter__pay { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-  .sfooter__pay-icon { width: 3.8rem; height: auto; }
+  .sfooter__pay { display: flex; flex-wrap: wrap; gap: 0.7rem; align-items: center; }
+  .sfooter__pay-img { width: 5rem; height: auto; display: block; border-radius: 0.5rem; box-shadow: 0 0 0 0.1rem rgba(var(--color-foreground), 0.12); }
   .sfooter__policies { display: flex; flex-wrap: wrap; gap: 2rem; }
   .sfooter__copy { margin: 0 0 0 auto; opacity: 0.6; font-size: 1.3rem; }
   .sfooter__copy a { color: inherit; }
@@ -170,6 +180,8 @@
   }
   @media screen and (max-width: 989px) {
     .sfooter__copy { margin: 0; width: 100%; }
+    /* Clear the floating WhatsApp button so the payment row / copyright don't sit under it. */
+    .sfooter__bottom { padding-bottom: 9rem; }
   }
 {%- endstylesheet -%}
 
@@ -189,10 +201,11 @@
     { "type": "text", "id": "contacts_heading", "label": "Heading", "default": "Contacts" },
     { "type": "paragraph", "content": "Social links come from Theme settings → Social media." },
     { "type": "header", "content": "Newsletter" },
-    { "type": "text", "id": "newsletter_heading", "label": "Heading", "default": "Join our newsletter" },
+    { "type": "text", "id": "newsletter_heading", "label": "Heading", "default": "Join the 971" },
     { "type": "text", "id": "newsletter_subtext", "label": "Subtext", "default": "Subscribe for early access to drops and exclusive offers." },
     { "type": "header", "content": "Bottom bar" },
     { "type": "checkbox", "id": "show_payment", "label": "Show payment icons", "default": true },
+    { "type": "text", "id": "payment_icons", "label": "Payment icons", "default": "visa,mastercard,amex,applepay", "info": "Comma-separated badge names. Available: visa, mastercard, amex, applepay. To add another, drop a matching payment-<name>.svg into assets/. Show only methods you actually accept." },
     { "type": "checkbox", "id": "show_policies", "label": "Show policy links", "default": true }
   ]
 }
