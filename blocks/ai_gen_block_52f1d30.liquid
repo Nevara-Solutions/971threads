@@ -204,15 +204,24 @@
   }
 
   .ai-footer-payment-icon-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 48px;
     height: 30px;
     background: #ffffff;
     border-radius: 5px;
     padding: 4px 5px;
     box-sizing: border-box;
-    object-fit: contain;
-    opacity: 1;
-    transition: opacity 0.3s ease;
+  }
+
+  .ai-footer-payment-icon-{{ ai_gen_id }} img,
+  .ai-footer-payment-icon-{{ ai_gen_id }} svg {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    display: block;
   }
 
   .ai-footer-payment-icon-{{ ai_gen_id }}:hover {
@@ -572,16 +581,16 @@
 
       <div class="ai-footer-payment-icons-{{ ai_gen_id }}">
         {% if block.settings.show_visa %}
-          <img class="ai-footer-payment-icon-{{ ai_gen_id }}" src="{{ 'payment-visa.svg' | asset_url }}" alt="Visa" width="38" height="24" loading="lazy">
+          <span class="ai-footer-payment-icon-{{ ai_gen_id }}"><img src="{{ 'payment-visa.svg' | asset_url }}" alt="Visa" loading="lazy"></span>
         {% endif %}
         {% if block.settings.show_mastercard %}
-          <img class="ai-footer-payment-icon-{{ ai_gen_id }}" src="{{ 'payment-mastercard.svg' | asset_url }}" alt="Mastercard" width="38" height="24" loading="lazy">
+          <span class="ai-footer-payment-icon-{{ ai_gen_id }}"><img src="{{ 'payment-mastercard.svg' | asset_url }}" alt="Mastercard" loading="lazy"></span>
         {% endif %}
         {% if block.settings.show_amex %}
-          <img class="ai-footer-payment-icon-{{ ai_gen_id }}" src="{{ 'payment-amex.svg' | asset_url }}" alt="American Express" width="38" height="24" loading="lazy">
+          <span class="ai-footer-payment-icon-{{ ai_gen_id }}">{{ 'american_express' | payment_type_svg_tag }}</span>
         {% endif %}
         {% if block.settings.show_apple_pay %}
-          <img class="ai-footer-payment-icon-{{ ai_gen_id }}" src="{{ 'payment-applepay.svg' | asset_url }}" alt="Apple Pay" width="38" height="24" loading="lazy">
+          <span class="ai-footer-payment-icon-{{ ai_gen_id }}">{{ 'apple_pay' | payment_type_svg_tag }}</span>
         {% endif %}
       </div>
     </div>
