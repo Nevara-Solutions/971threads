@@ -1,5 +1,4 @@
 {% doc %}
-  
 {% enddoc %}
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 
@@ -8,7 +7,7 @@
     display: block;
     position: -webkit-sticky; /* Safari support ke liye */
     position: sticky;         /* Sticky positioning */
-    top: 0;                   
+    top: 0;
     left: 0;
     right: 0;
     width: 100%;
@@ -32,7 +31,7 @@
     display: grid;
     grid-template-columns: 1.5fr auto 1fr; /* Links ke liye thodi space barhai hai */
     align-items: center;
-    justify-items: start; 
+    justify-items: start;
     height: {{ block.settings.header_height }}px;
     gap: 20px;
   }
@@ -413,7 +412,10 @@
         <ul class="ai-streetwear-header__nav-{{ ai_gen_id }}">
           {% if block.settings.show_home_link %}
             <li class="ai-streetwear-header__nav-item-{{ ai_gen_id }}">
-              <a href="{{ block.settings.home_link | default: '/' }}" class="ai-streetwear-header__nav-link-{{ ai_gen_id }}">
+              <a
+                href="{{ block.settings.home_link | default: '/' }}"
+                class="ai-streetwear-header__nav-link-{{ ai_gen_id }}"
+              >
                 {{ block.settings.home_text }}
               </a>
             </li>
@@ -421,49 +423,88 @@
 
           {% if block.settings.show_shop_link %}
             <li class="ai-streetwear-header__nav-item-{{ ai_gen_id }}">
-              <a href="{{ block.settings.shop_link | default: '#' }}" class="ai-streetwear-header__nav-link-{{ ai_gen_id }}">
+              <a
+                href="{{ block.settings.shop_link | default: '#' }}"
+                class="ai-streetwear-header__nav-link-{{ ai_gen_id }}"
+              >
                 {{ block.settings.shop_text }}
               </a>
 
               {% if block.settings.enable_mega_menu %}
                 <div class="ai-streetwear-header__mega-menu-{{ ai_gen_id }}">
                   <div class="ai-streetwear-header__mega-menu-split-{{ ai_gen_id }}">
-                    
-                    <div class="ai-streetwear-header__mega-menu-left-{{ ai_gen_id }}">
-                      <h4 class="ai-streetwear-header__mega-menu-collection-title-{{ ai_gen_id }}">
-                        {{ block.settings.collection_group_title }}
-                      </h4>
-                      <div class="ai-streetwear-header__mega-menu-grid-{{ ai_gen_id }}">
-                      <!-- Column 1: Hoodies (Fully Clickable Wrapper) -->
-                        {% if block.settings.hoodie_collection %}
-                          <a href="{{ block.settings.hoodie_collection.url }}" class="ai-streetwear-header__mega-menu-column-link-{{ ai_gen_id }}">
-                            <h3 class="ai-streetwear-header__mega-menu-title-{{ ai_gen_id }}">
-                              {{ block.settings.hoodie_text }}
-                            </h3>
-                            {% if block.settings.hoodie_image %}
-                              <div class="ai-streetwear-header__mega-menu-image-container-{{ ai_gen_id }}">
-                                <img
-                                  src="{{ block.settings.hoodie_image | image_url: width: 300 }}"
-                                  alt="{{ block.settings.hoodie_text }}"
-                                  class="ai-streetwear-header__mega-menu-image-{{ ai_gen_id }}"
-                                  loading="lazy"
-                                >
-                              </div>
-                            {% endif %}
-                          </a>
-                        {% endif %}
+                    <div style="display: flex; flex-direction: column;">
+                      <div class="ai-streetwear-header__mega-menu-left-{{ ai_gen_id }}">
+                        <h4 class="ai-streetwear-header__mega-menu-collection-title-{{ ai_gen_id }}">
+                          {{ block.settings.collection_group_title }}
+                        </h4>
+                        <div class="ai-streetwear-header__mega-menu-grid-{{ ai_gen_id }}">
+                          <!-- Column 1: Hoodies (Fully Clickable Wrapper) -->
+                          {% if block.settings.hoodie_collection %}
+                            <a
+                              href="{{ block.settings.hoodie_collection.url }}"
+                              class="ai-streetwear-header__mega-menu-column-link-{{ ai_gen_id }}"
+                            >
+                              <h3 class="ai-streetwear-header__mega-menu-title-{{ ai_gen_id }}">
+                                {{ block.settings.hoodie_text }}
+                              </h3>
+                              {% if block.settings.hoodie_image %}
+                                <div class="ai-streetwear-header__mega-menu-image-container-{{ ai_gen_id }}">
+                                  <img
+                                    src="{{ block.settings.hoodie_image | image_url: width: 300 }}"
+                                    alt="{{ block.settings.hoodie_text }}"
+                                    class="ai-streetwear-header__mega-menu-image-{{ ai_gen_id }}"
+                                    loading="lazy"
+                                  >
+                                </div>
+                              {% endif %}
+                            </a>
+                          {% endif %}
 
-<!-- Column 2: T-Shirts (Fully Clickable Wrapper) -->
-                        {% if block.settings.tshirt_collection %}
-                          <a href="{{ block.settings.tshirt_collection.url }}" class="ai-streetwear-header__mega-menu-column-link-{{ ai_gen_id }}">
-                            <h3 class="ai-streetwear-header__mega-menu-title-{{ ai_gen_id }}">
-                              {{ block.settings.tshirt_text }}
+                          <!-- Column 2: T-Shirts (Fully Clickable Wrapper) -->
+                          {% if block.settings.tshirt_collection %}
+                            <a
+                              href="{{ block.settings.tshirt_collection.url }}"
+                              class="ai-streetwear-header__mega-menu-column-link-{{ ai_gen_id }}"
+                            >
+                              <h3 class="ai-streetwear-header__mega-menu-title-{{ ai_gen_id }}">
+                                {{ block.settings.tshirt_text }}
+                              </h3>
+                              {% if block.settings.tshirt_image %}
+                                <div class="ai-streetwear-header__mega-menu-image-container-{{ ai_gen_id }}">
+                                  <img
+                                    src="{{ block.settings.tshirt_image | image_url: width: 300 }}"
+                                    alt="{{ block.settings.tshirt_text }}"
+                                    class="ai-streetwear-header__mega-menu-image-{{ ai_gen_id }}"
+                                    loading="lazy"
+                                  >
+                                </div>
+                              {% endif %}
+                            </a>
+                          {% endif %}
+                        </div>
+                      </div>
+
+                      <div class="ai-streetwear-header__mega-menu-left-{{ ai_gen_id }}">
+                        <h4 class="ai-streetwear-header__mega-menu-collection-title-{{ ai_gen_id }}">
+                          {{ block.settings.collection_group_seven_title }}
+                        </h4>
+
+                        {% if block.settings.new_seven_collection %}
+                          <a
+                            href="{{ block.settings.new_seven_collection.url }}"
+                            class="ai-streetwear-header__mega-menu-column-link-{{ ai_gen_id }}"
+                          >
+                            <h3
+                              class="ai-streetwear-header__mega-menu-title-{{ ai_gen_id }}"
+                            >
+                              {{ block.settings.new_seven_text }}
                             </h3>
-                            {% if block.settings.tshirt_image %}
+                            {% if block.settings.new_seven_image %}
                               <div class="ai-streetwear-header__mega-menu-image-container-{{ ai_gen_id }}">
                                 <img
-                                  src="{{ block.settings.tshirt_image | image_url: width: 300 }}"
-                                  alt="{{ block.settings.tshirt_text }}"
+                                  src="{{ block.settings.new_seven_image | image_url: width: 300 }}"
+                                  alt="{{ block.settings.new_seven_text }}"
                                   class="ai-streetwear-header__mega-menu-image-{{ ai_gen_id }}"
                                   loading="lazy"
                                 >
@@ -475,14 +516,21 @@
                     </div>
 
                     <div class="ai-streetwear-header__mega-menu-right-{{ ai_gen_id }}">
-                      <a href="{{ block.settings.all_products_link | default: '/collections/all' }}" class="ai-streetwear-header__all-products-btn-{{ ai_gen_id }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <a
+                        href="{{ block.settings.all_products_link | default: '/collections/all' }}"
+                        class="ai-streetwear-header__all-products-btn-{{ ai_gen_id }}"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                         </svg>
                         All Products
                       </a>
                     </div>
-
                   </div>
                 </div>
               {% endif %}
@@ -503,11 +551,7 @@
                 {{ block.settings.contact_text }}
               </a>
             </li>
-            <li class="ai-streetwear-header__nav-item-{{ ai_gen_id }}">
-            <a href="/pages/contact" class="ai-streetwear-header__nav-link-{{ ai_gen_id }}">
-              Contact Us
-            </a>
-          </li>
+            <li class="ai-streetwear-header__nav-item-{{ ai_gen_id }}"></li>
           {% endif %}
         </ul>
       </nav>
@@ -569,7 +613,10 @@
     <ul class="ai-streetwear-header__mobile-nav-{{ ai_gen_id }}">
       {% if block.settings.show_home_link %}
         <li>
-          <a href="{{ block.settings.home_link | default: '/' }}" class="ai-streetwear-header__mobile-nav-link-{{ ai_gen_id }}">
+          <a
+            href="{{ block.settings.home_link | default: '/' }}"
+            class="ai-streetwear-header__mobile-nav-link-{{ ai_gen_id }}"
+          >
             {{ block.settings.home_text }}
           </a>
         </li>
@@ -582,14 +629,16 @@
           </span>
           {% if block.settings.enable_mega_menu %}
             <ul class="ai-streetwear-header__mobile-submenu-{{ ai_gen_id }}">
-              
               <li class="ai-streetwear-header__mobile-submenu-header-{{ ai_gen_id }}">
                 {{ block.settings.collection_group_title }}
               </li>
 
               {% if block.settings.hoodie_collection %}
                 <li>
-                  <a href="{{ block.settings.hoodie_collection.url }}" class="ai-streetwear-header__mobile-submenu-link-{{ ai_gen_id }}">
+                  <a
+                    href="{{ block.settings.hoodie_collection.url }}"
+                    class="ai-streetwear-header__mobile-submenu-link-{{ ai_gen_id }}"
+                  >
                     {{ block.settings.hoodie_text }}
                   </a>
                 </li>
@@ -597,14 +646,36 @@
 
               {% if block.settings.tshirt_collection %}
                 <li>
-                  <a href="{{ block.settings.tshirt_collection.url }}" class="ai-streetwear-header__mobile-submenu-link-{{ ai_gen_id }}">
+                  <a
+                    href="{{ block.settings.tshirt_collection.url }}"
+                    class="ai-streetwear-header__mobile-submenu-link-{{ ai_gen_id }}"
+                  >
                     {{ block.settings.tshirt_text }}
                   </a>
                 </li>
               {% endif %}
 
+              <li class="ai-streetwear-header__mobile-submenu-header-{{ ai_gen_id }}">
+                {{ block.settings.collection_group_seven_title }}
+              </li>
+
+              {% if block.settings.new_seven_collection %}
+                <li>
+                  <a
+                    href="{{ block.settings.new_seven_collection.url }}"
+                    class="ai-streetwear-header__mobile-submenu-link-{{ ai_gen_id }}"
+                  >
+                    {{ block.settings.new_seven_text }}
+                  </a>
+                </li>
+              {% endif %}
+
               <li>
-                <a href="{{ block.settings.all_products_link | default: '/collections/all' }}" class="ai-streetwear-header__mobile-submenu-link-{{ ai_gen_id }}" style="font-weight: 700;">
+                <a
+                  href="{{ block.settings.all_products_link | default: '/collections/all' }}"
+                  class="ai-streetwear-header__mobile-submenu-link-{{ ai_gen_id }}"
+                  style="font-weight: 700;"
+                >
                   All Products
                 </a>
               </li>
@@ -627,11 +698,6 @@
             {{ block.settings.contact_text }}
           </a>
         </li>
-        <li>
-        <a href="/pages/contact" class="ai-streetwear-header__mobile-nav-link-{{ ai_gen_id }}">
-          Contact Us
-        </a>
-      </li>
       {% endif %}
     </ul>
   </div>
@@ -868,6 +934,29 @@
       "type": "image_picker",
       "id": "tshirt_image",
       "label": "T-Shirts image"
+    },
+    {
+      "type": "text",
+      "id": "collection_group_seven_title",
+      "label": "New Seven Collection Sub-heading",
+      "default": "Chapter One: The Seven"
+    },
+    {
+      "type": "text",
+      "id": "new_seven_text",
+      "label": "New Seven Category text",
+      "default": "T-Shirts"
+    },
+    {
+      "type": "collection",
+      "id": "new_seven_collection",
+      "label": "New Seven Collection"
+    },
+
+    {
+      "type": "image_picker",
+      "id": "new_seven_image",
+      "label": "New Seven Collection image"
     },
     {
       "type": "url",

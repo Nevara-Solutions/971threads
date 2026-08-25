@@ -44,14 +44,14 @@
         "announcement-bar-1": {
           "type": "announcement",
           "settings": {
-            "text": "Chapter one: The 7",
+            "text": "Chapter one: The Seven",
             "link": "shopify://collections/all"
           }
         },
         "announcement-bar-2": {
           "type": "announcement",
           "settings": {
-            "text": "971 Threads — From Sands to Street",
+            "text": "971 Threads - From Sands to Street",
             "link": ""
           }
         }
@@ -88,21 +88,25 @@
             "show_shop_link": true,
             "shop_text": "Collections",
             "shop_link": "https://971threads.com/collections",
-            "show_about_link": false,
-            "about_text": "🔥SUPER SALE",
-            "about_link": "shopify://collections/🔥super-sale",
+            "show_about_link": true,
+            "about_text": "About Us",
+            "about_link": "shopify://pages/about-us",
             "show_contact_link": true,
-            "contact_text": "ABOUT US",
-            "contact_link": "shopify://pages/about-us",
+            "contact_text": "Contact Us",
+            "contact_link": "shopify://pages/contact",
             "enable_mega_menu": true,
-            "collection_group_title": "The Origin Collection",
+            "collection_group_title": "Origin",
             "hoodie_text": "Hoodies",
             "hoodie_collection": "hoodie",
             "hoodie_image": "shopify://shop_images/20-DSC_0508_c1b5bb6e-b44b-488b-958a-ac9980cc1eb6.jpg",
             "tshirt_text": "T-Shirts",
             "tshirt_collection": "t-shirt",
-            "tshirt_image": "shopify://shop_images/41-DSC_0340_90535b8f-f98f-4910-b483-d8dcff39a732.jpg",
-            "all_products_link": "shopify://collections/all-products",
+            "tshirt_image": "{{ block.settings.tshirt_collection.image }}",
+            "collection_group_seven_title": "Chapter One: The Seven",
+            "new_seven_text": "T-Shirts",
+            "new_seven_collection": "chapter-one-the-seven",
+            "new_seven_image": "shopify://shop_images/Barjeel_2.jpg",
+            "all_products_link": "shopify://collections/all",
             "show_search": true,
             "show_account": false,
             "show_cart": true,

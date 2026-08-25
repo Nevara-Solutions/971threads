@@ -60,15 +60,6 @@
     "collection_tabs": {
       "type": "collection-tabs",
       "blocks": {
-        "tab_hoodies": {
-          "type": "tab",
-          "settings": {
-            "label": "Hoodies",
-            "collection": "hoodie",
-            "button_label": "Shop hoodies",
-            "button_link": "shopify://collections/hoodie"
-          }
-        },
         "tab_tees": {
           "type": "tab",
           "settings": {
@@ -77,11 +68,20 @@
             "button_label": "Shop tees",
             "button_link": "shopify://collections/t-shirt"
           }
+        },
+        "tab_hoodies": {
+          "type": "tab",
+          "settings": {
+            "label": "Hoodies",
+            "collection": "hoodie",
+            "button_label": "Shop hoodies",
+            "button_link": "shopify://collections/hoodie"
+          }
         }
       },
       "block_order": [
-        "tab_hoodies",
-        "tab_tees"
+        "tab_tees",
+        "tab_hoodies"
       ],
       "settings": {
         "color_scheme": "scheme-1",
@@ -122,6 +122,7 @@
         "phrase_EY6zaB",
         "phrase_xTLAUc"
       ],
+      "disabled": true,
       "name": "Marquee",
       "settings": {
         "color_scheme": "scheme-4",
@@ -409,9 +410,9 @@
             "review_6_name": " Rafay Jibran Daar",
             "review_6_text": "Very impressed with the individual packing and attention to detail on the product.",
             "review_7_enabled": true,
-            "review_7_name": "Momina Chaudhry",
-            "review_7_text": "Recently ordered from 971 Threads and I’m absolutely in love with the fabric, fit, and design; truly top-notch quality. The order was delivered the same day, which was such a great surprise. It also makes for a perfect gift. Highly recommend!",
-            "review_7_image": "shopify://shop_images/unnamed_3.png",
+            "review_7_name": "Alan Woolley",
+            "review_7_text": "The classic t-shirt hits all the marks. The fit is spot-on, and the material is noticeably soft and high quality right out of the package. I really appreciate the subtle, classy design. It gives it a truly premium feel without being overly loud. Highly recommend!",
+            "review_7_image": "shopify://shop_images/unnamed_959ba6b9-bc32-4c56-91ca-751110059938.png",
             "review_8_enabled": false,
             "review_8_name": "Khalid Mahmood",
             "review_8_text": "I received my order from 971 threads and genuinely got impresed with premium quality, clean packaging and their minimalist design. A proudly made in the UAE product that signifies a strong sense of identity and relevance via 971 code (UAE code), what else can I ask for.\nGreat craftsmanship and attention to detail, definitely looking forward to ordering more.",
