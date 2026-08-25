@@ -581,10 +581,10 @@
 
       <div class="ai-footer-payment-icons-{{ ai_gen_id }}">
         {% if block.settings.show_visa %}
-          <span class="ai-footer-payment-icon-{{ ai_gen_id }}"><img src="{{ 'payment-visa.svg' | asset_url }}" alt="Visa" loading="lazy"></span>
+          <span class="ai-footer-payment-icon-{{ ai_gen_id }}"><img src="{{ 'payment-visa.svg' | asset_url }}" alt="Visa" width="40" height="26" loading="lazy"></span>
         {% endif %}
         {% if block.settings.show_mastercard %}
-          <span class="ai-footer-payment-icon-{{ ai_gen_id }}"><img src="{{ 'payment-mastercard.svg' | asset_url }}" alt="Mastercard" loading="lazy"></span>
+          <span class="ai-footer-payment-icon-{{ ai_gen_id }}"><img src="{{ 'payment-mastercard.svg' | asset_url }}" alt="Mastercard" width="40" height="26" loading="lazy"></span>
         {% endif %}
         {% if block.settings.show_amex %}
           <span class="ai-footer-payment-icon-{{ ai_gen_id }}">{{ 'american_express' | payment_type_svg_tag }}</span>
