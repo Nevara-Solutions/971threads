@@ -224,6 +224,24 @@
     display: block;
   }
 
+  /* Amex: show the blue badge itself, no white chip around it. */
+  .ai-footer-pay-bare-{{ ai_gen_id }} {
+    background: transparent;
+    padding: 0;
+  }
+  .ai-footer-pay-bare-{{ ai_gen_id }} svg {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 5px;
+  }
+
+  /* Apple Pay: white box, no padding, black border. */
+  .ai-footer-pay-applepay-{{ ai_gen_id }} {
+    padding: 0;
+    background: #ffffff;
+    border: 1px solid #000000;
+  }
+
   .ai-footer-payment-icon-{{ ai_gen_id }}:hover {
     opacity: 1;
   }
@@ -587,10 +605,10 @@
           <span class="ai-footer-payment-icon-{{ ai_gen_id }}"><img src="{{ 'payment-mastercard.svg' | asset_url }}" alt="Mastercard" width="40" height="26" loading="lazy"></span>
         {% endif %}
         {% if block.settings.show_amex %}
-          <span class="ai-footer-payment-icon-{{ ai_gen_id }}">{{ 'american_express' | payment_type_svg_tag }}</span>
+          <span class="ai-footer-payment-icon-{{ ai_gen_id }} ai-footer-pay-bare-{{ ai_gen_id }}">{{ 'american_express' | payment_type_svg_tag }}</span>
         {% endif %}
         {% if block.settings.show_apple_pay %}
-          <span class="ai-footer-payment-icon-{{ ai_gen_id }}">{{ 'apple_pay' | payment_type_svg_tag }}</span>
+          <span class="ai-footer-payment-icon-{{ ai_gen_id }} ai-footer-pay-applepay-{{ ai_gen_id }}">{{ 'apple_pay' | payment_type_svg_tag }}</span>
         {% endif %}
       </div>
     </div>
