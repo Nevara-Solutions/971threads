@@ -267,6 +267,9 @@
     letter-spacing: 0.04em;
     font-size: 1.6rem;
     font-weight: 700;
+    line-height: 1.25;
+    /* Reserve two lines so price + size chips align across cards even when a title wraps. */
+    min-height: calc(1.6rem * 1.25 * 2);
   }
   .cspot__price {
     margin: 0;
