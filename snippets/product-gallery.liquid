@@ -1,0 +1,126 @@
+{%- comment -%}
+  971threads custom product gallery (product-gallery.js).
+  Desktop: vertical thumbnails on the left + main carousel. Mobile: main carousel on top,
+  horizontal thumbnails below. Arrows, thumbnail switch, swipe, and fullscreen zoom.
+{%- endcomment -%}
+{%- if product.media.size > 0 -%}
+  <product-gallery class="pgal">
+    <div class="pgal__thumbs">
+      {%- for media in product.media -%}
+        <button type="button" class="pgal__thumb{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}" aria-label="View image {{ forloop.index }}">
+          {{ media.preview_image | image_url: width: 200 | image_tag: loading: 'lazy', widths: '100, 150, 200', class: 'pgal__thumb-img', alt: media.alt | default: product.title }}
+        </button>
+      {%- endfor -%}
+    </div>
+
+    <div class="pgal__main">
+      <button type="button" class="pgal__zoom" aria-label="Zoom image">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" stroke-linecap="round"/></svg>
+      </button>
+      <div class="pgal__viewport">
+        <div class="pgal__track">
+          {%- for media in product.media -%}
+            {%- assign ld = 'lazy' -%}{%- if forloop.first -%}{%- assign ld = 'eager' -%}{%- endif -%}
+            <div class="pgal__slide" data-index="{{ forloop.index0 }}">
+              {{ media.preview_image | image_url: width: 1200 | image_tag: loading: ld, fetchpriority: 'auto', widths: '400, 600, 800, 1000, 1200, 1500', sizes: '(min-width: 990px) 46vw, 100vw', class: 'pgal__img', alt: media.alt | default: product.title }}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+      {%- if product.media.size > 1 -%}
+        <button type="button" class="pgal__arrow pgal__arrow--prev" aria-label="Previous image"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M15 5 8 12l7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button type="button" class="pgal__arrow pgal__arrow--next" aria-label="Next image"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m9 5 7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      {%- endif -%}
+    </div>
+
+    <div class="pgal__lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="{{ product.title | escape }} images">
+      <button type="button" class="pgal__lightbox-close" aria-label="Close">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke-linecap="round"/></svg>
+      </button>
+      <div class="pgal__lightbox-viewport">
+        <div class="pgal__lightbox-track">
+          {%- for media in product.media -%}
+            <div class="pgal__lightbox-slide">
+              {{ media.preview_image | image_url: width: 2048 | image_tag: loading: 'lazy', widths: '800, 1200, 1600, 2048', class: 'pgal__lightbox-img', alt: media.alt | default: product.title }}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+      {%- if product.media.size > 1 -%}
+        <button type="button" class="pgal__lightbox-arrow pgal__lightbox-prev" aria-label="Previous image"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M15 5 8 12l7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button type="button" class="pgal__lightbox-arrow pgal__lightbox-next" aria-label="Next image"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m9 5 7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      {%- endif -%}
+    </div>
+  </product-gallery>
+
+  {%- style -%}
+    .pgal { display: flex; gap: 1.2rem; align-items: flex-start; }
+    .pgal__thumbs { display: flex; flex-direction: column; gap: 1rem; flex: 0 0 8rem; }
+    .pgal__thumb {
+      display: block; padding: 0; margin: 0; background: none; cursor: pointer;
+      border: 0.15rem solid transparent; border-radius: 0.6rem; overflow: hidden;
+      aspect-ratio: 4 / 5; transition: border-color 0.15s ease, opacity 0.15s ease; opacity: 0.65;
+    }
+    .pgal__thumb:hover { opacity: 1; }
+    .pgal__thumb.is-active { border-color: rgb(var(--color-foreground)); opacity: 1; }
+    .pgal__thumb-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .pgal__main { position: relative; flex: 1 1 auto; min-width: 0; }
+    .pgal__viewport {
+      overflow: hidden; border-radius: 0.8rem; touch-action: pan-y; cursor: grab;
+      aspect-ratio: 4 / 5; background: rgba(var(--color-foreground), 0.03);
+    }
+    .pgal__viewport:active { cursor: grabbing; }
+    .pgal__track { display: flex; height: 100%; will-change: transform; }
+    .pgal__slide { flex: 0 0 100%; height: 100%; }
+    .pgal__img { width: 100%; height: 100%; object-fit: contain; display: block; -webkit-user-drag: none; user-select: none; }
+
+    .pgal__zoom {
+      position: absolute; top: 1.2rem; right: 1.2rem; z-index: 3;
+      display: inline-flex; align-items: center; justify-content: center; width: 3.6rem; height: 3.6rem;
+      background: rgba(var(--color-background), 0.85); color: rgb(var(--color-foreground));
+      border: 0.1rem solid rgba(var(--color-foreground), 0.12); border-radius: 50%; cursor: pointer;
+      backdrop-filter: blur(4px); transition: background 0.15s ease;
+    }
+    .pgal__zoom:hover { background: rgb(var(--color-background)); }
+
+    .pgal__arrow {
+      position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+      display: inline-flex; align-items: center; justify-content: center; width: 4rem; height: 4rem;
+      background: rgba(var(--color-background), 0.85); color: rgb(var(--color-foreground));
+      border: 0.1rem solid rgba(var(--color-foreground), 0.12); border-radius: 50%; cursor: pointer;
+      opacity: 0; transition: opacity 0.15s ease, background 0.15s ease; backdrop-filter: blur(4px);
+    }
+    .pgal__main:hover .pgal__arrow { opacity: 1; }
+    .pgal__arrow:hover { background: rgb(var(--color-background)); }
+    .pgal__arrow--prev { left: 1.2rem; }
+    .pgal__arrow--next { right: 1.2rem; }
+
+    /* Lightbox */
+    .pgal__lightbox {
+      position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center;
+      background: rgba(0, 0, 0, 0.92); opacity: 0; visibility: hidden; transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+    .pgal__lightbox[aria-hidden="false"] { opacity: 1; visibility: visible; }
+    .pgal__lightbox-viewport { width: 100%; height: 100%; overflow: hidden; touch-action: pan-y; }
+    .pgal__lightbox-track { display: flex; height: 100%; will-change: transform; }
+    .pgal__lightbox-slide { flex: 0 0 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 3rem; box-sizing: border-box; }
+    .pgal__lightbox-img { max-width: 100%; max-height: 100%; object-fit: contain; -webkit-user-drag: none; user-select: none; }
+    .pgal__lightbox-close { position: absolute; top: 1.6rem; right: 1.6rem; z-index: 2; width: 4.4rem; height: 4.4rem; display: inline-flex; align-items: center; justify-content: center; background: none; border: 0; color: #fff; cursor: pointer; }
+    .pgal__lightbox-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 4.8rem; height: 4.8rem; display: inline-flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); border: 0; color: #fff; border-radius: 50%; cursor: pointer; transition: background 0.15s ease; }
+    .pgal__lightbox-arrow:hover { background: rgba(255,255,255,0.2); }
+    .pgal__lightbox-prev { left: 2rem; } .pgal__lightbox-next { right: 2rem; }
+
+    @media screen and (max-width: 749px) {
+      .pgal { flex-direction: column; gap: 1rem; }
+      .pgal__main { order: 0; width: 100%; }
+      .pgal__thumbs { order: 1; flex-direction: row; flex: 0 0 auto; width: 100%; gap: 0.8rem; overflow-x: auto; overflow-y: hidden; padding-bottom: 0.4rem; scrollbar-width: thin; }
+      .pgal__thumb { flex: 0 0 6.2rem; }
+      .pgal__arrow { opacity: 1; width: 3.4rem; height: 3.4rem; }
+      .pgal__lightbox-slide { padding: 1.4rem; }
+      .pgal__lightbox-prev { left: 0.6rem; } .pgal__lightbox-next { right: 0.6rem; }
+    }
+  {%- endstyle -%}
+
+  <script src="{{ 'product-gallery.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
