@@ -1,6 +1,60 @@
 <!doctype html>
 <html class="js" lang="{{ request.locale.iso_code }}">
   <head>
+  <!-- Meta Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)n._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+
+  fbq('init', '1705998430508016');
+  fbq('track', 'PageView');
+
+  {%- if request.page_type == 'product' -%}
+    fbq('track', 'ViewContent', {
+      content_name: {{ product.title | json }},
+      content_ids: [{{ product.selected_or_first_available_variant.sku | json }} || {{ product.selected_or_first_available_variant.id | json }}],
+      content_type: 'product',
+      value: {{ product.selected_or_first_available_variant.price | divided_by: 100.0 }},
+      currency: {{ cart.currency.iso_code | json }}
+    });
+  {%- endif -%}
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1705998430508016&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
+<!-- Precise Click Event Listeners -->
+<script>
+  document.addEventListener('click', function (e) {
+    const target = e.target.closest('button, input[type="submit"], a, shopify-buy-it-now-button, div');
+    if (!target) return;
+
+    const nameAttr = target.getAttribute('name') || '';
+    const idAttr = target.id || '';
+    const text = (target.innerText || target.value || target.getAttribute('aria-label') || '').toLowerCase();
+
+    // 1. Add to Cart Detection (Catching all variants of add to cart buttons)
+    if (nameAttr === 'add' || idAttr.includes('ProductSubmitButton') || text.includes('add to cart') || text.includes('add')) {
+      if (typeof fbq === 'function') {
+        fbq('track', 'AddToCart');
+      }
+    }
+
+    // 2. Checkout / Buy It Now Detection
+    if (nameAttr === 'checkout' || idAttr.includes('Checkout') || text.includes('check out') || text.includes('checkout') || text.includes('buy it now')) {
+      if (typeof fbq === 'function') {
+        fbq('track', 'InitiateCheckout');
+      }
+    }
+  });
+</script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">

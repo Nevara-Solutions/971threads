@@ -37,7 +37,7 @@
           "settings": {
             "kicker": "",
             "heading": "When it's gone, it's gone",
-            "subheading": "Every release is a limited run. \n<br>No restocks, just the next drop.",
+            "subheading": "Every release is highly exclusive <br> and a limited run.",
             "button_label": "Shop tees",
             "button_link": "shopify://collections/all"
           }
@@ -64,9 +64,9 @@
           "type": "tab",
           "settings": {
             "label": "T-shirts",
-            "collection": "t-shirt",
+            "collection": "chapter-one-the-seven",
             "button_label": "Shop tees",
-            "button_link": "shopify://collections/t-shirt"
+            "button_link": "shopify://collections/chapter-one-the-seven"
           }
         },
         "tab_hoodies": {
@@ -231,8 +231,8 @@
             "button_text": "SHOP THE DROP",
             "button_link": "https://971threads.com/collections/all",
             "image_1": "shopify://shop_images/61-DSC_0551.jpg",
-            "image_2": "shopify://shop_images/41-DSC_0340.jpg",
-            "image_3": "shopify://shop_images/28-DSC_0485.jpg",
+            "image_2": "shopify://shop_images/43-DSC_0344.jpg",
+            "image_3": "shopify://shop_images/20-DSC_0508.jpg",
             "image_4": "shopify://shop_images/64-DSC_0691.jpg",
             "min_height_desktop": 600,
             "text_padding_desktop": 60,
@@ -285,7 +285,7 @@
           "type": "ai_gen_block_ca107b3",
           "settings": {
             "heading": "From Sands to Street",
-            "text": "<p>Born in the UAE, 971 Threads merges heritage with modern streetwear culture. Every piece reflects premium quality and authentic craftsmanship, rooted in the spirit of the Emirates and designed for those who value both tradition and innovation.</p><p><br/><em>We don't just create streetwear; we curate memories of home. Designed in the UAE, for the dreamers who walk between tradition and the future.</em><br/><strong>— The 971 Threads Team</strong></p>",
+            "text": "<p>Born in the UAE, 971 Threads merges heritage with modern streetwear culture. Every piece reflects premium quality and authentic craftsmanship, rooted in the spirit of the Emirates and designed for those who value both tradition and innovation.</p><p><br/><em>We don't just create streetwear; we curate memories of home. Designed in the UAE, for the dreamers who walk between tradition and the future.</em><br/><strong> The 971 Threads Team</strong></p>",
             "layout": "row",
             "text_alignment": "left",
             "container_width": 1400,
@@ -682,7 +682,7 @@
           "settings": {
             "icon": "grid",
             "heading": "Limited drops",
-            "text": "Every release is highly exclusive with zero restocks and absolutely no repeats."
+            "text": "Every release, is highly exclusive and limited with no repeats."
           }
         }
       },
